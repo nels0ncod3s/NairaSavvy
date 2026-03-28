@@ -1,0 +1,362 @@
+@import "tailwindcss";
+
+/* ─── NairaSavvy Design Tokens ─────────────────────────────────────── */
+
+@theme {
+  /* Color palette */
+  --color-cream:        #F5F0E8;
+  --color-cream-card:   #FAFAF7;
+  --color-ns-black:     #1A1A1A;
+  --color-ns-gray:      #6B6560;
+  --color-gray-light:   #D4CFC8;
+  --color-green:        #1B5E3B;
+  --color-green-light:  #E8F5EE;
+  --color-dark:         #0F0F0D;
+  --color-dark-card:    #1C1C1A;
+
+  /* Fonts */
+  --font-serif:  "Playfair Display", Georgia, serif;
+  --font-sans:   "DM Sans", system-ui, sans-serif;
+
+  /* Spacing extras */
+  --spacing-section:        120px;
+  --spacing-section-mobile: 64px;
+  --spacing-card:           40px;
+  --spacing-card-mobile:    24px;
+
+  /* Shadows */
+  --shadow-card:      0 1px 3px rgba(26,26,26,0.06), 0 1px 2px rgba(26,26,26,0.04);
+  --shadow-card-hover: 0 8px 24px rgba(26,26,26,0.10), 0 2px 8px rgba(26,26,26,0.06);
+  --shadow-nav:       0 1px 0 #D4CFC8;
+
+  /* Animations */
+  --animate-fade-up: fadeUp 0.6s ease forwards;
+  --animate-fade-in: fadeIn 0.4s ease forwards;
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+}
+
+/* ─── CSS Custom Properties (for use in vanilla CSS) ────────────────── */
+
+:root {
+  --cream:        #F5F0E8;
+  --cream-card:   #FAFAF7;
+  --ns-black:     #1A1A1A;
+  --ns-gray:      #6B6560;
+  --gray-light:   #D4CFC8;
+  --green:        #1B5E3B;
+  --green-light:  #E8F5EE;
+  --dark:         #0F0F0D;
+  --dark-card:    #1C1C1A;
+  --transition:   0.2s ease;
+  --font-serif:   "Playfair Display", Georgia, serif;
+  --font-sans:    "DM Sans", system-ui, sans-serif;
+}
+
+/* ─── Base Reset ────────────────────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--cream);
+  color: var(--ns-black);
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-size: 16px;
+  line-height: 1.75;
+  margin: 0;
+  padding: 0;
+}
+
+/* ─── Typography Utilities ──────────────────────────────────────────── */
+
+.type-display {
+  font-family: var(--font-serif, Georgia, serif);
+  font-size: clamp(48px, 6vw, 72px);
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.type-h1 {
+  font-family: var(--font-serif, Georgia, serif);
+  font-size: clamp(36px, 4vw, 48px);
+  line-height: 1.17;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.type-h2 {
+  font-family: var(--font-serif, Georgia, serif);
+  font-size: clamp(28px, 3vw, 36px);
+  line-height: 1.22;
+  font-weight: 600;
+}
+
+.type-h3 {
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 600;
+}
+
+.type-h4 {
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 600;
+}
+
+.type-body {
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-size: 16px;
+  line-height: 28px;
+  font-weight: 400;
+}
+
+.type-small {
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-size: 14px;
+  line-height: 22px;
+  font-weight: 400;
+}
+
+.type-label {
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* ─── Animation Delay Helpers ───────────────────────────────────────── */
+
+.animation-delay-150 { animation-delay: 0.15s; }
+.animation-delay-300 { animation-delay: 0.30s; }
+.animation-delay-450 { animation-delay: 0.45s; }
+.animation-delay-600 { animation-delay: 0.60s; }
+
+/* ─── Section Layout ────────────────────────────────────────────────── */
+
+.section {
+  padding-top: 120px;
+  padding-bottom: 120px;
+}
+
+.section-sm {
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding-top: 64px;
+    padding-bottom: 64px;
+  }
+  .section-sm {
+    padding-top: 48px;
+    padding-bottom: 48px;
+  }
+}
+
+.container-content {
+  width: 100%;
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+@media (min-width: 1024px) {
+  .container-content {
+    padding-left: 48px;
+    padding-right: 48px;
+  }
+}
+
+/* ─── Card Utilities ────────────────────────────────────────────────── */
+
+.card {
+  background-color: var(--cream-card);
+  border: 1px solid var(--gray-light);
+  padding: var(--spacing-card, 40px);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(26,26,26,0.10), 0 2px 8px rgba(26,26,26,0.06);
+}
+
+/* ─── Button Utilities ──────────────────────────────────────────────── */
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--green);
+  color: #ffffff;
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1;
+  padding: 14px 24px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  transition: background-color var(--transition), transform var(--transition);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.btn-primary:hover {
+  background-color: #164d2f;
+  transform: translateY(-1px);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: transparent;
+  color: var(--ns-black);
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1;
+  padding: 13px 24px;
+  border-radius: 4px;
+  border: 1px solid var(--ns-black);
+  cursor: pointer;
+  transition: background-color var(--transition), color var(--transition);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.btn-outline:hover {
+  background-color: var(--ns-black);
+  color: #ffffff;
+}
+
+/* ─── Form Utilities ────────────────────────────────────────────────── */
+
+.input {
+  width: 100%;
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-size: 16px;
+  line-height: 1;
+  padding: 14px 16px;
+  border-radius: 4px;
+  border: 1px solid var(--gray-light);
+  background-color: #ffffff;
+  color: var(--ns-black);
+  outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.input::placeholder {
+  color: var(--ns-gray);
+}
+
+.input:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px rgba(27, 94, 59, 0.12);
+}
+
+.input-dark {
+  background-color: var(--dark-card);
+  border-color: #333331;
+  color: #ffffff;
+}
+
+.input-dark::placeholder {
+  color: #888884;
+}
+
+.input-dark:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px rgba(27, 94, 59, 0.20);
+}
+
+/* ─── Category Tag ──────────────────────────────────────────────────── */
+
+.category-tag {
+  display: inline-block;
+  background-color: var(--green);
+  color: #ffffff;
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 4px 10px;
+  border-radius: 2px;
+}
+
+/* ─── Reading Progress Bar ──────────────────────────────────────────── */
+
+.reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background-color: var(--green);
+  z-index: 9999;
+  transition: width 0.1s linear;
+}
+
+/* ─── Prose Overrides for MDX ───────────────────────────────────────── */
+
+.prose-nairasavvy h1,
+.prose-nairasavvy h2,
+.prose-nairasavvy h3 {
+  font-family: var(--font-serif, Georgia, serif);
+  color: var(--ns-black);
+}
+
+.prose-nairasavvy h4,
+.prose-nairasavvy h5,
+.prose-nairasavvy h6 {
+  font-family: var(--font-sans, system-ui, sans-serif);
+  color: var(--ns-black);
+}
+
+.prose-nairasavvy p {
+  color: var(--ns-black);
+  line-height: 1.75;
+}
+
+.prose-nairasavvy a {
+  color: var(--green);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.prose-nairasavvy strong {
+  font-weight: 700;
+  color: var(--ns-black);
+}

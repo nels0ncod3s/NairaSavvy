@@ -1,0 +1,76 @@
+name: Deploy NairaSavvy to Vercel
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  deploy:
+    name: Build & Deploy
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./nairasavvy
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: nairasavvy/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: TypeScript check
+        run: npx tsc --noEmit
+
+      - name: Build
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SITE_URL: https://nairasavvy.vercel.app
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel@latest
+
+      # ── Production deploy (pushes to main) ──────────────────────────
+      - name: Deploy to Production
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        id: prod-deploy
+        run: |
+          DEPLOY_URL=$(vercel --prod --yes \
+            --token ${{ secrets.VERCEL_TOKEN }} \
+            2>&1 | grep -E "https://" | tail -1)
+          echo "deploy_url=$DEPLOY_URL" >> $GITHUB_OUTPUT
+          echo "✅ Production URL: $DEPLOY_URL"
+        env:
+          VERCEL_ORG_ID: team_9T8GlkyVrh47bTdRyP5ctH1Y
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
+      - name: Print live URL
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: |
+          echo "🚀 NairaSavvy is live at: ${{ steps.prod-deploy.outputs.deploy_url }}"
+
+      # ── Preview deploy (pull requests) ──────────────────────────────
+      - name: Deploy Preview
+        if: github.event_name == 'pull_request'
+        id: preview-deploy
+        run: |
+          PREVIEW_URL=$(vercel --yes \
+            --token ${{ secrets.VERCEL_TOKEN }} \
+            2>&1 | grep -E "https://" | tail -1)
+          echo "preview_url=$PREVIEW_URL" >> $GITHUB_OUTPUT
+          echo "🔍 Preview URL: $PREVIEW_URL"
+        env:
+          VERCEL_ORG_ID: team_9T8GlkyVrh47bTdRyP5ctH1Y
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}

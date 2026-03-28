@@ -21,11 +21,19 @@ export interface Faq {
   a: string;
 }
 
+export interface ArticleSource {
+  name: string;
+  year: string | number;
+  url: string;
+  description?: string;
+}
+
 export interface ArticleFull extends ArticleMeta {
   content: string;
   seoTitle?: string;
   metaDescription?: string;
   sources?: string[];
+  articleSources?: ArticleSource[];
   faqs?: Faq[];
 }
 
@@ -80,6 +88,7 @@ export function getArticleBySlug(slug: string): ArticleFull | null {
       seoTitle: data.seoTitle as string | undefined,
       metaDescription: data.metaDescription as string | undefined,
       sources: (data.sources as string[]) ?? [],
+      articleSources: (data.articleSources as ArticleSource[]) ?? [],
       faqs: (data.faqs as Faq[]) ?? [],
     };
   } catch {

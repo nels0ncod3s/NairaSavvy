@@ -1,0 +1,13 @@
+{
+  "name": "nairasavvy",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "next": "16.2.1"
+  },
+  "scripts": {
+    "build": "cd nairasavvy && npm run build",
+    "dev": "cd nairasavvy && npm run dev",
+    "start": "cd nairasavvy && npm start"
+  }
+}

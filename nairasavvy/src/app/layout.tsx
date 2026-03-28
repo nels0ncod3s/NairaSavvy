@@ -7,7 +7,7 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://nairasavvy.ng";
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "NairaSavvy — Nigeria's Financial Intelligence Platform",
+    default: "NairaSavvy: Nigeria's Financial Intelligence Platform",
     template: "%s | NairaSavvy",
   },
   description:
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     locale: "en_NG",
     url: siteUrl,
     siteName: "NairaSavvy",
-    title: "NairaSavvy — Nigeria's Financial Intelligence Platform",
+    title: "NairaSavvy: Nigeria's Financial Intelligence Platform",
     description:
       "Free guides, tools, and alerts to protect your money, fight back against banks, and grow what you have.",
     images: [
@@ -39,13 +39,13 @@ export const metadata: Metadata = {
         url: "/og-default.png",
         width: 1200,
         height: 630,
-        alt: "NairaSavvy — Nigeria's Financial Intelligence Platform",
+        alt: "NairaSavvy: Nigeria's Financial Intelligence Platform",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "NairaSavvy — Nigeria's Financial Intelligence Platform",
+    title: "NairaSavvy: Nigeria's Financial Intelligence Platform",
     description:
       "Free guides, tools, and alerts to protect your money, fight back against banks, and grow what you have.",
     images: ["/og-default.png"],
@@ -106,7 +106,7 @@ export default function RootLayout({
   return (
     <html lang="en-NG">
       <head>
-        {/* Google Fonts — loaded via browser for zero build-time dependency */}
+        {/* Google Fonts: loaded via browser for zero build-time dependency */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"

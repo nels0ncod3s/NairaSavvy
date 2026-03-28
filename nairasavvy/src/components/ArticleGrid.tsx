@@ -112,7 +112,7 @@ function ArticleCard({ article }: { article: ArticleMeta }) {
               fontWeight: 600,
             }}
           >
-            Read \u2192
+            Read →
           </span>
         </div>
       </article>
@@ -137,7 +137,7 @@ export default function ArticleGrid({ category }: ArticleGridProps) {
           className="type-h3"
           style={{ color: "#6B6560", marginBottom: "8px" }}
         >
-          No articles yet \u2014 check back soon
+          No articles yet. Check back soon.
         </p>
         <p className="type-body" style={{ color: "#9CA3A0" }}>
           We&apos;re working on guides for this section.

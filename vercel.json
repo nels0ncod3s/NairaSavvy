@@ -1,5 +1,5 @@
 {
-  "installCommand": "cd nairasavvy && npm install",
+  "installCommand": "npm install && cd nairasavvy && npm install",
   "buildCommand": "cd nairasavvy && npm run build && cp -r .next ../.next",
   "outputDirectory": ".next",
   "framework": "nextjs"

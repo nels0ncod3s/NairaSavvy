@@ -1,6 +1,6 @@
 {
   "installCommand": "npm install && cd nairasavvy && npm install",
-  "buildCommand": "cd nairasavvy && npm run build && cp -r .next ../.next",
-  "outputDirectory": ".next",
+  "buildCommand": "cd nairasavvy && npm run build",
+  "outputDirectory": "nairasavvy/.next",
   "framework": "nextjs"
 }

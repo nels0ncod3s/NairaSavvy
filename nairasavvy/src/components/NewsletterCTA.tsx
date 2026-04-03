@@ -108,7 +108,7 @@ export default function NewsletterCTA() {
               disabled={state === "loading"}
               style={{ whiteSpace: "nowrap" }}
             >
-              {state === "loading" ? "Joining\u2026" : "Get Free Alerts \u2192"}
+              {state === "loading" ? "Joining..." : "Get Free Alerts →"}
             </button>
           </form>
         )}
@@ -126,7 +126,7 @@ export default function NewsletterCTA() {
             marginTop: "16px",
           }}
         >
-          Free forever \u00b7 No spam \u00b7 Unsubscribe anytime
+          Free forever · No spam · Unsubscribe anytime
         </p>
       </div>
     </section>

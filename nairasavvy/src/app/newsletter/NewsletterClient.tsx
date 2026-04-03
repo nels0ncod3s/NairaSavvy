@@ -43,20 +43,20 @@ export default function NewsletterClient() {
             <div style={{ display: "flex", justifyContent: "center", gap: "32px", marginBottom: "48px", flexWrap: "wrap" }}>
               {["Free forever", "No spam", "Unsubscribe anytime"].map((t) => (
                 <span key={t} style={{ fontFamily: "var(--font-sans, system-ui, sans-serif)", fontSize: "14px", color: "#6B6760", display: "flex", alignItems: "center", gap: "6px" }}>
-                  <span style={{ color: "#1B5E3B", fontWeight: 700 }}>\u2713</span>{t}
+                  <span style={{ color: "#1B5E3B", fontWeight: 700 }}>✓</span>{t}
                 </span>
               ))}
             </div>
             {state === "success" ? (
               <div style={{ backgroundColor: "#0A2E1A", border: "1px solid #1B5E3B", borderRadius: "4px", padding: "32px" }}>
-                <p style={{ color: "#4ADE80", fontWeight: 700, fontSize: "18px", margin: 0, marginBottom: "8px" }}>\u2713 You&apos;re on the list.</p>
+                <p style={{ color: "#4ADE80", fontWeight: 700, fontSize: "18px", margin: 0, marginBottom: "8px" }}>✓ You&apos;re on the list.</p>
                 <p style={{ color: "#9CA3A0", margin: 0, fontSize: "15px" }}>Check your inbox for a confirmation email.</p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} style={{ display: "flex", gap: "12px", flexWrap: "wrap", justifyContent: "center" }}>
                 <input type="email" className="input input-dark" placeholder="your@email.com" value={email} onChange={(e) => setEmail(e.target.value)} required style={{ flex: "1 1 280px", maxWidth: "340px" }} />
                 <button type="submit" className="btn-primary" disabled={state === "loading"} style={{ fontSize: "16px", padding: "14px 28px", whiteSpace: "nowrap" }}>
-                  {state === "loading" ? "Joining\u2026" : "Get Free Alerts \u2192"}
+                  {state === "loading" ? "Joining..." : "Get Free Alerts →"}
                 </button>
               </form>
             )}

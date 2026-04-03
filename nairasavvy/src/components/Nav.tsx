@@ -23,7 +23,7 @@ export default function Nav() {
   const heroSentinelRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    // Watch the hero section — go solid once hero scrolls out
+    // Watch the hero section; go solid once hero scrolls out
     const sentinel = document.getElementById("hero-sentinel");
     if (!sentinel) {
       // Fallback: use scroll position
@@ -87,7 +87,7 @@ export default function Nav() {
                 textDecoration: "none",
                 letterSpacing: "-0.01em",
               }}
-              aria-label="NairaSavvy — home"
+              aria-label="NairaSavvy home"
             >
               NairaSavvy
             </Link>

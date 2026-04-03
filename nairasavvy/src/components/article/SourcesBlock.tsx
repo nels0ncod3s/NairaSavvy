@@ -105,7 +105,7 @@ export function SourcesBlock({ sources }: SourcesBlockProps) {
               </span>
               {source.description && (
                 <span style={{ color: '#6B6560' }}>
-                  {' — '}{source.description}
+                  {', '}{source.description}
                 </span>
               )}
             </span>

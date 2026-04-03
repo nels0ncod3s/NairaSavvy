@@ -173,7 +173,7 @@ export default function Footer() {
             Nothing on this site constitutes financial advice. Always verify
             current rates and consult a qualified financial advisor before
             making investment decisions. We may earn affiliate commissions from
-            some links — these are always clearly labelled. APY rates shown are
+            some links. These are always clearly labelled. APY rates shown are
             for informational purposes only and may have changed since last
             verified. Past performance does not guarantee future returns.
           </p>

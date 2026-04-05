@@ -14,7 +14,7 @@ const navLinks: NavLink[] = [
   { label: "Fight Back", href: "/fight-back" },
   { label: "Grow", href: "/grow" },
   { label: "Cut Costs", href: "/cut-costs" },
-  { label: "News", href: "/news" },
+  { label: "Articles", href: "/articles" },
 ];
 
 export default function Nav() {

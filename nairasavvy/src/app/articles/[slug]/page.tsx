@@ -48,9 +48,12 @@ export async function generateMetadata({
 /* ─── Content pre-processing ────────────────────────────────────────── */
 
 function preprocessContent(raw: string): string {
-  // Strip [JSON-LD SCHEMA...] section and everything after
-  const schemaIdx = raw.indexOf("[JSON-LD SCHEMA");
-  let content = schemaIdx !== -1 ? raw.slice(0, schemaIdx).trimEnd() : raw;
+  // Strip [JSON-LD SCHEMA...], [SCHEMA], or bare ```json schema blocks — everything from there to end
+  let content = raw;
+  for (const marker of ["[JSON-LD SCHEMA", "[SCHEMA]", "[SCHEMA"]) {
+    const idx = content.indexOf(marker);
+    if (idx !== -1) { content = content.slice(0, idx).trimEnd(); break; }
+  }
 
   const lines = content.split("\n");
   const result: string[] = [];
@@ -73,9 +76,7 @@ function preprocessContent(raw: string): string {
     if (defMatch) {
       const term = defMatch[1];
       i++;
-      // Skip blank lines after marker
       while (i < lines.length && lines[i].trim() === "") i++;
-      // Collect the definition paragraph
       const paraLines: string[] = [];
       while (
         i < lines.length &&
@@ -91,6 +92,36 @@ function preprocessContent(raw: string): string {
       result.push(paraLines.join("\n"));
       result.push("");
       result.push("</DefinitionBlock>");
+      result.push("");
+      continue;
+    }
+
+    // FAQ Q&A: **Q: question text** followed by A: answer text
+    const faqQMatch = line.match(/^\*\*Q:\s*(.+?)\*\*$/);
+    if (faqQMatch) {
+      const question = faqQMatch[1].trim();
+      i++;
+      // skip blank lines
+      while (i < lines.length && lines[i].trim() === "") i++;
+      // collect answer lines (starts with "A: " or is continuation)
+      const answerLines: string[] = [];
+      if (i < lines.length && lines[i].startsWith("A:")) {
+        answerLines.push(lines[i].replace(/^A:\s*/, "").trim());
+        i++;
+        while (
+          i < lines.length &&
+          lines[i].trim() !== "" &&
+          !lines[i].startsWith("**Q:")
+        ) {
+          answerLines.push(lines[i]);
+          i++;
+        }
+      }
+      const answer = answerLines.join(" ").trim();
+      result.push("");
+      result.push(`<FAQItem question="${question.replace(/"/g, "&quot;")}">`);
+      result.push(answer);
+      result.push("</FAQItem>");
       result.push("");
       continue;
     }
@@ -168,6 +199,7 @@ function DefinitionBlock({
 }
 
 function SectionLabel({ label }: { label: string }) {
+  const isFaq = label === "FAQ";
   return (
     <div
       style={{
@@ -177,13 +209,55 @@ function SectionLabel({ label }: { label: string }) {
         textTransform: "uppercase",
         letterSpacing: "0.1em",
         color: "#9CA3A0",
-        borderBottom: "1px solid #D4CFC8",
+        borderBottom: isFaq ? "none" : "1px solid #D4CFC8",
+        borderTop: isFaq ? "1px solid #D4CFC8" : "none",
         paddingBottom: "8px",
-        marginTop: "48px",
-        marginBottom: "24px",
+        paddingTop: isFaq ? "48px" : "0",
+        marginTop: isFaq ? "0" : "48px",
+        marginBottom: "16px",
       }}
     >
-      {label}
+      {isFaq ? "Frequently Asked Questions" : label}
+    </div>
+  );
+}
+
+function FAQItem({
+  question,
+  children,
+}: {
+  question: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div
+      style={{
+        borderBottom: "1px solid #D4CFC8",
+        padding: "20px 0",
+      }}
+    >
+      <p
+        style={{
+          fontFamily: "var(--font-sans, system-ui, sans-serif)",
+          fontSize: "16px",
+          fontWeight: 700,
+          color: "#1A1A1A",
+          margin: "0 0 10px",
+          lineHeight: "1.5",
+        }}
+      >
+        {question}
+      </p>
+      <div
+        style={{
+          fontFamily: "var(--font-sans, system-ui, sans-serif)",
+          fontSize: "16px",
+          lineHeight: "1.75",
+          color: "#6B6560",
+        }}
+      >
+        {children}
+      </div>
     </div>
   );
 }
@@ -244,17 +318,19 @@ const mdxComponents: MDXComponents = {
   DefinitionBlock: DefinitionBlock as React.ComponentType<Record<string, unknown>>,
   SectionLabel: SectionLabel as React.ComponentType<Record<string, unknown>>,
   InlineNewsletterCTA: InlineNewsletterCTA as React.ComponentType<Record<string, unknown>>,
+  FAQItem: FAQItem as React.ComponentType<Record<string, unknown>>,
   // Prose overrides
   h1: ({ children }) => (
     <h1
       style={{
         fontFamily: "var(--font-serif, Georgia, serif)",
-        fontSize: "clamp(28px, 4vw, 40px)",
-        lineHeight: "1.2",
+        fontSize: "clamp(32px, 4vw, 44px)",
+        lineHeight: "1.15",
         fontWeight: 700,
         color: "#1A1A1A",
-        marginTop: "40px",
-        marginBottom: "16px",
+        marginTop: "48px",
+        marginBottom: "20px",
+        letterSpacing: "-0.01em",
       }}
     >
       {children}
@@ -264,12 +340,13 @@ const mdxComponents: MDXComponents = {
     <h2
       style={{
         fontFamily: "var(--font-serif, Georgia, serif)",
-        fontSize: "clamp(22px, 3vw, 28px)",
-        lineHeight: "1.3",
+        fontSize: "clamp(26px, 3vw, 34px)",
+        lineHeight: "1.25",
         fontWeight: 700,
         color: "#1A1A1A",
-        marginTop: "40px",
+        marginTop: "56px",
         marginBottom: "16px",
+        letterSpacing: "-0.01em",
       }}
     >
       {children}
@@ -279,29 +356,77 @@ const mdxComponents: MDXComponents = {
     <h3
       style={{
         fontFamily: "var(--font-serif, Georgia, serif)",
-        fontSize: "20px",
-        lineHeight: "1.4",
+        fontSize: "22px",
+        lineHeight: "1.35",
         fontWeight: 700,
         color: "#1A1A1A",
-        marginTop: "32px",
+        marginTop: "40px",
         marginBottom: "12px",
       }}
     >
       {children}
     </h3>
   ),
+  h4: ({ children }) => (
+    <h4
+      style={{
+        fontFamily: "var(--font-sans, system-ui, sans-serif)",
+        fontSize: "16px",
+        lineHeight: "1.5",
+        fontWeight: 700,
+        color: "#1A1A1A",
+        marginTop: "28px",
+        marginBottom: "8px",
+        textTransform: "uppercase",
+        letterSpacing: "0.04em",
+      }}
+    >
+      {children}
+    </h4>
+  ),
   p: ({ children }) => (
     <p
       style={{
         fontFamily: "var(--font-sans, system-ui, sans-serif)",
         fontSize: "17px",
-        lineHeight: "1.8",
+        lineHeight: "1.85",
         color: "#1A1A1A",
         marginBottom: "24px",
       }}
     >
       {children}
     </p>
+  ),
+  ul: ({ children }) => (
+    <ul
+      style={{
+        fontFamily: "var(--font-sans, system-ui, sans-serif)",
+        fontSize: "17px",
+        lineHeight: "1.85",
+        color: "#1A1A1A",
+        marginBottom: "24px",
+        paddingLeft: "24px",
+      }}
+    >
+      {children}
+    </ul>
+  ),
+  ol: ({ children }) => (
+    <ol
+      style={{
+        fontFamily: "var(--font-sans, system-ui, sans-serif)",
+        fontSize: "17px",
+        lineHeight: "1.85",
+        color: "#1A1A1A",
+        marginBottom: "24px",
+        paddingLeft: "24px",
+      }}
+    >
+      {children}
+    </ol>
+  ),
+  li: ({ children }) => (
+    <li style={{ marginBottom: "8px" }}>{children}</li>
   ),
   strong: ({ children }) => (
     <strong style={{ fontWeight: 700, color: "#1A1A1A" }}>{children}</strong>
@@ -324,15 +449,29 @@ const mdxComponents: MDXComponents = {
   blockquote: ({ children }) => (
     <blockquote
       style={{
-        borderLeft: "4px solid #D4CFC8",
+        borderLeft: "4px solid #1B5E3B",
         paddingLeft: "24px",
         marginLeft: 0,
+        marginRight: 0,
+        marginTop: "32px",
+        marginBottom: "32px",
         color: "#6B6560",
         fontStyle: "italic",
+        fontSize: "18px",
+        lineHeight: "1.7",
       }}
     >
       {children}
     </blockquote>
+  ),
+  hr: () => (
+    <hr
+      style={{
+        border: "none",
+        borderTop: "1px solid #D4CFC8",
+        margin: "48px 0",
+      }}
+    />
   ),
 };
 

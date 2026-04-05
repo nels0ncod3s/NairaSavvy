@@ -62,6 +62,37 @@ CREATE TABLE IF NOT EXISTS content_queue (
   published_at TIMESTAMPTZ
 );
 
+-- CBN Circulars (policy updates that affect consumers)
+CREATE TABLE IF NOT EXISTS cbn_circulars (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  reference_number TEXT,
+  title TEXT NOT NULL,
+  date_issued DATE NOT NULL,
+  category TEXT,
+  summary TEXT,
+  source_url TEXT,
+  article_potential BOOLEAN DEFAULT false,
+  affects_consumers BOOLEAN DEFAULT true,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Data Plans (mobile data comparison)
+CREATE TABLE IF NOT EXISTS data_plans (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  network TEXT NOT NULL,
+  plan_name TEXT NOT NULL,
+  data_gb DECIMAL(6,2) NOT NULL,
+  price_naira INT NOT NULL,
+  validity_days INT,
+  night_bonus_gb DECIMAL(6,2) DEFAULT 0,
+  activation_code TEXT,
+  value_score DECIMAL(6,2),
+  is_hidden_deal BOOLEAN DEFAULT false,
+  is_active BOOLEAN DEFAULT true,
+  source_url TEXT,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
 -- ─── Seed Data ────────────────────────────────────────────────────────
 
 -- Current inflation rate (NBS, March 2026)
@@ -109,3 +140,13 @@ CREATE POLICY "Anyone can subscribe" ON subscribers
 
 -- Content queue: service role only
 -- (No public access — manage via service role key in API routes)
+
+-- CBN circulars: public read
+ALTER TABLE cbn_circulars ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Public can read cbn_circulars" ON cbn_circulars
+  FOR SELECT USING (true);
+
+-- Data plans: public read
+ALTER TABLE data_plans ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Public can read data_plans" ON data_plans
+  FOR SELECT USING (is_active = true);

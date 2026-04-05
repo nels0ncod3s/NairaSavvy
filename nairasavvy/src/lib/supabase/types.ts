@@ -172,6 +172,91 @@ export interface Database {
           published_at?: string | null;
         };
       };
+      cbn_circulars: {
+        Row: {
+          id: string;
+          reference_number: string | null;
+          title: string;
+          date_issued: string;
+          category: string | null;
+          summary: string | null;
+          source_url: string | null;
+          article_potential: boolean;
+          affects_consumers: boolean;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          reference_number?: string | null;
+          title: string;
+          date_issued: string;
+          category?: string | null;
+          summary?: string | null;
+          source_url?: string | null;
+          article_potential?: boolean;
+          affects_consumers?: boolean;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          reference_number?: string | null;
+          title?: string;
+          date_issued?: string;
+          category?: string | null;
+          summary?: string | null;
+          source_url?: string | null;
+          article_potential?: boolean;
+          affects_consumers?: boolean;
+          created_at?: string;
+        };
+      };
+      data_plans: {
+        Row: {
+          id: string;
+          network: string;
+          plan_name: string;
+          data_gb: number;
+          price_naira: number;
+          validity_days: number | null;
+          night_bonus_gb: number;
+          activation_code: string | null;
+          value_score: number | null;
+          is_hidden_deal: boolean;
+          is_active: boolean;
+          source_url: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          network: string;
+          plan_name: string;
+          data_gb: number;
+          price_naira: number;
+          validity_days?: number | null;
+          night_bonus_gb?: number;
+          activation_code?: string | null;
+          value_score?: number | null;
+          is_hidden_deal?: boolean;
+          is_active?: boolean;
+          source_url?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          network?: string;
+          plan_name?: string;
+          data_gb?: number;
+          price_naira?: number;
+          validity_days?: number | null;
+          night_bonus_gb?: number;
+          activation_code?: string | null;
+          value_score?: number | null;
+          is_hidden_deal?: boolean;
+          is_active?: boolean;
+          source_url?: string | null;
+          created_at?: string;
+        };
+      };
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;
@@ -185,3 +270,5 @@ export type Subscriber = Database["public"]["Tables"]["subscribers"]["Row"];
 export type ApyRate = Database["public"]["Tables"]["apy_rates"]["Row"];
 export type InflationData = Database["public"]["Tables"]["inflation_data"]["Row"];
 export type ContentQueue = Database["public"]["Tables"]["content_queue"]["Row"];
+export type CbnCircular = Database["public"]["Tables"]["cbn_circulars"]["Row"];
+export type DataPlan = Database["public"]["Tables"]["data_plans"]["Row"];

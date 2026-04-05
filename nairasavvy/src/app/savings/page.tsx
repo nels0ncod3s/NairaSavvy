@@ -1,8 +1,11 @@
-import type { Metadata } from "next";
-import Nav from "@/components/Nav";
-import Footer from "@/components/Footer";
-import ArticleGrid from "@/components/ArticleGrid";
-import NewsletterCTA from "@/components/NewsletterCTA";
+import type { Metadata } from "next"
+import Nav from "@/components/Nav"
+import Footer from "@/components/Footer"
+import ArticleGrid from "@/components/ArticleGrid"
+import NewsletterCTA from "@/components/NewsletterCTA"
+import { getCurrentInflationRate } from "@/lib/data/inflation"
+import { getAllAPYRates, type APYRate } from "@/lib/data/apy-rates"
+import ErosionCalculator from "@/components/tools/ErosionCalculator"
 
 export const metadata: Metadata = {
   title: "Protect Your Savings From Inflation",
@@ -12,33 +15,52 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Protect Your Savings From Inflation | NairaSavvy",
     description:
-      "See which savings accounts beat Nigeria's 32.7% inflation, and which ones are quietly destroying your money.",
+      "See which savings accounts beat Nigeria's inflation, and which ones are quietly destroying your money.",
     url: "/savings",
   },
-};
-
-const APY_RATES = [
-  { institution: "Lotus Bank", product: "Fixed Deposit", type: "savings", apy: 22.0 },
-  { institution: "Kuda Bank", product: "High Yield Save", type: "neobank", apy: 15.0 },
-  { institution: "OPay", product: "Savings", type: "neobank", apy: 15.0 },
-  { institution: "Moniepoint", product: "Business Save", type: "neobank", apy: 14.0 },
-  { institution: "PiggyVest", product: "SafeLock", type: "wealthtech", apy: 13.0 },
-  { institution: "Access Bank", product: "PayDay Save", type: "savings", apy: 8.0 },
-  { institution: "GTBank", product: "Smart Save", type: "savings", apy: 8.5 },
-  { institution: "Cowrywise", product: "Dollar Fund", type: "wealthtech", apy: 6.5 },
-  { institution: "PiggyVest", product: "Flex Dollar", type: "wealthtech", apy: 7.0 },
-  { institution: "Zenith Bank", product: "Target Save", type: "savings", apy: 6.0 },
-];
-
-const INFLATION_RATE = 32.7;
+}
 
 const TYPE_LABELS: Record<string, string> = {
   savings: "Bank",
   neobank: "Neobank",
   wealthtech: "Wealthtech",
-};
+}
 
-export default function SavingsPage() {
+function VerdictBadge({ verdict }: { verdict: APYRate["verdict"] }) {
+  const styles: Record<APYRate["verdict"], { bg: string; text: string }> = {
+    "BEATS INFLATION": { bg: "#E8F5EE", text: "#1B5E3B" },
+    CLOSE: { bg: "#FFFBEB", text: "#78350F" },
+    "LOSING VALUE": { bg: "#FEF2F2", text: "#7F1D1D" },
+  }
+  const style = styles[verdict]
+  return (
+    <span
+      style={{
+        fontFamily: "var(--font-sans, system-ui, sans-serif)",
+        fontSize: "10px",
+        fontWeight: 700,
+        textTransform: "uppercase",
+        letterSpacing: "0.06em",
+        color: style.text,
+        backgroundColor: style.bg,
+        padding: "4px 10px",
+        borderRadius: "2px",
+        whiteSpace: "nowrap",
+      }}
+    >
+      {verdict}
+    </span>
+  )
+}
+
+export default async function SavingsPage() {
+  const inflation = await getCurrentInflationRate()
+  const inflationRate = inflation?.rate_percent ?? 15.06
+  const inflationPeriod = inflation?.period ?? ""
+  const inflationSource = inflation?.source ?? ""
+
+  const allRates = await getAllAPYRates(inflationRate)
+
   return (
     <>
       <Nav />
@@ -52,14 +74,17 @@ export default function SavingsPage() {
           }}
         >
           <div className="container-content" style={{ maxWidth: "800px" }}>
-            <span className="category-tag" style={{ marginBottom: "20px", display: "inline-block" }}>
-              Savings &amp; Yields
+            <span
+              className="category-tag"
+              style={{ marginBottom: "20px", display: "inline-block" }}
+            >
+              Savings & Yields
             </span>
             <h1
               className="type-h1"
               style={{ color: "#1A1A1A", marginBottom: "24px" }}
             >
-              Your ₦100,000 is worth less than it was yesterday. Here&apos;s
+              Your &#8358;100,000 is worth less than it was yesterday. Here's
               how to stop the bleed.
             </h1>
             <p
@@ -72,10 +97,11 @@ export default function SavingsPage() {
                 lineHeight: "1.7",
               }}
             >
-              Nigeria&apos;s inflation is running at{" "}
-              <strong style={{ color: "#1A1A1A" }}>{INFLATION_RATE}%</strong>{" "}
-              (NBS, March 2026). If your savings account isn&apos;t beating that, you&apos;re
-              losing money in slow motion. Here&apos;s what&apos;s actually worth your time.
+              Nigeria's inflation is running at{" "}
+              <strong style={{ color: "#1A1A1A" }}>{inflationRate}%</strong>{" "}
+              ({inflationSource}, {inflationPeriod}). If your savings account
+              isn't beating that, you're losing money in slow motion.
+              Here's what's actually worth your time.
             </p>
           </div>
         </section>
@@ -96,22 +122,29 @@ export default function SavingsPage() {
                 className="type-body"
                 style={{ color: "#1A1A1A", margin: 0, lineHeight: "1.8" }}
               >
-                Most Nigerian savings accounts pay between 4–8% APY. With
-                inflation at {INFLATION_RATE}%, every naira sitting in a
-                standard savings account is losing{" "}
-                <strong>at least 24% of its real value every year</strong>. The
-                good news: some fintechs and specialised bank products are
+                Most Nigerian savings accounts pay between 4-8% APY. With
+                inflation at {inflationRate}%, every naira sitting in a standard
+                savings account is losing{" "}
+                <strong>
+                  at least {(inflationRate - 8).toFixed(0)}% of its real value
+                  every year
+                </strong>
+                . The good news: some fintechs and specialised bank products are
                 paying significantly more. This dashboard tracks them.
               </p>
             </div>
+
+            {/* Erosion Calculator */}
+            <ErosionCalculator
+              initialInflationRate={inflationRate}
+              inflationPeriod={inflationPeriod}
+              inflationSource={inflationSource}
+            />
           </div>
         </section>
 
         {/* NairaGuard APY Table */}
-        <section
-          id="naira-guard"
-          style={{ padding: "0 24px 100px" }}
-        >
+        <section id="naira-guard" style={{ padding: "0 24px 100px" }}>
           <div className="container-content">
             <div style={{ marginBottom: "40px" }}>
               <h2
@@ -121,10 +154,36 @@ export default function SavingsPage() {
                 NairaGuard Dashboard
               </h2>
               <p className="type-body" style={{ color: "#6B6560" }}>
-                Current savings rates vs. inflation. Last verified March 2026.{" "}
+                Current savings rates vs. inflation.{" "}
                 <strong style={{ color: "#1A1A1A" }}>
-                  Inflation benchmark: {INFLATION_RATE}%
+                  Inflation benchmark: {inflationRate}%
                 </strong>
+              </p>
+            </div>
+
+            {/* Inflation Alert Box */}
+            <div
+              style={{
+                backgroundColor: "#E8F5EE",
+                border: "1px solid #1B5E3B",
+                borderRadius: "4px",
+                padding: "16px 20px",
+                marginBottom: "24px",
+                display: "flex",
+                alignItems: "center",
+                gap: "12px",
+              }}
+            >
+              <span style={{ fontSize: "20px" }}>&#128202;</span>
+              <p
+                className="type-small"
+                style={{ color: "#1B5E3B", margin: 0, lineHeight: "1.5" }}
+              >
+                <strong>
+                  Nigeria's inflation is at {inflationRate}%.
+                </strong>{" "}
+                Any savings account below this rate is losing real value every
+                month.
               </p>
             </div>
 
@@ -210,16 +269,29 @@ export default function SavingsPage() {
                         letterSpacing: "0.08em",
                       }}
                     >
-                      Beats Inflation?
+                      Verdict
                     </th>
                   </tr>
                 </thead>
                 <tbody>
-                  {APY_RATES.sort((a, b) => b.apy - a.apy).map((row, i) => {
-                    const beats = row.apy >= INFLATION_RATE;
-                    return (
+                  {allRates.length === 0 ? (
+                    <tr>
+                      <td
+                        colSpan={5}
+                        style={{
+                          padding: "32px 20px",
+                          textAlign: "center",
+                          color: "#6B6560",
+                          fontFamily: "var(--font-sans, system-ui, sans-serif)",
+                        }}
+                      >
+                        No rates data available right now.
+                      </td>
+                    </tr>
+                  ) : (
+                    allRates.map((row, i) => (
                       <tr
-                        key={`${row.institution}-${row.product}`}
+                        key={`${row.institution}-${row.product_name}`}
                         style={{
                           backgroundColor: i % 2 === 0 ? "#FAFAF7" : "#FFFFFF",
                           borderBottom: "1px solid #D4CFC8",
@@ -228,7 +300,8 @@ export default function SavingsPage() {
                         <td
                           style={{
                             padding: "16px 20px",
-                            fontFamily: "var(--font-sans, system-ui, sans-serif)",
+                            fontFamily:
+                              "var(--font-sans, system-ui, sans-serif)",
                             fontSize: "15px",
                             fontWeight: 600,
                             color: "#1A1A1A",
@@ -239,21 +312,19 @@ export default function SavingsPage() {
                         <td
                           style={{
                             padding: "16px 20px",
-                            fontFamily: "var(--font-sans, system-ui, sans-serif)",
+                            fontFamily:
+                              "var(--font-sans, system-ui, sans-serif)",
                             fontSize: "15px",
                             color: "#6B6560",
                           }}
                         >
-                          {row.product}
+                          {row.product_name}
                         </td>
-                        <td
-                          style={{
-                            padding: "16px 20px",
-                          }}
-                        >
+                        <td style={{ padding: "16px 20px" }}>
                           <span
                             style={{
-                              fontFamily: "var(--font-sans, system-ui, sans-serif)",
+                              fontFamily:
+                                "var(--font-sans, system-ui, sans-serif)",
                               fontSize: "12px",
                               fontWeight: 600,
                               textTransform: "uppercase",
@@ -264,34 +335,73 @@ export default function SavingsPage() {
                               borderRadius: "2px",
                             }}
                           >
-                            {TYPE_LABELS[row.type] ?? row.type}
+                            {TYPE_LABELS[row.product_type ?? ""] ??
+                              row.product_type}
                           </span>
                         </td>
                         <td
                           style={{
                             padding: "16px 20px",
                             textAlign: "right",
-                            fontFamily: "var(--font-sans, system-ui, sans-serif)",
+                            fontFamily:
+                              "var(--font-sans, system-ui, sans-serif)",
                             fontSize: "18px",
                             fontWeight: 700,
-                            color: beats ? "#1B5E3B" : "#1A1A1A",
+                            color:
+                              row.vs_inflation >= 0 ? "#1B5E3B" : "#1A1A1A",
                           }}
                         >
-                          {row.apy.toFixed(2)}%
+                          {row.apy_percent.toFixed(2)}%
                         </td>
                         <td
                           style={{
                             padding: "16px 20px",
                             textAlign: "center",
-                            fontSize: "18px",
                           }}
                         >
-                          {beats ? "✓" : "✗"}
+                          <VerdictBadge verdict={row.verdict} />
                         </td>
                       </tr>
-                    );
-                  })}
+                    ))
+                  )}
                 </tbody>
+                {allRates.length > 0 && (
+                  <tfoot>
+                    <tr
+                      style={{
+                        backgroundColor: "#1A1A1A",
+                        color: "#FFFFFF",
+                      }}
+                    >
+                      <td
+                        colSpan={3}
+                        style={{
+                          padding: "16px 20px",
+                          fontFamily: "var(--font-sans, system-ui, sans-serif)",
+                          fontSize: "12px",
+                          fontWeight: 600,
+                          textTransform: "uppercase",
+                          letterSpacing: "0.08em",
+                        }}
+                      >
+                        Summary
+                      </td>
+                      <td
+                        style={{
+                          padding: "16px 20px",
+                          textAlign: "right",
+                          fontFamily: "var(--font-sans, system-ui, sans-serif)",
+                          fontSize: "14px",
+                          fontWeight: 600,
+                        }}
+                      >
+                        {allRates.filter((r) => r.vs_inflation >= 0).length} of{" "}
+                        {allRates.length} beat inflation
+                      </td>
+                      <td style={{ padding: "16px 20px" }}></td>
+                    </tr>
+                  </tfoot>
+                )}
               </table>
             </div>
 
@@ -310,7 +420,12 @@ export default function SavingsPage() {
         </section>
 
         {/* Articles */}
-        <section style={{ padding: "0 24px 100px", backgroundColor: "#F5F0E8" }}>
+        <section
+          style={{
+            padding: "0 24px 100px",
+            backgroundColor: "#F5F0E8",
+          }}
+        >
           <div className="container-content">
             <h2
               className="type-h2"
@@ -326,5 +441,5 @@ export default function SavingsPage() {
       <NewsletterCTA />
       <Footer />
     </>
-  );
+  )
 }

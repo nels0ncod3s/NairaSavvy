@@ -1,0 +1,313 @@
+'use client'
+
+import { useState } from 'react'
+
+interface DataPlan {
+  id: string
+  network: string
+  plan_name: string
+  data_gb: number
+  price_naira: number
+  validity_days: number | null
+  night_bonus_gb: number
+  activation_code: string | null
+  value_score: number | null
+  is_hidden_deal: boolean
+  source_url: string | null
+}
+
+const NETWORKS = ['All', 'MTN', 'Airtel', 'Glo', '9mobile']
+
+function ValueStars({ score }: { score: number | null }) {
+  if (score === null) return null
+  const stars = Math.min(5, Math.max(1, Math.round(score / 20)))
+  return (
+    <span style={{ color: '#F59E0B', fontSize: '14px' }}>
+      {'★'.repeat(stars)}{'☆'.repeat(5 - stars)}
+    </span>
+  )
+}
+
+export default function DataPlansClient({ allPlans }: { allPlans: DataPlan[] }) {
+  const [activeNetwork, setActiveNetwork] = useState('All')
+
+  const filteredPlans =
+    activeNetwork === 'All'
+      ? allPlans
+      : allPlans.filter((p) => p.network === activeNetwork)
+
+  return (
+    <section style={{ padding: '0 24px 100px' }}>
+      <div className="container-content">
+        <h2 className="type-h2" style={{ color: '#1A1A1A', marginBottom: '24px' }}>
+          All Data Plans
+        </h2>
+
+        {/* Network Filter Pills */}
+        <div
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: '8px',
+            marginBottom: '32px',
+          }}
+        >
+          {NETWORKS.map((network) => (
+            <button
+              key={network}
+              onClick={() => setActiveNetwork(network)}
+              style={{
+                fontFamily: 'var(--font-sans, system-ui, sans-serif)',
+                fontSize: '14px',
+                fontWeight: 600,
+                padding: '8px 16px',
+                borderRadius: '20px',
+                border:
+                  activeNetwork === network
+                    ? '2px solid #1B5E3B'
+                    : '1px solid #D4CFC8',
+                backgroundColor:
+                  activeNetwork === network ? '#E8F5EE' : '#FAFAF7',
+                color: activeNetwork === network ? '#1B5E3B' : '#6B6560',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+              }}
+            >
+              {network}
+            </button>
+          ))}
+        </div>
+
+        {/* Plans Grid - Mobile card layout at 375px */}
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+            gap: '16px',
+          }}
+        >
+          {filteredPlans.length === 0 ? (
+            <div
+              style={{
+                gridColumn: '1 / -1',
+                textAlign: 'center',
+                padding: '64px 24px',
+                border: '1px dashed #D4CFC8',
+                borderRadius: '4px',
+              }}
+            >
+              <p
+                className="type-h4"
+                style={{ color: '#6B6560', marginBottom: '8px' }}
+              >
+                No plans found for {activeNetwork}.
+              </p>
+              <p className="type-body" style={{ color: '#9CA3A0' }}>
+                Try selecting a different network.
+              </p>
+            </div>
+          ) : (
+            filteredPlans.map((plan) => (
+              <div
+                key={plan.id}
+                className="card"
+                style={{
+                  borderRadius: '4px',
+                  padding: '24px',
+                }}
+              >
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'flex-start',
+                    marginBottom: '12px',
+                  }}
+                >
+                  <span
+                    style={{
+                      fontFamily: 'var(--font-sans, system-ui, sans-serif)',
+                      fontSize: '11px',
+                      fontWeight: 600,
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.08em',
+                      color: '#6B6560',
+                      backgroundColor: '#F5F0E8',
+                      padding: '3px 8px',
+                      borderRadius: '2px',
+                    }}
+                  >
+                    {plan.network}
+                  </span>
+                  <ValueStars score={plan.value_score} />
+                </div>
+
+                <h3
+                  style={{
+                    fontFamily: 'var(--font-serif, Georgia, serif)',
+                    fontSize: '20px',
+                    fontWeight: 600,
+                    color: '#1A1A1A',
+                    margin: '0 0 16px',
+                  }}
+                >
+                  {plan.plan_name}
+                </h3>
+
+                <div
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: '1fr 1fr',
+                    gap: '12px',
+                    marginBottom: '16px',
+                  }}
+                >
+                  <div>
+                    <p
+                      style={{
+                        fontFamily: 'var(--font-sans, system-ui, sans-serif)',
+                        fontSize: '12px',
+                        color: '#6B6560',
+                        margin: '0 0 4px',
+                      }}
+                    >
+                      Data
+                    </p>
+                    <p
+                      style={{
+                        fontFamily: 'var(--font-sans, system-ui, sans-serif)',
+                        fontSize: '22px',
+                        fontWeight: 700,
+                        color: '#1A1A1A',
+                        margin: 0,
+                      }}
+                    >
+                      {plan.data_gb}GB
+                    </p>
+                  </div>
+                  <div>
+                    <p
+                      style={{
+                        fontFamily: 'var(--font-sans, system-ui, sans-serif)',
+                        fontSize: '12px',
+                        color: '#6B6560',
+                        margin: '0 0 4px',
+                      }}
+                    >
+                      Price
+                    </p>
+                    <p
+                      style={{
+                        fontFamily: 'var(--font-sans, system-ui, sans-serif)',
+                        fontSize: '22px',
+                        fontWeight: 700,
+                        color: '#1A1A1A',
+                        margin: 0,
+                      }}
+                    >
+                      &#8358;{plan.price_naira.toLocaleString()}
+                    </p>
+                  </div>
+                  {plan.validity_days && (
+                    <div>
+                      <p
+                        style={{
+                          fontFamily: 'var(--font-sans, system-ui, sans-serif)',
+                          fontSize: '12px',
+                          color: '#6B6560',
+                          margin: '0 0 4px',
+                        }}
+                      >
+                        Validity
+                      </p>
+                      <p
+                        style={{
+                          fontFamily: 'var(--font-sans, system-ui, sans-serif)',
+                          fontSize: '16px',
+                          fontWeight: 600,
+                          color: '#1A1A1A',
+                          margin: 0,
+                        }}
+                      >
+                        {plan.validity_days} days
+                      </p>
+                    </div>
+                  )}
+                  {plan.night_bonus_gb > 0 && (
+                    <div>
+                      <p
+                        style={{
+                          fontFamily: 'var(--font-sans, system-ui, sans-serif)',
+                          fontSize: '12px',
+                          color: '#6B6560',
+                          margin: '0 0 4px',
+                        }}
+                      >
+                        Night Bonus
+                      </p>
+                      <p
+                        style={{
+                          fontFamily: 'var(--font-sans, system-ui, sans-serif)',
+                          fontSize: '16px',
+                          fontWeight: 600,
+                          color: '#1B5E3B',
+                          margin: 0,
+                        }}
+                      >
+                        +{plan.night_bonus_gb}GB
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                {plan.activation_code && (
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      backgroundColor: '#F5F0E8',
+                      border: '1px solid #D4CFC8',
+                      borderRadius: '4px',
+                      padding: '8px 12px',
+                    }}
+                  >
+                    <code
+                      style={{
+                        fontFamily: 'monospace',
+                        fontSize: '13px',
+                        color: '#1A1A1A',
+                        flex: 1,
+                      }}
+                    >
+                      {plan.activation_code}
+                    </code>
+                    <button
+                      style={{
+                        fontFamily: 'var(--font-sans, system-ui, sans-serif)',
+                        fontSize: '12px',
+                        fontWeight: 600,
+                        color: '#1B5E3B',
+                        background: 'none',
+                        border: 'none',
+                        cursor: 'pointer',
+                        padding: '4px 8px',
+                      }}
+                      onClick={() => {
+                        if (typeof navigator !== 'undefined') {
+                          navigator.clipboard.writeText(plan.activation_code ?? '')
+                        }
+                      }}
+                    >
+                      Copy
+                    </button>
+                  </div>
+                )}
+              </div>
+            ))
+          )}
+        </div>
+      </div>
+    </section>
+  )
+}

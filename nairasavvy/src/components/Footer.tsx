@@ -5,32 +5,32 @@ const pillars = [
     label: "Protect",
     links: [
       { label: "Savings & Yields", href: "/savings" },
-      { label: "Naira-Guard Dashboard", href: "/savings#naira-guard" },
-      { label: "Erosion Calculator", href: "/tools/naira-erosion-calculator" },
+      { label: "NairaGuard Dashboard", href: "/savings" },
+      { label: "Naira Erosion Calculator", href: "/tools/naira-erosion-calculator" },
     ],
   },
   {
     label: "Fight Back",
     links: [
       { label: "Consumer Rights", href: "/fight-back" },
-      { label: "POS Disputes", href: "/articles/pos-failed-transaction-nigeria" },
-      { label: "CBN Complaints", href: "/fight-back#cbn-complaints" },
+      { label: "Bank App Down? What To Do", href: "/articles/bank-app-down-what-to-do-polaris-vulte" },
+      { label: "CBN Complaints Guide", href: "/fight-back" },
     ],
   },
   {
     label: "Grow",
     links: [
       { label: "Investment Options", href: "/grow" },
-      { label: "T-Bills Guide", href: "/grow#tbills" },
-      { label: "Dollar Accounts", href: "/grow#dollar-accounts" },
+      { label: "T-Bills & Money Markets", href: "/grow" },
+      { label: "Dollar Accounts", href: "/grow" },
     ],
   },
   {
     label: "Guides",
     links: [
-      { label: "All Articles", href: "/news" },
-      { label: "Best Savings 2026", href: "/articles/best-savings-accounts-nigeria-2026" },
-      { label: "Cut Costs", href: "/cut-costs" },
+      { label: "All Articles", href: "/articles" },
+      { label: "Best Savings Accounts 2026", href: "/savings" },
+      { label: "Data Plan Deals", href: "/cut-costs/data-plans" },
     ],
   },
 ];
@@ -38,7 +38,7 @@ const pillars = [
 const legalLinks = [
   { label: "Privacy Policy", href: "/privacy" },
   { label: "Terms of Use", href: "/terms" },
-  { label: "About NairaSavvy", href: "/about" },
+  { label: "About", href: "/about" },
   { label: "Newsletter", href: "/newsletter" },
 ];
 

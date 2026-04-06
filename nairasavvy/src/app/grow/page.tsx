@@ -53,7 +53,7 @@ export default function GrowPage() {
                 lineHeight: "1.7",
               }}
             >
-              With inflation at 32.7%, cash is a bad investment. T-bills,
+              With inflation at 15.06% (NBS, Feb 2026), cash is a bad investment. T-bills,
               dollar savings, mutual funds, and money market accounts are
               accessible to everyday Nigerians, but most people don&apos;t know
               where to start. We break them down.

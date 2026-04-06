@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import ArticleGrid from "@/components/ArticleGrid";
@@ -84,6 +85,83 @@ export default function CutCostsPage() {
                 charges, and get refunds where you&apos;re entitled.
               </p>
             </div>
+          </div>
+        </section>
+
+        {/* Data Plans Tool — featured card */}
+        <section style={{ padding: "0 24px 80px" }}>
+          <div className="container-content">
+            <h2
+              className="type-h2"
+              style={{ color: "#1A1A1A", marginBottom: "32px" }}
+            >
+              Tools
+            </h2>
+            <Link href="/cut-costs/data-plans" style={{ textDecoration: "none", display: "block", maxWidth: "640px" }}>
+              <div
+                style={{
+                  backgroundColor: "#0F0F0D",
+                  borderRadius: "4px",
+                  padding: "40px",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "16px",
+                  transition: "transform 0.2s ease",
+                }}
+              >
+                <span
+                  style={{
+                    fontFamily: "var(--font-sans, system-ui, sans-serif)",
+                    fontSize: "11px",
+                    fontWeight: 700,
+                    textTransform: "uppercase" as const,
+                    letterSpacing: "0.08em",
+                    color: "#1B5E3B",
+                    backgroundColor: "#E8F5EE",
+                    padding: "3px 10px",
+                    borderRadius: "2px",
+                    alignSelf: "flex-start",
+                  }}
+                >
+                  Live Tool
+                </span>
+                <h3
+                  style={{
+                    fontFamily: "var(--font-serif, Georgia, serif)",
+                    fontSize: "26px",
+                    fontWeight: 700,
+                    color: "#FFFFFF",
+                    margin: 0,
+                    lineHeight: "1.25",
+                  }}
+                >
+                  Data Plan Comparison: MTN vs Airtel vs Glo vs T2 Mobile
+                </h3>
+                <p
+                  style={{
+                    fontFamily: "var(--font-sans, system-ui, sans-serif)",
+                    fontSize: "16px",
+                    color: "#888884",
+                    margin: 0,
+                    lineHeight: "1.65",
+                  }}
+                >
+                  36 plans compared and scored by GB per ₦1,000. Filter by
+                  network. Copy activation codes instantly. Find the hidden
+                  deals the networks don&apos;t advertise.
+                </p>
+                <span
+                  style={{
+                    color: "#1B5E3B",
+                    fontSize: "15px",
+                    fontWeight: 600,
+                    fontFamily: "var(--font-sans, system-ui, sans-serif)",
+                  }}
+                >
+                  Compare all plans &rarr;
+                </span>
+              </div>
+            </Link>
           </div>
         </section>
 

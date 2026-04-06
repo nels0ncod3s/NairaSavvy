@@ -127,21 +127,53 @@ export default function ArticleGrid({ category }: ArticleGridProps) {
     return (
       <div
         style={{
-          textAlign: "center",
-          padding: "64px 24px",
-          border: "1px dashed #D4CFC8",
+          backgroundColor: "#0F0F0D",
           borderRadius: "4px",
+          padding: "56px 40px",
+          textAlign: "center",
         }}
       >
         <p
-          className="type-h3"
-          style={{ color: "#6B6560", marginBottom: "8px" }}
+          style={{
+            fontFamily: "var(--font-sans, system-ui, sans-serif)",
+            fontSize: "11px",
+            fontWeight: 700,
+            textTransform: "uppercase" as const,
+            letterSpacing: "0.1em",
+            color: "#1B5E3B",
+            marginBottom: "16px",
+          }}
         >
-          No articles yet. Check back soon.
+          The Naira Shield
         </p>
-        <p className="type-body" style={{ color: "#9CA3A0" }}>
-          We&apos;re working on guides for this section.
+        <h3
+          style={{
+            fontFamily: "var(--font-serif, Georgia, serif)",
+            fontSize: "24px",
+            fontWeight: 600,
+            color: "#FFFFFF",
+            marginBottom: "12px",
+            lineHeight: "1.3",
+          }}
+        >
+          Guides for this section are on their way.
+        </h3>
+        <p
+          style={{
+            fontFamily: "var(--font-sans, system-ui, sans-serif)",
+            fontSize: "16px",
+            color: "#888884",
+            maxWidth: "400px",
+            margin: "0 auto 28px",
+            lineHeight: "1.6",
+          }}
+        >
+          Subscribe to the Naira Shield and we&apos;ll notify you the moment
+          new guides are published.
         </p>
+        <Link href="/newsletter" className="btn-primary">
+          Get Notified Free &rarr;
+        </Link>
       </div>
     );
   }

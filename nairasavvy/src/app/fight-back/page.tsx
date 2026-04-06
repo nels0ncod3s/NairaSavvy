@@ -98,116 +98,67 @@ export default function FightBackPage() {
               Tools
             </h2>
 
-            {/* Complaint Letter Generator (coming soon) */}
+            {/* Complaint Letter Generator — notify on launch */}
             <div
               style={{
-                backgroundColor: "#FAFAF7",
-                border: "1px solid #D4CFC8",
+                backgroundColor: "#0F0F0D",
                 borderRadius: "4px",
                 padding: "40px",
                 maxWidth: "560px",
-                position: "relative",
-                overflow: "hidden",
               }}
             >
-              {/* Coming soon badge */}
-              <div
-                style={{
-                  position: "absolute",
-                  top: "20px",
-                  right: "20px",
-                  backgroundColor: "#1B5E3B",
-                  color: "#FFFFFF",
-                  fontFamily: "var(--font-sans, system-ui, sans-serif)",
-                  fontSize: "11px",
-                  fontWeight: 700,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.08em",
-                  padding: "4px 10px",
-                  borderRadius: "2px",
-                }}
-              >
-                Coming Soon
-              </div>
-
-              <div
-                style={{
-                  fontSize: "32px",
-                  marginBottom: "16px",
-                }}
-              >
-                ✉️
-              </div>
+              <div style={{ fontSize: "32px", marginBottom: "16px" }}>✉️</div>
               <h3
-                className="type-h3"
                 style={{
-                  color: "#1A1A1A",
-                  marginBottom: "12px",
                   fontFamily: "var(--font-serif, Georgia, serif)",
+                  fontSize: "22px",
+                  fontWeight: 700,
+                  color: "#FFFFFF",
+                  marginBottom: "12px",
                 }}
               >
                 Complaint Letter Generator
               </h3>
               <p
-                className="type-body"
-                style={{ color: "#6B6560", marginBottom: "24px" }}
-              >
-                Generate a legally-worded complaint letter to your bank or the
-                CBN in under 2 minutes. Include the right regulation citations,
-                demand a resolution timeline, and escalate through the correct
-                channels.
-              </p>
-              <div
                 style={{
-                  display: "flex",
-                  gap: "8px",
-                  flexWrap: "wrap",
-                  marginBottom: "24px",
+                  fontFamily: "var(--font-sans, system-ui, sans-serif)",
+                  fontSize: "16px",
+                  lineHeight: "1.7",
+                  color: "#888884",
+                  marginBottom: "12px",
                 }}
               >
-                {[
-                  "Failed POS",
-                  "USSD failure",
-                  "Erroneous charges",
-                  "Locked account",
-                  "Device policy",
-                ].map((tag) => (
-                  <span
-                    key={tag}
-                    style={{
-                      fontFamily: "var(--font-sans, system-ui, sans-serif)",
-                      fontSize: "12px",
-                      fontWeight: 500,
-                      color: "#6B6560",
-                      backgroundColor: "#F5F0E8",
-                      border: "1px solid #D4CFC8",
-                      padding: "4px 10px",
-                      borderRadius: "2px",
-                    }}
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-              <button
-                disabled
+                Generate a legally-worded complaint letter to your bank or the
+                CBN in under 2 minutes — with the right regulation citations,
+                a resolution deadline, and the correct escalation channel.
+              </p>
+              <p
                 style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "8px",
-                  backgroundColor: "#D4CFC8",
-                  color: "#9CA3A0",
+                  fontFamily: "var(--font-sans, system-ui, sans-serif)",
+                  fontSize: "14px",
+                  color: "#888884",
+                  marginBottom: "28px",
+                }}
+              >
+                This tool is in development. Subscribe to the Naira Shield and
+                we&apos;ll email you the moment it launches.
+              </p>
+              <a
+                href="/newsletter"
+                style={{
+                  display: "inline-block",
+                  backgroundColor: "#1B5E3B",
+                  color: "#FFFFFF",
                   fontFamily: "var(--font-sans, system-ui, sans-serif)",
                   fontSize: "15px",
                   fontWeight: 600,
                   padding: "14px 24px",
                   borderRadius: "4px",
-                  border: "none",
-                  cursor: "not-allowed",
+                  textDecoration: "none",
                 }}
               >
-                Generate Letter: Coming Soon
-              </button>
+                Get notified when it launches &rarr;
+              </a>
             </div>
           </div>
         </section>

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getArticlesByCategory, type ArticleMeta } from "@/lib/articles";
+import AnimateOnScroll from "@/components/AnimateOnScroll";
 
 interface ArticleGridProps {
   category?: string;
@@ -186,8 +187,10 @@ export default function ArticleGrid({ category }: ArticleGridProps) {
         gap: "24px",
       }}
     >
-      {articles.map((article) => (
-        <ArticleCard key={article.slug} article={article} />
+      {articles.map((article, i) => (
+        <AnimateOnScroll key={article.slug} delay={i * 100} variant="fadeUp">
+          <ArticleCard article={article} />
+        </AnimateOnScroll>
       ))}
     </div>
   );

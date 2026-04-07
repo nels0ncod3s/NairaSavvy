@@ -5,6 +5,7 @@ import NairaGuardDashboard from "@/components/home/NairaGuardDashboard";
 import ArticleGrid from "@/components/ArticleGrid";
 import NewsletterCTA from "@/components/NewsletterCTA";
 import ErosionCalculator from "@/components/tools/ErosionCalculator";
+import AnimateOnScroll from "@/components/AnimateOnScroll";
 
 const pillars = [
   {
@@ -49,8 +50,9 @@ export default function Home() {
           }}
         >
           <div className="container-content" style={{ maxWidth: "760px" }}>
+            {/* Staggered CSS animations — no scroll trigger needed, visible on load */}
             <h1
-              className="type-display"
+              className="type-display hero-animate-1"
               style={{ color: "#1A1A1A", marginBottom: "28px" }}
             >
               Nigeria&apos;s financial system
@@ -60,7 +62,7 @@ export default function Home() {
               <span style={{ color: "#1B5E3B" }}>NairaSavvy was.</span>
             </h1>
             <p
-              className="type-body"
+              className="type-body hero-animate-2"
               style={{
                 color: "#6B6560",
                 fontSize: "18px",
@@ -72,9 +74,11 @@ export default function Home() {
               Free guides, tools, and alerts to protect your money, fight back
               against banks, and grow what you have.
             </p>
-            <Link href="/newsletter" className="btn-primary" style={{ fontSize: "16px", padding: "16px 32px" }}>
-              Get Free Alerts &rarr;
-            </Link>
+            <div className="hero-animate-3">
+              <Link href="/newsletter" className="btn-primary" style={{ fontSize: "16px", padding: "16px 32px" }}>
+                Get Free Alerts &rarr;
+              </Link>
+            </div>
           </div>
         </section>
 
@@ -88,75 +92,75 @@ export default function Home() {
                 gap: "24px",
               }}
             >
-              {pillars.map((p) => (
-                <Link
-                  key={p.num}
-                  href={p.href}
-                  style={{ textDecoration: "none", display: "block" }}
-                >
-                  <div
-                    className="card"
-                    style={{
-                      borderRadius: "4px",
-                      padding: "40px",
-                      height: "100%",
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "16px",
-                      transition: "transform 0.2s ease, box-shadow 0.2s ease",
-                    }}
+              {pillars.map((p, i) => (
+                <AnimateOnScroll key={p.num} delay={i * 120} variant="fadeUp">
+                  <Link
+                    href={p.href}
+                    style={{ textDecoration: "none", display: "block", height: "100%" }}
                   >
-                    <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                      <span
+                    <div
+                      className="card"
+                      style={{
+                        borderRadius: "4px",
+                        padding: "40px",
+                        height: "100%",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "16px",
+                      }}
+                    >
+                      <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                        <span
+                          style={{
+                            fontFamily: "var(--font-sans, system-ui, sans-serif)",
+                            fontSize: "12px",
+                            fontWeight: 700,
+                            textTransform: "uppercase" as const,
+                            letterSpacing: "0.1em",
+                            color: "#9CA3A0",
+                          }}
+                        >
+                          {p.num}
+                        </span>
+                        <span className="category-tag">{p.label}</span>
+                      </div>
+                      <h3
                         style={{
-                          fontFamily: "var(--font-sans, system-ui, sans-serif)",
-                          fontSize: "12px",
+                          fontFamily: "var(--font-serif, Georgia, serif)",
+                          fontSize: "22px",
                           fontWeight: 700,
-                          textTransform: "uppercase" as const,
-                          letterSpacing: "0.1em",
-                          color: "#9CA3A0",
+                          color: "#1A1A1A",
+                          lineHeight: "1.3",
+                          margin: 0,
                         }}
                       >
-                        {p.num}
+                        {p.heading}
+                      </h3>
+                      <p
+                        style={{
+                          fontFamily: "var(--font-sans, system-ui, sans-serif)",
+                          fontSize: "15px",
+                          lineHeight: "1.7",
+                          color: "#6B6560",
+                          margin: 0,
+                          flex: 1,
+                        }}
+                      >
+                        {p.body}
+                      </p>
+                      <span
+                        style={{
+                          color: "#1B5E3B",
+                          fontSize: "14px",
+                          fontWeight: 600,
+                          fontFamily: "var(--font-sans, system-ui, sans-serif)",
+                        }}
+                      >
+                        {p.cta} &rarr;
                       </span>
-                      <span className="category-tag">{p.label}</span>
                     </div>
-                    <h3
-                      style={{
-                        fontFamily: "var(--font-serif, Georgia, serif)",
-                        fontSize: "22px",
-                        fontWeight: 700,
-                        color: "#1A1A1A",
-                        lineHeight: "1.3",
-                        margin: 0,
-                      }}
-                    >
-                      {p.heading}
-                    </h3>
-                    <p
-                      style={{
-                        fontFamily: "var(--font-sans, system-ui, sans-serif)",
-                        fontSize: "15px",
-                        lineHeight: "1.7",
-                        color: "#6B6560",
-                        margin: 0,
-                        flex: 1,
-                      }}
-                    >
-                      {p.body}
-                    </p>
-                    <span
-                      style={{
-                        color: "#1B5E3B",
-                        fontSize: "14px",
-                        fontWeight: 600,
-                        fontFamily: "var(--font-sans, system-ui, sans-serif)",
-                      }}
-                    >
-                      {p.cta} &rarr;
-                    </span>
-                  </div>
-                </Link>
+                  </Link>
+                </AnimateOnScroll>
               ))}
             </div>
           </div>
@@ -165,7 +169,7 @@ export default function Home() {
         {/* ── NAIRA-GUARD DASHBOARD ─────────────────────────── */}
         <section id="naira-guard" style={{ padding: "0 24px 120px", backgroundColor: "#F5F0E8" }}>
           <div className="container-content">
-            <div style={{ marginBottom: "40px" }}>
+            <AnimateOnScroll style={{ marginBottom: "40px" }}>
               <p
                 style={{
                   fontFamily: "var(--font-sans, system-ui, sans-serif)",
@@ -182,20 +186,22 @@ export default function Home() {
               <h2 className="type-h2" style={{ color: "#1A1A1A" }}>
                 Is your money working hard enough?
               </h2>
-            </div>
-            <NairaGuardDashboard />
+            </AnimateOnScroll>
+            <AnimateOnScroll delay={100} variant="scale">
+              <NairaGuardDashboard />
+            </AnimateOnScroll>
           </div>
         </section>
 
         {/* ── LATEST ARTICLES ──────────────────────────────── */}
         <section style={{ padding: "0 24px 120px", backgroundColor: "#FAFAF7" }}>
           <div className="container-content">
-            <div
+            <AnimateOnScroll
               style={{
                 display: "flex",
                 alignItems: "baseline",
                 justifyContent: "space-between",
-                flexWrap: "wrap",
+                flexWrap: "wrap" as const,
                 gap: "16px",
                 marginBottom: "40px",
               }}
@@ -231,7 +237,7 @@ export default function Home() {
               >
                 See all guides &rarr;
               </Link>
-            </div>
+            </AnimateOnScroll>
             <ArticleGrid />
           </div>
         </section>
@@ -239,7 +245,7 @@ export default function Home() {
         {/* ── NAIRA EROSION CALCULATOR ─────────────────────── */}
         <section style={{ padding: "120px 24px", backgroundColor: "#0F0F0D" }}>
           <div className="container-content" style={{ maxWidth: "860px" }}>
-            <div style={{ marginBottom: "48px" }}>
+            <AnimateOnScroll style={{ marginBottom: "48px" }}>
               <p
                 style={{
                   fontFamily: "var(--font-sans, system-ui, sans-serif)",
@@ -269,8 +275,10 @@ export default function Home() {
                 Calculator shows you the real value of your money after
                 inflation, in naira, not percentages.
               </p>
-            </div>
-            <ErosionCalculator />
+            </AnimateOnScroll>
+            <AnimateOnScroll delay={120} variant="scale">
+              <ErosionCalculator />
+            </AnimateOnScroll>
             <p style={{ marginTop: "24px", textAlign: "center" }}>
               <Link
                 href="/tools/naira-erosion-calculator"

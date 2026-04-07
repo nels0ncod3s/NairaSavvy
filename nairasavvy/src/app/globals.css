@@ -446,3 +446,177 @@ body {
   font-weight: 700;
   color: var(--ns-black);
 }
+
+/* ─── Responsive Section / Hero Layout ─────────────────────────────── */
+
+/* Main homepage hero */
+.ns-hero-main {
+  padding: 120px 24px 100px;
+  text-align: center;
+}
+
+/* Sub-page heroes */
+.ns-hero {
+  padding: 100px 24px 80px;
+}
+
+/* Standard section bottom spacer */
+.ns-section {
+  padding: 0 24px 120px;
+}
+
+/* Dark full-bleed section (calculator, etc.) */
+.ns-section-dark {
+  padding: 120px 24px;
+}
+
+/* ─── Mobile: ≤ 768px ────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .ns-hero-main {
+    padding: 88px 20px 72px;
+  }
+
+  .ns-hero {
+    padding: 72px 20px 56px;
+  }
+
+  .ns-section {
+    padding: 0 20px 72px;
+  }
+
+  .ns-section-dark {
+    padding: 72px 20px;
+  }
+
+  /* Cards get tighter inner padding */
+  .card {
+    padding: 24px;
+  }
+
+  /* Container inner padding tighter on small phones */
+  .container-content {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  /* Type scale: display down a notch */
+  .type-display {
+    font-size: clamp(36px, 9vw, 56px);
+  }
+
+  /* H2 slightly tighter */
+  .type-h2 {
+    font-size: clamp(24px, 6vw, 32px);
+  }
+}
+
+/* ─── Mobile: ≤ 480px ────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .ns-hero-main {
+    padding: 72px 16px 56px;
+  }
+
+  .ns-hero {
+    padding: 64px 16px 48px;
+  }
+
+  .ns-section {
+    padding: 0 16px 56px;
+  }
+
+  .ns-section-dark {
+    padding: 56px 16px;
+  }
+}
+
+/* ─── Responsive Utility Classes ────────────────────────────────────── */
+
+/* Erosion calculator outer box */
+.erosion-calc-wrap {
+  padding: 32px;
+}
+
+@media (max-width: 768px) {
+  .erosion-calc-wrap {
+    padding: 20px;
+  }
+}
+
+/* In-article dark newsletter CTA */
+.inline-cta-box {
+  padding: 40px;
+  margin: 48px 0;
+}
+
+@media (max-width: 768px) {
+  .inline-cta-box {
+    padding: 24px;
+    margin: 32px 0;
+  }
+}
+
+/* Calculator result numbers */
+.result-number {
+  font-size: 24px;
+}
+
+@media (max-width: 480px) {
+  .result-number {
+    font-size: 19px;
+  }
+}
+
+/* Footer main grid */
+.footer-main-grid {
+  gap: 64px;
+  padding-top: 80px;
+  padding-bottom: 64px;
+}
+
+@media (max-width: 768px) {
+  .footer-main-grid {
+    gap: 36px;
+    padding-top: 56px;
+    padding-bottom: 48px;
+  }
+}
+
+/* Article body wrapper — generous side breathing room on desktop */
+.article-body {
+  padding: 0 24px 100px;
+}
+
+@media (max-width: 768px) {
+  .article-body {
+    padding: 0 16px 64px;
+  }
+}
+
+/* Article header */
+.article-header {
+  padding: 80px 24px 56px;
+}
+
+@media (max-width: 768px) {
+  .article-header {
+    padding: 56px 16px 40px;
+  }
+}
+
+/* Intro / info box inside page */
+.page-intro-box {
+  padding: 32px;
+}
+
+@media (max-width: 768px) {
+  .page-intro-box {
+    padding: 20px;
+  }
+}
+
+/* Mobile nav link size */
+@media (max-width: 380px) {
+  .mobile-nav-link {
+    font-size: 22px !important;
+  }
+}

@@ -123,7 +123,7 @@ export default function ArticlesPage({
         </section>
 
         {/* Articles grid */}
-        <section style={{ padding: "0 24px 120px" }}>
+        <section className="ns-section">
           <div className="container-content">
             <ArticleGrid
               category={activeCategory === "all" ? undefined : activeCategory}

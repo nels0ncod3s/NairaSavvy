@@ -92,7 +92,7 @@ export default function DataPlansClient({
     <>
       {/* Hidden Deals */}
       {hiddenDeals.length > 0 && (
-        <section style={{ padding: '0 24px 80px', backgroundColor: '#0F0F0D' }}>
+        <section className="ns-section" style={{ backgroundColor: '#0F0F0D' }}>
           <div className="container-content">
             <h2 className="type-h2" style={{ color: '#FFFFFF', marginBottom: '8px' }}>
               Hidden Deals
@@ -102,7 +102,7 @@ export default function DataPlansClient({
             </p>
             <div style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(min(280px, 100%), 1fr))',
               gap: '16px',
             }}>
               {hiddenDeals.map((deal) => (
@@ -201,7 +201,7 @@ export default function DataPlansClient({
       )}
 
       {/* All Plans with network filter */}
-      <section style={{ padding: '0 24px 100px' }}>
+      <section className="ns-section">
         <div className="container-content">
           <h2 className="type-h2" style={{ color: '#1A1A1A', marginBottom: '24px' }}>
             All Data Plans
@@ -234,7 +234,7 @@ export default function DataPlansClient({
           {/* Plans grid */}
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(min(280px, 100%), 1fr))',
             gap: '16px',
           }}>
             {filteredPlans.length === 0 ? (

@@ -43,14 +43,10 @@ export default function Home() {
         {/* ── HERO ─────────────────────────────────────────── */}
         <section
           id="hero-sentinel"
-          style={{
-            backgroundColor: "#F5F0E8",
-            padding: "120px 24px 100px",
-            textAlign: "center",
-          }}
+          className="ns-hero-main"
+          style={{ backgroundColor: "#F5F0E8" }}
         >
           <div className="container-content" style={{ maxWidth: "760px" }}>
-            {/* Staggered CSS animations — no scroll trigger needed, visible on load */}
             <h1
               className="type-display hero-animate-1"
               style={{ color: "#1A1A1A", marginBottom: "28px" }}
@@ -83,12 +79,13 @@ export default function Home() {
         </section>
 
         {/* ── PILLAR CARDS 01 / 02 / 03 ────────────────────── */}
-        <section style={{ padding: "0 24px 120px", backgroundColor: "#F5F0E8" }}>
+        <section className="ns-section" style={{ backgroundColor: "#F5F0E8" }}>
           <div className="container-content">
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))",
+                /* min() ensures cards never overflow on narrow screens */
+                gridTemplateColumns: "repeat(auto-fill, minmax(min(300px, 100%), 1fr))",
                 gap: "24px",
               }}
             >
@@ -102,7 +99,6 @@ export default function Home() {
                       className="card"
                       style={{
                         borderRadius: "4px",
-                        padding: "40px",
                         height: "100%",
                         display: "flex",
                         flexDirection: "column",
@@ -127,7 +123,7 @@ export default function Home() {
                       <h3
                         style={{
                           fontFamily: "var(--font-serif, Georgia, serif)",
-                          fontSize: "22px",
+                          fontSize: "clamp(18px, 3vw, 22px)",
                           fontWeight: 700,
                           color: "#1A1A1A",
                           lineHeight: "1.3",
@@ -167,7 +163,7 @@ export default function Home() {
         </section>
 
         {/* ── NAIRA-GUARD DASHBOARD ─────────────────────────── */}
-        <section id="naira-guard" style={{ padding: "0 24px 120px", backgroundColor: "#F5F0E8" }}>
+        <section id="naira-guard" className="ns-section" style={{ backgroundColor: "#F5F0E8" }}>
           <div className="container-content">
             <AnimateOnScroll style={{ marginBottom: "40px" }}>
               <p
@@ -194,7 +190,7 @@ export default function Home() {
         </section>
 
         {/* ── LATEST ARTICLES ──────────────────────────────── */}
-        <section style={{ padding: "0 24px 120px", backgroundColor: "#FAFAF7" }}>
+        <section className="ns-section" style={{ backgroundColor: "#FAFAF7" }}>
           <div className="container-content">
             <AnimateOnScroll
               style={{
@@ -243,7 +239,7 @@ export default function Home() {
         </section>
 
         {/* ── NAIRA EROSION CALCULATOR ─────────────────────── */}
-        <section style={{ padding: "120px 24px", backgroundColor: "#0F0F0D" }}>
+        <section className="ns-section-dark" style={{ backgroundColor: "#0F0F0D" }}>
           <div className="container-content" style={{ maxWidth: "860px" }}>
             <AnimateOnScroll style={{ marginBottom: "48px" }}>
               <p

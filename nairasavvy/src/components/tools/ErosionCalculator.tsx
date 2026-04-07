@@ -35,11 +35,11 @@ export default function ErosionCalculator({
 
   return (
     <div
+      className="erosion-calc-wrap"
       style={{
         backgroundColor: '#FAFAF7',
         border: '1px solid #D4CFC8',
         borderRadius: '4px',
-        padding: '32px',
       }}
     >
       <h3
@@ -55,7 +55,7 @@ export default function ErosionCalculator({
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(200px, 100%), 1fr))',
           gap: '20px',
           marginBottom: '24px',
         }}
@@ -143,7 +143,7 @@ export default function ErosionCalculator({
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(160px, 100%), 1fr))',
           gap: '16px',
         }}
       >
@@ -163,9 +163,9 @@ export default function ErosionCalculator({
             Future Cost
           </p>
           <p
+            className="result-number"
             style={{
               fontFamily: 'var(--font-sans, system-ui, sans-serif)',
-              fontSize: '24px',
               fontWeight: 700,
               color: '#7F1D1D',
               margin: 0,
@@ -197,9 +197,9 @@ export default function ErosionCalculator({
             Value Lost
           </p>
           <p
+            className="result-number"
             style={{
               fontFamily: 'var(--font-sans, system-ui, sans-serif)',
-              fontSize: '24px',
               fontWeight: 700,
               color: '#78350F',
               margin: 0,
@@ -231,9 +231,9 @@ export default function ErosionCalculator({
             Remaining Power
           </p>
           <p
+            className="result-number"
             style={{
               fontFamily: 'var(--font-sans, system-ui, sans-serif)',
-              fontSize: '24px',
               fontWeight: 700,
               color: '#1B5E3B',
               margin: 0,

@@ -265,11 +265,10 @@ function FAQItem({
 function InlineNewsletterCTA() {
   return (
     <div
+      className="inline-cta-box"
       style={{
         backgroundColor: "#0F0F0D",
         borderRadius: "4px",
-        padding: "40px",
-        margin: "48px 0",
         textAlign: "center",
       }}
     >
@@ -565,9 +564,9 @@ export default async function ArticlePage({
         {/* Article header */}
         <header
           id="hero-sentinel"
+          className="article-header"
           style={{
             backgroundColor: "#F5F0E8",
-            padding: "80px 24px 48px",
             borderBottom: "1px solid #D4CFC8",
           }}
         >
@@ -659,7 +658,7 @@ export default async function ArticlePage({
         </header>
 
         {/* Article body */}
-        <article style={{ padding: "56px 24px 80px" }}>
+        <article className="article-body">
           <div className="container-content" style={{ maxWidth: "760px" }}>
             <MDXRemote source={processedContent} components={mdxComponents} />
           </div>
@@ -670,7 +669,7 @@ export default async function ArticlePage({
 
       {/* Sources: always last, inside reading column */}
       {article.articleSources && article.articleSources.length > 0 && (
-        <section style={{ backgroundColor: "#F5F0E8", padding: "0 24px 80px" }}>
+        <section className="ns-section" style={{ backgroundColor: "#F5F0E8", paddingTop: "0" }}>
           <div className="container-content" style={{ maxWidth: "760px" }}>
             <SourcesBlock sources={article.articleSources} />
           </div>

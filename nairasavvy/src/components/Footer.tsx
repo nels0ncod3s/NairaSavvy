@@ -53,19 +53,15 @@ export default function Footer() {
       }}
     >
       {/* Main footer content */}
-      <div
-        className="container-content"
-        style={{ paddingTop: "80px", paddingBottom: "64px" }}
-      >
+      <div className="container-content" style={{ paddingTop: "80px", paddingBottom: "64px" }}>
         {/* Top: wordmark + tagline */}
         <div
+          className="footer-main-grid md:grid-cols-5"
           style={{
             display: "grid",
             gridTemplateColumns: "1fr",
-            gap: "64px",
             marginBottom: "64px",
           }}
-          className="md:grid-cols-5"
         >
           {/* Brand column */}
           <div style={{ gridColumn: "span 2" }}>

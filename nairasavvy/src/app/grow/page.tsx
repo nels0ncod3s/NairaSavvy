@@ -25,10 +25,8 @@ export default function GrowPage() {
         {/* Hero */}
         <section
           id="hero-sentinel"
-          style={{
-            backgroundColor: "#F5F0E8",
-            padding: "100px 24px 80px",
-          }}
+          className="ns-hero"
+          style={{ backgroundColor: "#F5F0E8" }}
         >
           <div className="container-content" style={{ maxWidth: "800px" }}>
             <span
@@ -62,7 +60,7 @@ export default function GrowPage() {
         </section>
 
         {/* Intro */}
-        <section style={{ padding: "0 24px 80px" }}>
+        <section className="ns-section">
           <div className="container-content" style={{ maxWidth: "800px" }}>
             <div
               style={{
@@ -90,7 +88,7 @@ export default function GrowPage() {
         </section>
 
         {/* Articles */}
-        <section style={{ padding: "0 24px 100px" }}>
+        <section className="ns-section">
           <div className="container-content">
             <h2
               className="type-h2"

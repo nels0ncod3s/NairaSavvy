@@ -68,10 +68,8 @@ export default async function SavingsPage() {
         {/* Hero */}
         <section
           id="hero-sentinel"
-          style={{
-            backgroundColor: "#F5F0E8",
-            padding: "100px 24px 80px",
-          }}
+          className="ns-hero"
+          style={{ backgroundColor: "#F5F0E8" }}
         >
           <div className="container-content" style={{ maxWidth: "800px" }}>
             <span
@@ -107,7 +105,7 @@ export default async function SavingsPage() {
         </section>
 
         {/* Intro */}
-        <section style={{ padding: "0 24px 80px" }}>
+        <section className="ns-section">
           <div className="container-content" style={{ maxWidth: "800px" }}>
             <div
               style={{
@@ -144,7 +142,7 @@ export default async function SavingsPage() {
         </section>
 
         {/* NairaGuard APY Table */}
-        <section id="naira-guard" style={{ padding: "0 24px 100px" }}>
+        <section id="naira-guard" className="ns-section">
           <div className="container-content">
             <div style={{ marginBottom: "40px" }}>
               <h2
@@ -420,12 +418,7 @@ export default async function SavingsPage() {
         </section>
 
         {/* Articles */}
-        <section
-          style={{
-            padding: "0 24px 100px",
-            backgroundColor: "#F5F0E8",
-          }}
-        >
+        <section className="ns-section" style={{ backgroundColor: "#F5F0E8" }}>
           <div className="container-content">
             <h2
               className="type-h2"

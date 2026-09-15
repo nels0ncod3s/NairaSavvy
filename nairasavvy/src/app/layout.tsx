@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Analytics } from "@vercel/analytics/react";
+import SiteAnalytics from "@/components/SiteAnalytics";
 import "./globals.css";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://nairasavvy.ng";
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
       "Free guides, tools, and alerts to protect your money, fight back against banks, and grow what you have.",
     images: [
       {
-        url: "/og-default.png",
+        url: "/opengraph-image",
         width: 1200,
         height: 630,
         alt: "NairaSavvy: Nigeria's Financial Intelligence Platform",
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     title: "NairaSavvy: Nigeria's Financial Intelligence Platform",
     description:
       "Free guides, tools, and alerts to protect your money, fight back against banks, and grow what you have.",
-    images: ["/og-default.png"],
+    images: ["/opengraph-image"],
     creator: "@NairaSavvy",
   },
   robots: {
@@ -72,7 +72,7 @@ const organizationSchema = {
   "@type": "Organization",
   name: "NairaSavvy",
   url: siteUrl,
-  logo: `${siteUrl}/logo.png`,
+  logo: `${siteUrl}/logo.svg`,
   sameAs: ["https://twitter.com/NairaSavvy"],
   description:
     "Nigeria's premier consumer financial intelligence platform. Free guides, tools, and alerts to protect your money, fight back against banks, and grow what you have.",
@@ -113,6 +113,7 @@ export default function RootLayout({
           href="https://fonts.gstatic.com"
           crossOrigin="anonymous"
         />
+        {/* eslint-disable-next-line @next/next/no-page-custom-font -- App Router global layout; font is shared across all routes. */}
         <link
           href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap"
           rel="stylesheet"
@@ -120,19 +121,22 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(organizationSchema),
+            __html: JSON.stringify(organizationSchema).replace(/</g, "\\u003c"),
           }}
         />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(websiteSchema),
+            __html: JSON.stringify(websiteSchema).replace(/</g, "\\u003c"),
           }}
         />
       </head>
       <body>
+        <a className="skip-link" href="#main-content">
+          Skip to content
+        </a>
         {children}
-        <Analytics />
+        <SiteAnalytics />
       </body>
     </html>
   );

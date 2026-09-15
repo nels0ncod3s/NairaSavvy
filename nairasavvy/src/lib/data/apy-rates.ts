@@ -1,74 +1,54 @@
-import { createClient } from '@/lib/supabase/server'
-import type { Database } from '@/lib/supabase/types'
-
-type ApyRateRow = Database['public']['Tables']['apy_rates']['Row']
-
-export interface APYRate {
-  institution: string
-  product_name: string
-  product_type: string | null
-  apy_percent: number
-  min_balance: number
-  source_url: string | null
-  verified_at: string
-  vs_inflation: number
-  verdict: 'BEATS INFLATION' | 'CLOSE' | 'LOSING VALUE'
-}
-
-function computeVerdict(rate: ApyRateRow, inflationRate: number): APYRate {
-  const vs_inflation = rate.apy_percent - inflationRate
+import { createClient } from "@/lib/supabase/server";
+import { isFresh, realReturn, safeUrl } from "@/lib/finance";
+import type { ApyRate } from "@/lib/supabase/types";
+export type APYRate = ApyRate & {
+  vs_inflation: number | null;
+  real_return: number | null;
+  verdict: string;
+};
+export function computeVerdict(
+  rate: ApyRate,
+  inflation: number | null,
+): APYRate {
+  const comparable =
+    rate.currency === "NGN" &&
+    inflation !== null &&
+    safeUrl(rate.source_url) &&
+    isFresh(rate.verified_at, 30);
+  const value = comparable ? realReturn(rate.apy_percent, inflation!) : null;
   return {
-    institution: rate.institution,
-    product_name: rate.product_name,
-    product_type: rate.product_type,
-    apy_percent: rate.apy_percent,
-    min_balance: rate.min_balance,
-    source_url: rate.source_url,
-    verified_at: rate.verified_at,
-    vs_inflation,
-    verdict: vs_inflation >= 0
-      ? 'BEATS INFLATION'
-      : vs_inflation >= -5
-        ? 'CLOSE'
-        : 'LOSING VALUE'
+    ...rate,
+    real_return: value,
+    vs_inflation: comparable ? rate.apy_percent - inflation! : null,
+    verdict:
+      value === null
+        ? "NOT COMPARED"
+        : value > 0
+          ? "ABOVE INFLATION"
+          : value === 0
+            ? "MATCHES INFLATION"
+            : "BELOW INFLATION",
+  };
+}
+export async function getAllAPYRates(
+  inflation: number | null,
+): Promise<APYRate[]> {
+  try {
+    const client = await createClient();
+    if (!client) return [];
+    const { data, error } = await client
+      .from("apy_rates")
+      .select("*")
+      .eq("is_active", true)
+      .order("apy_percent", { ascending: false });
+    if (error) return [];
+    return (data ?? [])
+      .filter((r) => Number.isFinite(r.apy_percent) && r.apy_percent >= 0)
+      .map((r) => computeVerdict(r, inflation));
+  } catch {
+    return [];
   }
 }
-
-export async function getTopAPYRates(inflationRate: number, limit = 10): Promise<APYRate[]> {
-  const supabase = await createClient()
-  const { data, error } = await supabase
-    .from('apy_rates')
-    .select('institution, product_name, product_type, apy_percent, min_balance, source_url, verified_at')
-    .eq('is_active', true)
-    .not('apy_percent', 'is', null)
-    .order('apy_percent', { ascending: false })
-    .limit(limit)
-
-  if (error) {
-    console.error('Error fetching APY rates:', error)
-    return []
-  }
-
-  if (!data) return []
-
-  return (data as ApyRateRow[]).map(rate => computeVerdict(rate, inflationRate))
-}
-
-export async function getAllAPYRates(inflationRate: number): Promise<APYRate[]> {
-  const supabase = await createClient()
-  const { data, error } = await supabase
-    .from('apy_rates')
-    .select('institution, product_name, product_type, apy_percent, min_balance, source_url, verified_at')
-    .eq('is_active', true)
-    .not('apy_percent', 'is', null)
-    .order('apy_percent', { ascending: false })
-
-  if (error) {
-    console.error('Error fetching all APY rates:', error)
-    return []
-  }
-
-  if (!data) return []
-
-  return (data as ApyRateRow[]).map(rate => computeVerdict(rate, inflationRate))
+export async function getTopAPYRates(inflation: number | null, limit = 10) {
+  return (await getAllAPYRates(inflation)).slice(0, limit);
 }

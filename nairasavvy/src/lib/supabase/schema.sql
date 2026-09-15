@@ -93,27 +93,7 @@ CREATE TABLE IF NOT EXISTS data_plans (
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- ─── Seed Data ────────────────────────────────────────────────────────
-
--- Current inflation rate (NBS, March 2026)
-INSERT INTO inflation_data (rate_percent, period, source)
-VALUES (32.70, 'March 2026', 'NBS')
-ON CONFLICT DO NOTHING;
-
--- APY rates seed data
-INSERT INTO apy_rates (institution, product_name, product_type, apy_percent, is_active)
-VALUES
-  ('PiggyVest',   'Flex Dollar',       'wealthtech', 7.00,  true),
-  ('Cowrywise',   'Dollar Fund',       'wealthtech', 6.50,  true),
-  ('Lotus Bank',  'Fixed Deposit',     'savings',    22.00, true),
-  ('Kuda Bank',   'High Yield Save',   'neobank',    15.00, true),
-  ('GTBank',      'Smart Save',        'savings',    8.50,  true),
-  ('Zenith Bank', 'Target Save',       'savings',    6.00,  true),
-  ('Access Bank', 'PayDay Save',       'savings',    8.00,  true),
-  ('OPay',        'Savings',           'neobank',    15.00, true),
-  ('PiggyVest',   'SafeLock',          'wealthtech', 13.00, true),
-  ('Moniepoint',  'Business Save',     'neobank',    14.00, true)
-ON CONFLICT DO NOTHING;
+-- Add sourced, reviewed data separately. No example financial rates are seeded.
 
 -- ─── Row Level Security ───────────────────────────────────────────────
 
@@ -125,28 +105,37 @@ ALTER TABLE inflation_data  ENABLE ROW LEVEL SECURITY;
 ALTER TABLE content_queue   ENABLE ROW LEVEL SECURITY;
 
 -- Public read access for articles, apy_rates, inflation_data
+DROP POLICY IF EXISTS "Public can read articles" ON articles;
 CREATE POLICY "Public can read articles" ON articles
   FOR SELECT USING (true);
 
+DROP POLICY IF EXISTS "Public can read apy_rates" ON apy_rates;
 CREATE POLICY "Public can read apy_rates" ON apy_rates
   FOR SELECT USING (is_active = true);
 
+DROP POLICY IF EXISTS "Public can read inflation_data" ON inflation_data;
 CREATE POLICY "Public can read inflation_data" ON inflation_data
   FOR SELECT USING (true);
 
 -- Subscribers: insert only (no public read)
-CREATE POLICY "Anyone can subscribe" ON subscribers
-  FOR INSERT WITH CHECK (true);
+DROP POLICY IF EXISTS "Anyone can subscribe" ON subscribers;
+-- Signups are handled only by the server-side subscription API.
+REVOKE ALL ON subscribers FROM anon, authenticated;
 
 -- Content queue: service role only
 -- (No public access — manage via service role key in API routes)
 
 -- CBN circulars: public read
 ALTER TABLE cbn_circulars ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Public can read cbn_circulars" ON cbn_circulars;
 CREATE POLICY "Public can read cbn_circulars" ON cbn_circulars
   FOR SELECT USING (true);
 
 -- Data plans: public read
 ALTER TABLE data_plans ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Public can read data_plans" ON data_plans;
 CREATE POLICY "Public can read data_plans" ON data_plans
   FOR SELECT USING (is_active = true);
+
+GRANT SELECT ON articles, apy_rates, inflation_data, cbn_circulars, data_plans TO anon, authenticated;
+-- Next apply upgrade.sql for comparison metadata and newsletter lifecycle fields.

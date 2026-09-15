@@ -1,21 +1,27 @@
-import { createClient } from '@/lib/supabase/server'
-import type { Database } from '@/lib/supabase/types'
-
-type InflationRow = Database['public']['Tables']['inflation_data']['Row']
-
-export async function getCurrentInflationRate(): Promise<InflationRow | null> {
-  const supabase = await createClient()
-  const { data, error } = await supabase
-    .from('inflation_data')
-    .select('rate_percent, period, source, recorded_at')
-    .order('recorded_at', { ascending: false })
-    .limit(1)
-    .maybeSingle()
-
-  if (error) {
-    console.error('Error fetching inflation rate:', error)
-    return null
+import { cache } from "react";
+import { createClient } from "@/lib/supabase/server";
+import { isFresh, safeUrl } from "@/lib/finance";
+export const getCurrentInflationRate = cache(async () => {
+  try {
+    const client = await createClient();
+    if (!client) return null;
+    const { data, error } = await client
+      .from("inflation_data")
+      .select("*")
+      .order("recorded_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    if (
+      error ||
+      !data ||
+      !safeUrl(data.source_url) ||
+      !isFresh(data.recorded_at, 60) ||
+      !Number.isFinite(data.rate_percent) ||
+      data.rate_percent < 0
+    )
+      return null;
+    return data;
+  } catch {
+    return null;
   }
-
-  return data
-}
+});

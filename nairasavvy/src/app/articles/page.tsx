@@ -5,7 +5,7 @@ import ArticleGrid from "@/components/ArticleGrid";
 import NewsletterCTA from "@/components/NewsletterCTA";
 
 export const metadata: Metadata = {
-  title: "All Articles | NairaSavvy",
+  title: "All Articles",
   description:
     "Guides, analysis, and how-tos to help you protect your money, fight back against banks, and grow what you have.",
   alternates: { canonical: "/articles" },
@@ -25,22 +25,34 @@ const CATEGORY_LABELS: Record<string, string> = {
   "cut-costs": "Cut Costs",
 };
 
-const CATEGORIES = ["all", "news", "savings", "fight-back", "grow", "cut-costs"];
+const CATEGORIES = [
+  "all",
+  "news",
+  "savings",
+  "fight-back",
+  "grow",
+  "cut-costs",
+];
 
-export default function ArticlesPage({
+export default async function ArticlesPage({
   searchParams,
 }: {
-  searchParams: { category?: string };
+  searchParams: Promise<{ category?: string }>;
 }) {
+  const params = await searchParams;
   const activeCategory =
-    searchParams.category && CATEGORIES.includes(searchParams.category)
-      ? searchParams.category
+    params.category && CATEGORIES.includes(params.category)
+      ? params.category
       : "all";
 
   return (
     <>
       <Nav />
-      <main style={{ backgroundColor: "#F5F0E8" }}>
+      <main
+        id="main-content"
+        tabIndex={-1}
+        style={{ backgroundColor: "#F5F0E8" }}
+      >
         {/* Hero */}
         <section
           id="hero-sentinel"
@@ -73,8 +85,8 @@ export default function ArticlesPage({
               }}
             >
               Plain-English guides, breaking-down CBN policy, savings rate
-              comparisons, and step-by-step how-tos for every Nigerian who
-              wants to stop losing and start winning with their money.
+              comparisons, and step-by-step how-tos for every Nigerian who wants
+              to stop losing and start winning with their money.
             </p>
           </div>
         </section>
@@ -93,7 +105,8 @@ export default function ArticlesPage({
             >
               {CATEGORIES.map((cat) => {
                 const isActive = cat === activeCategory;
-                const label = cat === "all" ? "All" : (CATEGORY_LABELS[cat] ?? cat);
+                const label =
+                  cat === "all" ? "All" : (CATEGORY_LABELS[cat] ?? cat);
                 const href =
                   cat === "all" ? "/articles" : `/articles?category=${cat}`;
                 return (

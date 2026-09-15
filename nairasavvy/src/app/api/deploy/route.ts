@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
     console.error("[deploy] CONTENT_WEBHOOK_SECRET env var not set");
     return NextResponse.json(
       { error: "Server misconfiguration" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 
@@ -44,13 +44,25 @@ export async function POST(request: NextRequest) {
         error: "Deploy hook not configured",
         hint: "Add VERCEL_DEPLOY_HOOK_URL to Vercel environment variables",
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 
   try {
-    const response = await fetch(deployHookUrl, {
+    const hook = new URL(deployHookUrl);
+    if (
+      hook.protocol !== "https:" ||
+      hook.hostname !== "api.vercel.com" ||
+      !hook.pathname.startsWith("/v1/integrations/deploy/")
+    ) {
+      return NextResponse.json(
+        { error: "Deploy hook misconfigured" },
+        { status: 503 },
+      );
+    }
+    const response = await fetch(hook, {
       method: "POST",
+      signal: AbortSignal.timeout(10000),
       headers: { "Content-Type": "application/json" },
     });
 
@@ -76,9 +88,6 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown error";
     console.error("[deploy] Deploy hook failed:", message);
-    return NextResponse.json(
-      { error: "Deployment failed", detail: message },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Deployment failed" }, { status: 500 });
   }
 }

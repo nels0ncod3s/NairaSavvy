@@ -21,7 +21,11 @@ export default function GrowPage() {
   return (
     <>
       <Nav />
-      <main style={{ backgroundColor: "#F5F0E8" }}>
+      <main
+        id="main-content"
+        tabIndex={-1}
+        style={{ backgroundColor: "#F5F0E8" }}
+      >
         {/* Hero */}
         <section
           id="hero-sentinel"
@@ -51,10 +55,10 @@ export default function GrowPage() {
                 lineHeight: "1.7",
               }}
             >
-              With inflation at 15.06% (NBS, Feb 2026), cash is a bad investment. T-bills,
-              dollar savings, mutual funds, and money market accounts are
-              accessible to everyday Nigerians, but most people don&apos;t know
-              where to start. We break them down.
+              Understand your time horizon, currency and access needs before
+              comparing T-bills, dollar savings, mutual funds, and money market
+              accounts are accessible to everyday Nigerians, but most people
+              don&apos;t know where to start. We break them down.
             </p>
           </div>
         </section>
@@ -74,14 +78,11 @@ export default function GrowPage() {
                 className="type-body"
                 style={{ color: "#1A1A1A", margin: 0, lineHeight: "1.8" }}
               >
-                Growing your money in Nigeria requires understanding a few key
-                options. Nigerian Treasury Bills (T-bills) currently offer
-                returns above 20% per annum, higher than most savings
-                accounts. Dollar-denominated accounts protect against naira
-                devaluation. Money market funds offer daily liquidity with
-                better returns than a savings account. We explain every option
-                in plain English, with minimum balances and where to open
-                accounts.
+                Compare each product on its own terms. Treasury bills, funds and
+                deposit accounts have different access rules, fees and risks.
+                Foreign-currency products also expose you to exchange-rate
+                changes. Begin with your goal and the provider’s documented
+                terms before comparing returns.
               </p>
             </div>
           </div>

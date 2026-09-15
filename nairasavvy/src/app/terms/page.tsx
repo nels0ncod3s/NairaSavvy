@@ -51,19 +51,35 @@ export default function TermsPage() {
   return (
     <>
       <Nav />
-      <main style={{ backgroundColor: "#F5F0E8" }}>
+      <main
+        id="main-content"
+        tabIndex={-1}
+        style={{ backgroundColor: "#F5F0E8" }}
+      >
         <section
           id="hero-sentinel"
-          style={{ padding: "100px 24px 80px", borderBottom: "1px solid #D4CFC8" }}
+          style={{
+            padding: "100px 24px 80px",
+            borderBottom: "1px solid #D4CFC8",
+          }}
         >
           <div className="container-content" style={{ maxWidth: "760px" }}>
-            <span className="category-tag" style={{ marginBottom: "20px", display: "inline-block" }}>
+            <span
+              className="category-tag"
+              style={{ marginBottom: "20px", display: "inline-block" }}
+            >
               Legal
             </span>
-            <h1 className="type-h1" style={{ color: "#1A1A1A", marginBottom: "16px" }}>
+            <h1
+              className="type-h1"
+              style={{ color: "#1A1A1A", marginBottom: "16px" }}
+            >
               Terms of Use
             </h1>
-            <p className="type-body" style={{ color: "#6B6560", fontSize: "16px" }}>
+            <p
+              className="type-body"
+              style={{ color: "#6B6560", fontSize: "16px" }}
+            >
               Effective date: 1 April 2026. NairaSavvy is operated by KwenuAI.
             </p>
           </div>

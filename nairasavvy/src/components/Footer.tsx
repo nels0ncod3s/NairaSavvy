@@ -6,15 +6,21 @@ const pillars = [
     links: [
       { label: "Savings & Yields", href: "/savings" },
       { label: "NairaGuard Dashboard", href: "/savings" },
-      { label: "Naira Erosion Calculator", href: "/tools/naira-erosion-calculator" },
+      {
+        label: "Naira Erosion Calculator",
+        href: "/tools/naira-erosion-calculator",
+      },
     ],
   },
   {
     label: "Fight Back",
     links: [
       { label: "Consumer Rights", href: "/fight-back" },
-      { label: "Bank App Down? What To Do", href: "/articles/bank-app-down-what-to-do-polaris-vulte" },
-      { label: "CBN Complaints Guide", href: "/fight-back" },
+      {
+        label: "Bank App Down? What To Do",
+        href: "/articles/bank-app-down-what-to-do-polaris-vulte",
+      },
+      { label: "Complaint Letter Generator", href: "/tools/complaint-letter" },
     ],
   },
   {
@@ -29,13 +35,14 @@ const pillars = [
     label: "Guides",
     links: [
       { label: "All Articles", href: "/articles" },
-      { label: "Best Savings Accounts 2026", href: "/savings" },
+      { label: "Compare Savings Products", href: "/savings" },
       { label: "Data Plan Deals", href: "/cut-costs/data-plans" },
     ],
   },
 ];
 
 const legalLinks = [
+  { label: "Editorial Policy", href: "/editorial-policy" },
   { label: "Privacy Policy", href: "/privacy" },
   { label: "Terms of Use", href: "/terms" },
   { label: "About", href: "/about" },
@@ -53,18 +60,21 @@ export default function Footer() {
       }}
     >
       {/* Main footer content */}
-      <div className="container-content" style={{ paddingTop: "80px", paddingBottom: "64px" }}>
+      <div
+        className="container-content"
+        style={{ paddingTop: "80px", paddingBottom: "64px" }}
+      >
         {/* Top: wordmark + tagline */}
         <div
           className="footer-main-grid md:grid-cols-5"
           style={{
             display: "grid",
-            gridTemplateColumns: "1fr",
+
             marginBottom: "64px",
           }}
         >
           {/* Brand column */}
-          <div style={{ gridColumn: "span 2" }}>
+          <div className="footer-brand">
             <Link
               href="/"
               style={{
@@ -106,19 +116,29 @@ export default function Footer() {
               <p
                 className="type-label"
                 style={{
-                  color: "#6B6760",
+                  color: "#B4B1AA",
                   marginBottom: "20px",
                 }}
               >
                 {pillar.label}
               </p>
-              <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: "12px" }}>
+              <ul
+                style={{
+                  listStyle: "none",
+                  margin: 0,
+                  padding: 0,
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "12px",
+                }}
+              >
                 {pillar.links.map((link) => (
-                  <li key={link.href}>
+                  <li key={link.label}>
                     <Link
                       href={link.href}
                       style={{
-                        fontFamily: "var(--font-dm-sans, system-ui, sans-serif)",
+                        fontFamily:
+                          "var(--font-dm-sans, system-ui, sans-serif)",
                         fontSize: "14px",
                         color: "#C4BFB8",
                         textDecoration: "none",
@@ -158,7 +178,7 @@ export default function Footer() {
               fontFamily: "var(--font-dm-sans, system-ui, sans-serif)",
               fontSize: "13px",
               lineHeight: "22px",
-              color: "#6B6760",
+              color: "#B4B1AA",
               margin: 0,
             }}
           >
@@ -189,22 +209,22 @@ export default function Footer() {
             style={{
               fontFamily: "var(--font-dm-sans, system-ui, sans-serif)",
               fontSize: "13px",
-              color: "#4A4845",
+              color: "#B4B1AA",
               margin: 0,
             }}
           >
             © {currentYear} NairaSavvy · Built by{" "}
-            <span style={{ color: "#6B6760" }}>KwenuAI</span>
+            <span style={{ color: "#B4B1AA" }}>KwenuAI</span>
           </p>
           <div style={{ display: "flex", gap: "24px", flexWrap: "wrap" }}>
             {legalLinks.map((link) => (
               <Link
-                key={link.href}
+                key={link.label}
                 href={link.href}
                 style={{
                   fontFamily: "var(--font-dm-sans, system-ui, sans-serif)",
                   fontSize: "13px",
-                  color: "#4A4845",
+                  color: "#B4B1AA",
                   textDecoration: "none",
                   transition: "color 0.2s ease",
                 }}

@@ -30,6 +30,7 @@ export async function generateMetadata({
   if (!article) return {};
 
   return {
+    robots: article.reviewRequired ? { index: false, follow: true } : undefined,
     title: article.seoTitle ?? article.title,
     description: article.metaDescription ?? article.excerpt,
     keywords: article.keywords,
@@ -52,7 +53,10 @@ function preprocessContent(raw: string): string {
   let content = raw;
   for (const marker of ["[JSON-LD SCHEMA", "[SCHEMA]", "[SCHEMA"]) {
     const idx = content.indexOf(marker);
-    if (idx !== -1) { content = content.slice(0, idx).trimEnd(); break; }
+    if (idx !== -1) {
+      content = content.slice(0, idx).trimEnd();
+      break;
+    }
   }
 
   const lines = content.split("\n");
@@ -217,7 +221,15 @@ function SectionLabel({ label }: { label: string }) {
         marginBottom: "16px",
       }}
     >
-      {isFaq ? "Frequently Asked Questions" : label}
+      {isFaq
+        ? "Frequently Asked Questions"
+        : ({
+            HOOK: "The situation",
+            PROBLEM: "What happened",
+            "NEED TO KNOW": "What to know",
+            "ACTION STEPS": "Your next steps",
+            "BOTTOM LINE": "What this means",
+          }[label] ?? label)}
     </div>
   );
 }
@@ -314,9 +326,13 @@ function InlineNewsletterCTA() {
 }
 
 const mdxComponents: MDXComponents = {
-  DefinitionBlock: DefinitionBlock as React.ComponentType<Record<string, unknown>>,
+  DefinitionBlock: DefinitionBlock as React.ComponentType<
+    Record<string, unknown>
+  >,
   SectionLabel: SectionLabel as React.ComponentType<Record<string, unknown>>,
-  InlineNewsletterCTA: InlineNewsletterCTA as React.ComponentType<Record<string, unknown>>,
+  InlineNewsletterCTA: InlineNewsletterCTA as React.ComponentType<
+    Record<string, unknown>
+  >,
   FAQItem: FAQItem as React.ComponentType<Record<string, unknown>>,
   // Prose overrides
   h1: ({ children }) => (
@@ -424,9 +440,7 @@ const mdxComponents: MDXComponents = {
       {children}
     </ol>
   ),
-  li: ({ children }) => (
-    <li style={{ marginBottom: "8px" }}>{children}</li>
-  ),
+  li: ({ children }) => <li style={{ marginBottom: "8px" }}>{children}</li>,
   strong: ({ children }) => (
     <strong style={{ fontWeight: 700, color: "#1A1A1A" }}>{children}</strong>
   ),
@@ -515,6 +529,7 @@ export default async function ArticlePage({
     "@type": "Article",
     headline: article.title,
     datePublished: article.publishedAt,
+    dateModified: article.updatedAt ?? article.publishedAt,
     author: {
       "@type": "Organization",
       name: article.author,
@@ -549,18 +564,26 @@ export default async function ArticlePage({
       {/* JSON-LD schemas in head */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(articleSchema).replace(/</g, "\\u003c"),
+        }}
       />
       {faqSchema && (
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(faqSchema).replace(/</g, "\\u003c"),
+          }}
         />
       )}
 
       <Nav />
 
-      <main style={{ backgroundColor: "#F5F0E8" }}>
+      <main
+        id="main-content"
+        tabIndex={-1}
+        style={{ backgroundColor: "#F5F0E8" }}
+      >
         {/* Article header */}
         <header
           id="hero-sentinel"
@@ -611,6 +634,17 @@ export default async function ArticlePage({
               {article.excerpt}
             </p>
 
+            {article.reviewRequired && (
+              <aside className="review-note">
+                Archived story: time-sensitive claims and quoted rates need a
+                fresh source review. Do not use this article as current
+                financial or regulatory guidance.{" "}
+                <Link href="/editorial-policy">How we review content</Link>.
+              </aside>
+            )}
+            {article.updatedAt && (
+              <p>Updated: {formatDate(article.updatedAt)}</p>
+            )}
             {/* Meta line */}
             <div
               style={{
@@ -669,7 +703,10 @@ export default async function ArticlePage({
 
       {/* Sources: always last, inside reading column */}
       {article.articleSources && article.articleSources.length > 0 && (
-        <section className="ns-section" style={{ backgroundColor: "#F5F0E8", paddingTop: "0" }}>
+        <section
+          className="ns-section"
+          style={{ backgroundColor: "#F5F0E8", paddingTop: "0" }}
+        >
           <div className="container-content" style={{ maxWidth: "760px" }}>
             <SourcesBlock sources={article.articleSources} />
           </div>

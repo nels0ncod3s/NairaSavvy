@@ -1,3 +1,5 @@
+import { getCurrentInflationRate } from "@/lib/data/inflation";
+export const dynamic = "force-dynamic";
 import Link from "next/link";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
@@ -12,7 +14,7 @@ const pillars = [
     num: "01",
     label: "Protect",
     heading: "Stop your savings from being eaten alive by inflation.",
-    body: "Nigeria's inflation is running above 15%. If your savings account isn't keeping pace, you're losing real money every single month. We show you exactly which accounts beat inflation and which ones don't.",
+    body: "Inflation changes what your savings can buy. Compare the published rate, currency, fees, access rules and source before choosing a product.",
     cta: "See the NairaGuard table",
     href: "/savings",
   },
@@ -28,18 +30,22 @@ const pillars = [
     num: "03",
     label: "Grow",
     heading: "Find every legal edge to make your money work harder.",
-    body: "T-bills above 20%. Money market funds at 22–26%. Dollar savings accounts. These options exist for everyday Nigerians, not just the wealthy. We break them down in plain English with real numbers.",
+    body: "Treasury bills, money market funds and dollar products work differently. Understand the terms and risks before deciding what fits your goals.",
     cta: "Explore growth options",
     href: "/grow",
   },
 ];
 
-export default function Home() {
+export default async function Home() {
+  const inflation = await getCurrentInflationRate();
   return (
     <>
       <Nav />
-      <main style={{ backgroundColor: "#F5F0E8" }}>
-
+      <main
+        id="main-content"
+        tabIndex={-1}
+        style={{ backgroundColor: "#F5F0E8" }}
+      >
         {/* ── HERO ─────────────────────────────────────────── */}
         <section
           id="hero-sentinel"
@@ -71,7 +77,11 @@ export default function Home() {
               against banks, and grow what you have.
             </p>
             <div className="hero-animate-3">
-              <Link href="/newsletter" className="btn-primary" style={{ fontSize: "16px", padding: "16px 32px" }}>
+              <Link
+                href="/newsletter"
+                className="btn-primary"
+                style={{ fontSize: "16px", padding: "16px 32px" }}
+              >
                 Get Free Alerts &rarr;
               </Link>
             </div>
@@ -85,7 +95,8 @@ export default function Home() {
               style={{
                 display: "grid",
                 /* min() ensures cards never overflow on narrow screens */
-                gridTemplateColumns: "repeat(auto-fill, minmax(min(300px, 100%), 1fr))",
+                gridTemplateColumns:
+                  "repeat(auto-fill, minmax(min(300px, 100%), 1fr))",
                 gap: "24px",
               }}
             >
@@ -93,7 +104,11 @@ export default function Home() {
                 <AnimateOnScroll key={p.num} delay={i * 120} variant="fadeUp">
                   <Link
                     href={p.href}
-                    style={{ textDecoration: "none", display: "block", height: "100%" }}
+                    style={{
+                      textDecoration: "none",
+                      display: "block",
+                      height: "100%",
+                    }}
                   >
                     <div
                       className="card"
@@ -105,10 +120,17 @@ export default function Home() {
                         gap: "16px",
                       }}
                     >
-                      <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "12px",
+                        }}
+                      >
                         <span
                           style={{
-                            fontFamily: "var(--font-sans, system-ui, sans-serif)",
+                            fontFamily:
+                              "var(--font-sans, system-ui, sans-serif)",
                             fontSize: "12px",
                             fontWeight: 700,
                             textTransform: "uppercase" as const,
@@ -163,7 +185,11 @@ export default function Home() {
         </section>
 
         {/* ── NAIRA-GUARD DASHBOARD ─────────────────────────── */}
-        <section id="naira-guard" className="ns-section" style={{ backgroundColor: "#F5F0E8" }}>
+        <section
+          id="naira-guard"
+          className="ns-section"
+          style={{ backgroundColor: "#F5F0E8" }}
+        >
           <div className="container-content">
             <AnimateOnScroll style={{ marginBottom: "40px" }}>
               <p
@@ -217,7 +243,7 @@ export default function Home() {
                   05 — Latest
                 </p>
                 <h2 className="type-h2" style={{ color: "#1A1A1A", margin: 0 }}>
-                  What you need to know this week.
+                  Guides for your next money decision.
                 </h2>
               </div>
               <Link
@@ -239,7 +265,10 @@ export default function Home() {
         </section>
 
         {/* ── NAIRA EROSION CALCULATOR ─────────────────────── */}
-        <section className="ns-section-dark" style={{ backgroundColor: "#0F0F0D" }}>
+        <section
+          className="ns-section-dark"
+          style={{ backgroundColor: "#0F0F0D" }}
+        >
           <div className="container-content" style={{ maxWidth: "860px" }}>
             <AnimateOnScroll style={{ marginBottom: "48px" }}>
               <p
@@ -255,7 +284,10 @@ export default function Home() {
               >
                 06 — Tool
               </p>
-              <h2 className="type-h2" style={{ color: "#FFFFFF", marginBottom: "16px" }}>
+              <h2
+                className="type-h2"
+                style={{ color: "#FFFFFF", marginBottom: "16px" }}
+              >
                 See exactly how much your savings are losing.
               </h2>
               <p
@@ -273,7 +305,11 @@ export default function Home() {
               </p>
             </AnimateOnScroll>
             <AnimateOnScroll delay={120} variant="scale">
-              <ErosionCalculator />
+              <ErosionCalculator
+                initialInflationRate={inflation?.rate_percent}
+                inflationPeriod={inflation?.period}
+                inflationSource={inflation?.source}
+              />
             </AnimateOnScroll>
             <p style={{ marginTop: "24px", textAlign: "center" }}>
               <Link
@@ -291,7 +327,6 @@ export default function Home() {
             </p>
           </div>
         </section>
-
       </main>
 
       <NewsletterCTA />

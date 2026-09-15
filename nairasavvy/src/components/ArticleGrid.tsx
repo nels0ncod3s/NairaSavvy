@@ -26,9 +26,7 @@ function CategoryLabel({ category }: { category: string }) {
     grow: "Grow",
     "cut-costs": "Cut Costs",
   };
-  return (
-    <span className="category-tag">{labels[category] ?? category}</span>
-  );
+  return <span className="category-tag">{labels[category] ?? category}</span>;
 }
 
 function ArticleCard({ article }: { article: ArticleMeta }) {
@@ -66,6 +64,9 @@ function ArticleCard({ article }: { article: ArticleMeta }) {
           </span>
         </div>
 
+        {article.reviewRequired && (
+          <p className="type-small">Archived · source review needed</p>
+        )}
         <h3
           className="type-h3"
           style={{
@@ -169,8 +170,8 @@ export default function ArticleGrid({ category }: ArticleGridProps) {
             lineHeight: "1.6",
           }}
         >
-          Subscribe to the Naira Shield and we&apos;ll notify you the moment
-          new guides are published.
+          Subscribe to the Naira Shield and we&apos;ll notify you the moment new
+          guides are published.
         </p>
         <Link href="/newsletter" className="btn-primary">
           Get Notified Free &rarr;

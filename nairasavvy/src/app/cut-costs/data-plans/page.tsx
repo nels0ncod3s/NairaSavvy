@@ -1,32 +1,34 @@
-import type { Metadata } from "next"
-import Nav from "@/components/Nav"
-import Footer from "@/components/Footer"
-import { getHiddenDeals, getAllDataPlans } from "@/lib/data/data-plans"
-import DataPlansClient from "./DataPlansClient"
+export const dynamic = "force-dynamic";
+import type { Metadata } from "next";
+import Nav from "@/components/Nav";
+import Footer from "@/components/Footer";
+import { getAllDataPlans } from "@/lib/data/data-plans";
+import DataPlansClient from "./DataPlansClient";
 
 export const metadata: Metadata = {
-  title: "Best Data Plans in Nigeria 2026",
+  title: "Compare Data Plans in Nigeria",
   description:
     "Compare mobile data plans from MTN, Airtel, Glo, and T2 Mobile. Find hidden deals and the best value for your money.",
   alternates: { canonical: "/cut-costs/data-plans" },
   openGraph: {
-    title: "Best Data Plans in Nigeria 2026 | NairaSavvy",
+    title: "Compare Data Plans in Nigeria | NairaSavvy",
     description:
-      "Compare 36 data plans and find hidden deals from all Nigerian networks.",
+      "Filter data plans by budget, validity and ordinary data allowance.",
     url: "/cut-costs/data-plans",
   },
-}
+};
 
 export default async function DataPlansPage() {
-  const [hiddenDeals, allPlans] = await Promise.all([
-    getHiddenDeals(),
-    getAllDataPlans(),
-  ])
+  const allPlans = await getAllDataPlans();
 
   return (
     <>
       <Nav />
-      <main style={{ backgroundColor: "#F5F0E8" }}>
+      <main
+        id="main-content"
+        tabIndex={-1}
+        style={{ backgroundColor: "#F5F0E8" }}
+      >
         {/* Hero */}
         <section
           id="hero-sentinel"
@@ -43,7 +45,7 @@ export default async function DataPlansPage() {
               className="type-h1"
               style={{ color: "#1A1A1A", marginBottom: "24px" }}
             >
-              Stop overpaying for data. Here are the plans that actually give you value.
+              Choose data around your budget and usage.
             </h1>
             <p
               className="type-body"
@@ -55,15 +57,15 @@ export default async function DataPlansPage() {
                 lineHeight: "1.7",
               }}
             >
-              We compared every active plan from MTN, Airtel, Glo, and T2 Mobile
-              and scored them by GB per ₦1,000. The hidden deals are the ones
-              the networks bury in fine print.
+              Compare available records by ordinary GB per ₦1,000, with clear
+              review dates and optional restricted bonuses. Confirm eligibility
+              with the provider.
             </p>
           </div>
         </section>
 
         {/* Hidden deals + all plans — rendered client-side for interactivity */}
-        <DataPlansClient hiddenDeals={hiddenDeals} allPlans={allPlans} />
+        <DataPlansClient allPlans={allPlans} />
 
         {/* CTA */}
         <section style={{ padding: "80px 24px", backgroundColor: "#0F0F0D" }}>
@@ -91,5 +93,5 @@ export default async function DataPlansPage() {
       </main>
       <Footer />
     </>
-  )
+  );
 }

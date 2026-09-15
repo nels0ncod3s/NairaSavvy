@@ -44,7 +44,11 @@ export default function AboutPage() {
   return (
     <>
       <Nav />
-      <main style={{ backgroundColor: "#F5F0E8" }}>
+      <main
+        id="main-content"
+        tabIndex={-1}
+        style={{ backgroundColor: "#F5F0E8" }}
+      >
         {/* Hero */}
         <section
           id="hero-sentinel"
@@ -108,12 +112,12 @@ export default function AboutPage() {
                   marginTop: "16px",
                 }}
               >
-                We&apos;re not a bank. We&apos;re not a broker. We have no financial
-                product to sell you. We exist to give you the intelligence you
-                need to make better decisions with your money, whether that&apos;s
-                choosing the right savings account, filing a complaint against
-                your bank, or understanding what the latest CBN circular
-                actually means for your pocket.
+                We&apos;re not a bank. We&apos;re not a broker. We have no
+                financial product to sell you. We exist to give you the
+                intelligence you need to make better decisions with your money,
+                whether that&apos;s choosing the right savings account, filing a
+                complaint against your bank, or understanding what the latest
+                CBN circular actually means for your pocket.
               </p>
             </div>
           </div>
@@ -206,18 +210,18 @@ export default function AboutPage() {
               }}
             >
               Every article is verified before publication. We cite our sources.
-              We flag what we&apos;re unsure about. We update articles when things
-              change.
+              We flag what we&apos;re unsure about. We update articles when
+              things change.
             </p>
             <p
               className="type-body"
               style={{ color: "#6B6560", lineHeight: "1.8" }}
             >
-              We don&apos;t publish clickbait. We don&apos;t run unverified rumours. When
-              we get something wrong, we publish a correction and update the
-              article with the correct information. Our editorial team includes
-              writers with backgrounds in Nigerian banking, consumer advocacy,
-              and financial journalism.
+              We don&apos;t publish clickbait. We don&apos;t run unverified
+              rumours. When we get something wrong, we publish a correction and
+              update the article with the correct information. Our editorial
+              team includes writers with backgrounds in Nigerian banking,
+              consumer advocacy, and financial journalism.
             </p>
           </div>
         </section>

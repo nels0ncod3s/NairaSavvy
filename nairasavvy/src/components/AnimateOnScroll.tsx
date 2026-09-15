@@ -1,68 +1,61 @@
 "use client";
-
-import { useEffect, useRef, CSSProperties, ReactNode, ElementType } from "react";
-
-type AnimVariant = "fadeUp" | "scale" | "fadeIn";
-
-interface AnimateOnScrollProps {
-  children: ReactNode;
-  delay?: number; // ms
-  variant?: AnimVariant;
-  threshold?: number;
-  className?: string;
-  style?: CSSProperties;
-  tag?: ElementType;
-}
-
-const VARIANT_CLASSES: Record<AnimVariant, string> = {
-  fadeUp: "reveal",
-  scale: "reveal-scale",
-  fadeIn: "reveal",
-};
-
+import {
+  useEffect,
+  useRef,
+  type CSSProperties,
+  type ReactNode,
+  type ElementType,
+} from "react";
 export default function AnimateOnScroll({
   children,
   delay = 0,
   variant = "fadeUp",
-  threshold = 0.12,
   className = "",
   style,
   tag: Tag = "div",
-}: AnimateOnScrollProps) {
+}: {
+  children: ReactNode;
+  delay?: number;
+  variant?: "fadeUp" | "scale" | "fadeIn";
+  threshold?: number;
+  className?: string;
+  style?: CSSProperties;
+  tag?: ElementType;
+}) {
   const ref = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-
+    const element = ref.current;
+    if (
+      !element ||
+      !("IntersectionObserver" in window) ||
+      matchMedia("(prefers-reduced-motion: reduce)").matches
+    )
+      return;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          const timer = setTimeout(() => {
-            el.classList.add("is-visible");
-          }, delay);
-          observer.unobserve(el);
-          return () => clearTimeout(timer);
+          element.animate(
+            [
+              {
+                opacity: 0,
+                transform:
+                  variant === "scale" ? "scale(.98)" : "translateY(12px)",
+              },
+              { opacity: 1, transform: "none" },
+            ],
+            { duration: 450, delay: Math.min(delay, 300), easing: "ease-out" },
+          );
+          observer.disconnect();
         }
       },
-      { threshold }
+      { threshold: 0.1 },
     );
-
-    observer.observe(el);
+    observer.observe(element);
     return () => observer.disconnect();
-  }, [delay, threshold]);
-
-  const baseClass = VARIANT_CLASSES[variant];
-
-  const Component = Tag as "div";
-
+  }, [delay, variant]);
   return (
-    <Component
-      ref={ref}
-      className={`${baseClass} ${className}`.trim()}
-      style={style}
-    >
+    <Tag ref={ref} className={className} style={style}>
       {children}
-    </Component>
+    </Tag>
   );
 }

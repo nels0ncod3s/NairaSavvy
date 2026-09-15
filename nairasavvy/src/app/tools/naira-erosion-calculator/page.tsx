@@ -1,3 +1,5 @@
+import { getCurrentInflationRate } from "@/lib/data/inflation";
+export const dynamic = "force-dynamic";
 import type { Metadata } from "next";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
@@ -17,16 +19,18 @@ export const metadata: Metadata = {
   },
 };
 
-export default function NairaErosionCalculatorPage() {
+export default async function NairaErosionCalculatorPage() {
+  const inflation = await getCurrentInflationRate();
   return (
     <>
       <Nav />
-      <main style={{ backgroundColor: "#0F0F0D", minHeight: "100vh" }}>
+      <main
+        id="main-content"
+        tabIndex={-1}
+        style={{ backgroundColor: "#0F0F0D", minHeight: "100vh" }}
+      >
         {/* Hero */}
-        <section
-          id="hero-sentinel"
-          style={{ padding: "100px 24px 64px" }}
-        >
+        <section id="hero-sentinel" style={{ padding: "100px 24px 64px" }}>
           <div className="container-content" style={{ maxWidth: "800px" }}>
             <span
               style={{
@@ -56,13 +60,13 @@ export default function NairaErosionCalculatorPage() {
                 fontFamily: "var(--font-sans, system-ui, sans-serif)",
                 fontSize: "18px",
                 lineHeight: "1.7",
-                color: "#888884",
+                color: "#B4B1AA",
                 maxWidth: "600px",
               }}
             >
-              Your savings account shows a number. Inflation shows a
-              different one. This tool shows you the real difference — in
-              naira, not percentages.
+              Your savings account shows a number. Inflation shows a different
+              one. This tool shows you the real difference — in naira, not
+              percentages.
             </p>
           </div>
         </section>
@@ -70,7 +74,11 @@ export default function NairaErosionCalculatorPage() {
         {/* Calculator */}
         <section style={{ padding: "0 24px 80px" }}>
           <div className="container-content" style={{ maxWidth: "860px" }}>
-            <ErosionCalculator />
+            <ErosionCalculator
+              initialInflationRate={inflation?.rate_percent}
+              inflationPeriod={inflation?.period}
+              inflationSource={inflation?.source}
+            />
           </div>
         </section>
 
@@ -99,13 +107,13 @@ export default function NairaErosionCalculatorPage() {
               {[
                 {
                   title: "Find accounts that beat inflation",
-                  body: "Some savings products pay above 20% APY. See the full NairaGuard comparison table.",
+                  body: "Compare published yields, terms and review dates in the NairaGuard table.",
                   href: "/savings",
                   cta: "View NairaGuard",
                 },
                 {
                   title: "Invest in T-bills or money markets",
-                  body: "Nigerian Treasury Bills and money market funds offer returns that outpace most savings accounts.",
+                  body: "Understand access, costs and risks before comparing treasury bills and money market funds.",
                   href: "/grow",
                   cta: "Grow your money",
                 },
@@ -150,7 +158,7 @@ export default function NairaErosionCalculatorPage() {
                       style={{
                         fontFamily: "var(--font-sans, system-ui, sans-serif)",
                         fontSize: "14px",
-                        color: "#888884",
+                        color: "#B4B1AA",
                         margin: 0,
                         flex: 1,
                         lineHeight: "1.6",

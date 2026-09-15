@@ -21,7 +21,11 @@ export default function FightBackPage() {
   return (
     <>
       <Nav />
-      <main style={{ backgroundColor: "#F5F0E8" }}>
+      <main
+        id="main-content"
+        tabIndex={-1}
+        style={{ backgroundColor: "#F5F0E8" }}
+      >
         {/* Hero */}
         <section
           id="hero-sentinel"
@@ -74,13 +78,13 @@ export default function FightBackPage() {
                 className="type-body"
                 style={{ color: "#1A1A1A", margin: 0, lineHeight: "1.8" }}
               >
-                The Central Bank of Nigeria&apos;s Consumer Protection Regulations
-                (2022) give you clear rights as a bank customer. Banks are
-                required to resolve failed transaction disputes within{" "}
-                <strong>72 hours</strong>, provide refunds for erroneous
-                charges, and respond to CBN complaints within{" "}
-                <strong>5 business days</strong>. Most Nigerians never collect
-                what they&apos;re owed, simply because they don&apos;t know to ask.
+                Start by reporting the issue to your bank and keeping its
+                complaint reference. Escalation depends on the issue and the
+                time already allowed for resolution.{" "}
+                <a href="https://www.cbn.gov.ng/FinInc/FinLit/LodgeComplaint.html">
+                  Read the CBN complaint procedure
+                </a>{" "}
+                before escalating.
               </p>
             </div>
           </div>
@@ -126,9 +130,9 @@ export default function FightBackPage() {
                   marginBottom: "12px",
                 }}
               >
-                Generate a legally-worded complaint letter to your bank or the
-                CBN in under 2 minutes — with the right regulation citations,
-                a resolution deadline, and the correct escalation channel.
+                Draft an editable letter to your bank with the transaction
+                details, your requested resolution and previous complaint
+                history.
               </p>
               <p
                 style={{
@@ -138,11 +142,10 @@ export default function FightBackPage() {
                   marginBottom: "28px",
                 }}
               >
-                This tool is in development. Subscribe to the Naira Shield and
-                we&apos;ll email you the moment it launches.
+                Create, review and download your letter in your browser.
               </p>
               <a
-                href="/newsletter"
+                href="/tools/complaint-letter"
                 style={{
                   display: "inline-block",
                   backgroundColor: "#1B5E3B",
@@ -155,7 +158,7 @@ export default function FightBackPage() {
                   textDecoration: "none",
                 }}
               >
-                Get notified when it launches &rarr;
+                Create your complaint letter &rarr;
               </a>
             </div>
           </div>

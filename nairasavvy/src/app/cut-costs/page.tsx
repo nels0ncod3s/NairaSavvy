@@ -12,8 +12,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/cut-costs" },
   openGraph: {
     title: "Cut the Hidden Costs | NairaSavvy",
-    description:
-      "You're paying more than you should. Here's where to stop.",
+    description: "You're paying more than you should. Here's where to stop.",
     url: "/cut-costs",
   },
 };
@@ -22,7 +21,11 @@ export default function CutCostsPage() {
   return (
     <>
       <Nav />
-      <main style={{ backgroundColor: "#F5F0E8" }}>
+      <main
+        id="main-content"
+        tabIndex={-1}
+        style={{ backgroundColor: "#F5F0E8" }}
+      >
         {/* Hero */}
         <section
           id="hero-sentinel"
@@ -40,7 +43,8 @@ export default function CutCostsPage() {
               className="type-h1"
               style={{ color: "#1A1A1A", marginBottom: "24px" }}
             >
-              You&apos;re paying more than you should. Here&apos;s where to stop.
+              You&apos;re paying more than you should. Here&apos;s where to
+              stop.
             </h1>
             <p
               className="type-body"
@@ -52,8 +56,8 @@ export default function CutCostsPage() {
                 lineHeight: "1.7",
               }}
             >
-              Hidden bank maintenance fees. SMS charges at ₦4 per message.
-              Data plans that bill you for services you didn&apos;t use. Insurance
+              Hidden bank maintenance fees. SMS charges at ₦4 per message. Data
+              plans that bill you for services you didn&apos;t use. Insurance
               policies with clauses that make them useless. The costs you
               don&apos;t see are often bigger than the ones you do.
             </p>
@@ -76,11 +80,11 @@ export default function CutCostsPage() {
                 style={{ color: "#1A1A1A", margin: 0, lineHeight: "1.8" }}
               >
                 The average Nigerian pays thousands of naira per year in charges
-                they&apos;ve never explicitly agreed to. Bank account maintenance
-                fees, card issuance fees, transfer fees that differ by channel,
-                and ATM charges that add up. These erode savings quietly.
-                We&apos;ll help you audit your statements, identify unnecessary
-                charges, and get refunds where you&apos;re entitled.
+                they&apos;ve never explicitly agreed to. Bank account
+                maintenance fees, card issuance fees, transfer fees that differ
+                by channel, and ATM charges that add up. These erode savings
+                quietly. We&apos;ll help you audit your statements, identify
+                unnecessary charges, and get refunds where you&apos;re entitled.
               </p>
             </div>
           </div>
@@ -95,7 +99,14 @@ export default function CutCostsPage() {
             >
               Tools
             </h2>
-            <Link href="/cut-costs/data-plans" style={{ textDecoration: "none", display: "block", maxWidth: "640px" }}>
+            <Link
+              href="/cut-costs/data-plans"
+              style={{
+                textDecoration: "none",
+                display: "block",
+                maxWidth: "640px",
+              }}
+            >
               <div
                 style={{
                   backgroundColor: "#0F0F0D",

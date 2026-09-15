@@ -1,9 +1,10 @@
-import type { Metadata } from "next"
-import Nav from "@/components/Nav"
-import Footer from "@/components/Footer"
-import ArticleGrid from "@/components/ArticleGrid"
-import NewsletterCTA from "@/components/NewsletterCTA"
-import { getConsumerCirculars } from "@/lib/data/cbn-circulars"
+export const dynamic = "force-dynamic";
+import type { Metadata } from "next";
+import Nav from "@/components/Nav";
+import Footer from "@/components/Footer";
+import ArticleGrid from "@/components/ArticleGrid";
+import NewsletterCTA from "@/components/NewsletterCTA";
+import { getConsumerCirculars } from "@/lib/data/cbn-circulars";
 
 export const metadata: Metadata = {
   title: "What's Happening With Your Money",
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
       "CBN circulars. Fintech updates. Translated into plain English.",
     url: "/news",
   },
-}
+};
 
 function formatDate(dateStr: string): string {
   try {
@@ -24,19 +25,23 @@ function formatDate(dateStr: string): string {
       day: "numeric",
       month: "long",
       year: "numeric",
-    })
+    });
   } catch {
-    return dateStr
+    return dateStr;
   }
 }
 
 export default async function NewsPage() {
-  const circulars = await getConsumerCirculars()
+  const circulars = await getConsumerCirculars();
 
   return (
     <>
       <Nav />
-      <main style={{ backgroundColor: "#F5F0E8" }}>
+      <main
+        id="main-content"
+        tabIndex={-1}
+        style={{ backgroundColor: "#F5F0E8" }}
+      >
         {/* Hero */}
         <section
           id="hero-sentinel"
@@ -69,8 +74,8 @@ export default async function NewsPage() {
               }}
             >
               Every CBN directive, fintech policy change, and banking update
-              that affects your money, explained without the regulatory
-              jargon. We tell you what it means and what to do.
+              that affects your money, explained without the regulatory jargon.
+              We tell you what it means and what to do.
             </p>
           </div>
         </section>
@@ -105,7 +110,7 @@ export default async function NewsPage() {
               </h2>
               <p
                 className="type-body"
-                style={{ color: "#888884", marginBottom: "32px" }}
+                style={{ color: "#B4B1AA", marginBottom: "32px" }}
               >
                 Recent CBN circulars that affect your money.
               </p>
@@ -137,7 +142,8 @@ export default async function NewsPage() {
                         display: "flex",
                         flexDirection: "column",
                         gap: "12px",
-                        transition: "transform 0.2s ease, border-color 0.2s ease",
+                        transition:
+                          "transform 0.2s ease, border-color 0.2s ease",
                       }}
                     >
                       <div
@@ -170,7 +176,7 @@ export default async function NewsPage() {
                         <span
                           className="type-small"
                           style={{
-                            color: "#888884",
+                            color: "#B4B1AA",
                             whiteSpace: "nowrap",
                           }}
                         >
@@ -195,7 +201,7 @@ export default async function NewsPage() {
                         <p
                           className="type-body"
                           style={{
-                            color: "#888884",
+                            color: "#B4B1AA",
                             margin: 0,
                             flex: 1,
                             display: "-webkit-box",
@@ -230,5 +236,5 @@ export default async function NewsPage() {
       <NewsletterCTA />
       <Footer />
     </>
-  )
+  );
 }

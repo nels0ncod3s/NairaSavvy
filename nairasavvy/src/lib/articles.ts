@@ -10,6 +10,8 @@ export interface ArticleMeta {
   excerpt: string;
   category: string;
   publishedAt: string;
+  updatedAt?: string;
+  reviewRequired: boolean;
   readTime: number;
   featured: boolean;
   author: string;
@@ -37,9 +39,14 @@ export interface ArticleFull extends ArticleMeta {
   faqs?: Faq[];
 }
 
-function parseArticleMeta(slug: string, data: Record<string, unknown>): ArticleMeta {
+function parseArticleMeta(
+  slug: string,
+  data: Record<string, unknown>,
+): ArticleMeta {
   return {
     slug,
+    updatedAt: data.updatedAt as string | undefined,
+    reviewRequired: data.reviewRequired === true,
     title: (data.title as string) ?? "",
     excerpt: (data.excerpt as string) ?? "",
     category: (data.category as string) ?? "",
@@ -54,7 +61,9 @@ function parseArticleMeta(slug: string, data: Record<string, unknown>): ArticleM
 export function getAllArticles(): ArticleMeta[] {
   try {
     if (!fs.existsSync(ARTICLES_DIR)) return [];
-    const files = fs.readdirSync(ARTICLES_DIR).filter((f) => f.endsWith(".mdx"));
+    const files = fs
+      .readdirSync(ARTICLES_DIR)
+      .filter((f) => f.endsWith(".mdx"));
     return files
       .map((f) => {
         const slug = f.replace(".mdx", "");
@@ -64,7 +73,7 @@ export function getAllArticles(): ArticleMeta[] {
       })
       .sort(
         (a, b) =>
-          new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+          new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
       );
   } catch {
     return [];
@@ -79,6 +88,7 @@ export function getArticlesByCategory(category?: string): ArticleMeta[] {
 
 export function getArticleBySlug(slug: string): ArticleFull | null {
   try {
+    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)) return null;
     const filePath = path.join(ARTICLES_DIR, `${slug}.mdx`);
     const raw = fs.readFileSync(filePath, "utf8");
     const { data, content } = matter(raw);

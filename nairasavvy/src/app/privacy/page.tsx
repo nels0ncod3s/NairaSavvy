@@ -4,7 +4,8 @@ import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "Privacy Policy | NairaSavvy",
-  description: "How NairaSavvy collects, uses, and protects your personal information.",
+  description:
+    "How NairaSavvy collects, uses, and protects your personal information.",
   alternates: { canonical: "/privacy" },
 };
 
@@ -18,6 +19,10 @@ const sections = [
     body: `Your email address is used solely to send you the Naira Shield newsletter and occasional product updates related to NairaSavvy. We do not sell, rent, or share your email address with any third party for marketing purposes.`,
   },
   {
+    heading: "Service providers",
+    body: `Supabase stores subscription records and Resend processes confirmation email delivery. Complaint-letter details stay in your browser and are not submitted to these services.`,
+  },
+  {
     heading: "Cookies and analytics",
     body: `NairaSavvy uses Vercel Analytics, a privacy-first analytics tool that does not use cookies or track you across websites. We collect aggregate, anonymised page view data to understand which content is most useful. No personally identifiable information is collected through analytics.`,
   },
@@ -27,7 +32,7 @@ const sections = [
   },
   {
     heading: "Data retention",
-    body: `Your email address is retained for as long as you remain subscribed to the Naira Shield. You can unsubscribe at any time by clicking the unsubscribe link in any newsletter email, after which your address will be removed within 7 days.`,
+    body: `Your email address and signup status are stored to manage your subscription. Confirmation links expire after 24 hours. Completing the unsubscribe form removes your subscriber record. Delivery providers may retain their own operational logs.`,
   },
   {
     heading: "Your rights",
@@ -43,19 +48,35 @@ export default function PrivacyPage() {
   return (
     <>
       <Nav />
-      <main style={{ backgroundColor: "#F5F0E8" }}>
+      <main
+        id="main-content"
+        tabIndex={-1}
+        style={{ backgroundColor: "#F5F0E8" }}
+      >
         <section
           id="hero-sentinel"
-          style={{ padding: "100px 24px 80px", borderBottom: "1px solid #D4CFC8" }}
+          style={{
+            padding: "100px 24px 80px",
+            borderBottom: "1px solid #D4CFC8",
+          }}
         >
           <div className="container-content" style={{ maxWidth: "760px" }}>
-            <span className="category-tag" style={{ marginBottom: "20px", display: "inline-block" }}>
+            <span
+              className="category-tag"
+              style={{ marginBottom: "20px", display: "inline-block" }}
+            >
               Legal
             </span>
-            <h1 className="type-h1" style={{ color: "#1A1A1A", marginBottom: "16px" }}>
+            <h1
+              className="type-h1"
+              style={{ color: "#1A1A1A", marginBottom: "16px" }}
+            >
               Privacy Policy
             </h1>
-            <p className="type-body" style={{ color: "#6B6560", fontSize: "16px" }}>
+            <p
+              className="type-body"
+              style={{ color: "#6B6560", fontSize: "16px" }}
+            >
               Effective date: 1 April 2026. NairaSavvy is operated by KwenuAI.
             </p>
           </div>

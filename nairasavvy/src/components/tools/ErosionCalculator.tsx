@@ -75,6 +75,23 @@ export default function ErosionCalculator({
           />
         </label>
       </div>
+      <div
+        className="amount-presets"
+        role="group"
+        aria-label="Try a starting balance"
+      >
+        <span>Try a balance</span>
+        {[50000, 100000, 500000].map((value) => (
+          <button
+            type="button"
+            key={value}
+            aria-pressed={Number(amount) === value}
+            onClick={() => setAmount(String(value))}
+          >
+            {money(value)}
+          </button>
+        ))}
+      </div>
       {initialInflationRate !== undefined && (
         <button
           className="text-button"
@@ -119,6 +136,31 @@ export default function ErosionCalculator({
           </div>
         )}
       </div>
+      {result && Number(amount) > 0 && (
+        <div className="power-visual">
+          <div className="power-labels">
+            <span>
+              Buying power retained{" "}
+              <strong>
+                {((result.purchasingPower / Number(amount)) * 100).toFixed(1)}%
+              </strong>
+            </span>
+            <span>
+              Lost to inflation{" "}
+              <strong>
+                {((result.loss / Number(amount)) * 100).toFixed(1)}%
+              </strong>
+            </span>
+          </div>
+          <div className="power-track" aria-hidden="true">
+            <span
+              style={{
+                width: `${(result.purchasingPower / Number(amount)) * 100}%`,
+              }}
+            />
+          </div>
+        </div>
+      )}
       <p className="type-small">
         Purchasing power = amount ÷ (1 + inflation rate)<sup>years</sup>. This
         is a scenario, not a forecast. Your own spending mix may differ from the

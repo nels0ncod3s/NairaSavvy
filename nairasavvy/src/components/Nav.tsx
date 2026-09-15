@@ -2,7 +2,7 @@
 import { useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ArrowUpRight } from "lucide-react";
 const links = [
   ["Savings", "/savings"],
   ["Fight Back", "/fight-back"],
@@ -22,7 +22,10 @@ export default function Nav() {
     <>
       <nav className="main-nav" aria-label="Main navigation">
         <Link className="wordmark" href="/">
-          NairaSavvy
+          <span className="brand-mark" aria-hidden="true">
+            ₦
+          </span>
+          NairaSavvy<span className="brand-period">.</span>
         </Link>
         <div className="desktop-nav">
           {links.map(([label, href]) => (
@@ -35,7 +38,7 @@ export default function Nav() {
             </Link>
           ))}
           <Link className="btn-primary" href="/newsletter">
-            Get Free Alerts
+            Get Free Alerts <ArrowUpRight size={16} aria-hidden="true" />
           </Link>
         </div>
         <button
@@ -91,7 +94,7 @@ export default function Nav() {
           </Link>
         ))}
         <Link className="btn-primary" href="/newsletter" onClick={close}>
-          Get Free Alerts
+          Get Free Alerts <ArrowUpRight size={16} aria-hidden="true" />
         </Link>
       </dialog>
     </>

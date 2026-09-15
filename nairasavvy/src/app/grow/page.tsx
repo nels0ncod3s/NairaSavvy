@@ -1,8 +1,5 @@
 import type { Metadata } from "next";
-import Nav from "@/components/Nav";
-import Footer from "@/components/Footer";
-import ArticleGrid from "@/components/ArticleGrid";
-import NewsletterCTA from "@/components/NewsletterCTA";
+import CategoryLanding from "@/components/CategoryLanding";
 
 export const metadata: Metadata = {
   title: "Grow What You Have",
@@ -17,93 +14,35 @@ export const metadata: Metadata = {
   },
 };
 
-export default function GrowPage() {
+export default function Page() {
   return (
-    <>
-      <Nav />
-      <main
-        id="main-content"
-        tabIndex={-1}
-        style={{ backgroundColor: "#F5F0E8" }}
-      >
-        {/* Hero */}
-        <section
-          id="hero-sentinel"
-          className="ns-hero"
-          style={{ backgroundColor: "#F5F0E8" }}
-        >
-          <div className="container-content" style={{ maxWidth: "800px" }}>
-            <span
-              className="category-tag"
-              style={{ marginBottom: "20px", display: "inline-block" }}
-            >
-              Grow
-            </span>
-            <h1
-              className="type-h1"
-              style={{ color: "#1A1A1A", marginBottom: "24px" }}
-            >
-              Every naira you&apos;re not growing is shrinking.
-            </h1>
-            <p
-              className="type-body"
-              style={{
-                color: "#6B6560",
-                maxWidth: "600px",
-                marginBottom: "0",
-                fontSize: "18px",
-                lineHeight: "1.7",
-              }}
-            >
-              Understand your time horizon, currency and access needs before
-              comparing T-bills, dollar savings, mutual funds, and money market
-              accounts are accessible to everyday Nigerians, but most people
-              don&apos;t know where to start. We break them down.
-            </p>
-          </div>
-        </section>
-
-        {/* Intro */}
-        <section className="ns-section">
-          <div className="container-content" style={{ maxWidth: "800px" }}>
-            <div
-              style={{
-                backgroundColor: "#FAFAF7",
-                border: "1px solid #D4CFC8",
-                borderRadius: "4px",
-                padding: "32px",
-              }}
-            >
-              <p
-                className="type-body"
-                style={{ color: "#1A1A1A", margin: 0, lineHeight: "1.8" }}
-              >
-                Compare each product on its own terms. Treasury bills, funds and
-                deposit accounts have different access rules, fees and risks.
-                Foreign-currency products also expose you to exchange-rate
-                changes. Begin with your goal and the provider’s documented
-                terms before comparing returns.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* Articles */}
-        <section className="ns-section">
-          <div className="container-content">
-            <h2
-              className="type-h2"
-              style={{ color: "#1A1A1A", marginBottom: "40px" }}
-            >
-              Grow Guides
-            </h2>
-            <ArticleGrid category="grow" />
-          </div>
-        </section>
-      </main>
-
-      <NewsletterCTA />
-      <Footer />
-    </>
+    <CategoryLanding
+      category="grow"
+      label="Grow"
+      title="Think beyond"
+      accent="the headline return."
+      description="Put your goals first. Understand the products, the trade-offs and what it means to make your money work harder."
+      symbol="↗"
+      steps={[
+        {
+          title: "Give your money a job.",
+          text: "An emergency fund and a five-year goal need different things. Decide when you’ll need the money before choosing a product.",
+        },
+        {
+          title: "Read beyond the rate.",
+          text: "Look at fees, access rules and the possibility of loss. A higher quoted yield does not make a product safer.",
+        },
+        {
+          title: "Keep currency in view.",
+          text: "Compare like with like. A dollar return and a naira return carry different exchange-rate exposure.",
+        },
+      ]}
+      tool={{
+        title: "Put savings options side by side.",
+        text: "Compare currencies, published yields, product terms and source dates in one place.",
+        href: "/savings",
+        cta: "Explore NairaGuard",
+      }}
+    />
   );
 }

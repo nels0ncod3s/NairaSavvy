@@ -50,190 +50,64 @@ const legalLinks = [
 ];
 
 export default function Footer() {
-  const currentYear = new Date().getFullYear();
-
   return (
-    <footer
-      style={{
-        backgroundColor: "#0F0F0D",
-        color: "#FFFFFF",
-      }}
-    >
-      {/* Main footer content */}
-      <div
-        className="container-content"
-        style={{ paddingTop: "80px", paddingBottom: "64px" }}
-      >
-        {/* Top: wordmark + tagline */}
-        <div
-          className="footer-main-grid md:grid-cols-5"
-          style={{
-            display: "grid",
-
-            marginBottom: "64px",
-          }}
-        >
-          {/* Brand column */}
+    <footer className="studio-footer">
+      <div className="container-content">
+        <div className="footer-top">
+          <p>
+            Financial clarity.
+            <br />A little more freedom.
+          </p>
+          <Link href="#main-content" className="back-to-start">
+            BACK TO THE TOP ↑
+          </Link>
+        </div>
+        <div className="footer-main-grid">
           <div className="footer-brand">
-            <Link
-              href="/"
-              style={{
-                fontFamily: "var(--font-playfair, Georgia, serif)",
-                fontSize: "24px",
-                fontWeight: 700,
-                color: "#FFFFFF",
-                textDecoration: "none",
-                display: "block",
-                marginBottom: "16px",
-              }}
-            >
-              NairaSavvy
+            <Link href="/" className="wordmark">
+              <span className="brand-mark" aria-hidden="true">
+                ₦
+              </span>
+              NairaSavvy.
             </Link>
-            <p
-              style={{
-                fontFamily: "var(--font-dm-sans, system-ui, sans-serif)",
-                fontSize: "15px",
-                lineHeight: "24px",
-                color: "#9CA3A0",
-                marginBottom: "32px",
-                maxWidth: "300px",
-              }}
-            >
-              Your money. Protected. Grown. Defended.
+            <p>
+              For the money you earn.
+              <br />
+              And the life you’re building.
             </p>
-            <Link
-              href="/newsletter"
-              className="btn-primary"
-              style={{ fontSize: "14px", padding: "11px 20px" }}
-            >
-              Get Free Alerts
-            </Link>
+            <span className="footer-origin">BUILT WITH PURPOSE IN NIGERIA</span>
           </div>
-
-          {/* Nav columns */}
           {pillars.map((pillar) => (
             <div key={pillar.label}>
-              <p
-                className="type-label"
-                style={{
-                  color: "#B4B1AA",
-                  marginBottom: "20px",
-                }}
-              >
-                {pillar.label}
-              </p>
-              <ul
-                style={{
-                  listStyle: "none",
-                  margin: 0,
-                  padding: 0,
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "12px",
-                }}
-              >
+              <h3 className="eyebrow">{pillar.label}</h3>
+              <ul>
                 {pillar.links.map((link) => (
                   <li key={link.label}>
-                    <Link
-                      href={link.href}
-                      style={{
-                        fontFamily:
-                          "var(--font-dm-sans, system-ui, sans-serif)",
-                        fontSize: "14px",
-                        color: "#C4BFB8",
-                        textDecoration: "none",
-                        transition: "color 0.2s ease",
-                      }}
-                      className="hover:text-white"
-                    >
-                      {link.label}
-                    </Link>
+                    <Link href={link.href}>{link.label}</Link>
                   </li>
                 ))}
               </ul>
             </div>
           ))}
         </div>
-
-        {/* Divider */}
-        <div
-          style={{
-            height: "1px",
-            backgroundColor: "#1C1C1A",
-            marginBottom: "40px",
-          }}
-        />
-
-        {/* Legal disclaimer */}
-        <div
-          style={{
-            backgroundColor: "#1C1C1A",
-            borderRadius: "4px",
-            padding: "24px",
-            marginBottom: "40px",
-          }}
-        >
-          <p
-            style={{
-              fontFamily: "var(--font-dm-sans, system-ui, sans-serif)",
-              fontSize: "13px",
-              lineHeight: "22px",
-              color: "#B4B1AA",
-              margin: 0,
-            }}
-          >
-            <strong style={{ color: "#9CA3A0", fontWeight: 600 }}>
-              Disclaimer:{" "}
-            </strong>
-            NairaSavvy is a financial education and information platform.
-            Nothing on this site constitutes financial advice. Always verify
-            current rates and consult a qualified financial advisor before
-            making investment decisions. We may earn affiliate commissions from
-            some links. These are always clearly labelled. APY rates shown are
-            for informational purposes only and may have changed since last
-            verified. Past performance does not guarantee future returns.
-          </p>
+        <div className="footer-disclaimer">
+          NairaSavvy provides financial education, not personalised financial
+          advice. Verify current rates and product terms before making
+          decisions. Investments carry risk. Affiliate links, where used, are
+          labelled.
         </div>
-
-        {/* Bottom bar */}
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "16px",
-            alignItems: "flex-start",
-          }}
-          className="md:flex-row md:items-center md:justify-between"
-        >
-          <p
-            style={{
-              fontFamily: "var(--font-dm-sans, system-ui, sans-serif)",
-              fontSize: "13px",
-              color: "#B4B1AA",
-              margin: 0,
-            }}
-          >
-            © {currentYear} NairaSavvy · Built by{" "}
-            <span style={{ color: "#B4B1AA" }}>KwenuAI</span>
-          </p>
-          <div style={{ display: "flex", gap: "24px", flexWrap: "wrap" }}>
+        <div className="footer-bottom">
+          <p>© {new Date().getFullYear()} NairaSavvy · Built by KwenuAI</p>
+          <div>
             {legalLinks.map((link) => (
-              <Link
-                key={link.label}
-                href={link.href}
-                style={{
-                  fontFamily: "var(--font-dm-sans, system-ui, sans-serif)",
-                  fontSize: "13px",
-                  color: "#B4B1AA",
-                  textDecoration: "none",
-                  transition: "color 0.2s ease",
-                }}
-                className="hover:text-gray-400"
-              >
+              <Link key={link.label} href={link.href}>
                 {link.label}
               </Link>
             ))}
           </div>
+        </div>
+        <div className="footer-big-word" aria-hidden="true">
+          Stay savvy<span>✳</span>
         </div>
       </div>
     </footer>

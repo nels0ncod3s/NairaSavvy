@@ -1,6 +1,5 @@
 export const dynamic = "force-dynamic";
 import type { Metadata } from "next";
-import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import ArticleGrid from "@/components/ArticleGrid";
 import NewsletterCTA from "@/components/NewsletterCTA";
@@ -36,7 +35,6 @@ export default async function NewsPage() {
 
   return (
     <>
-      <Nav />
       <main
         id="main-content"
         tabIndex={-1}

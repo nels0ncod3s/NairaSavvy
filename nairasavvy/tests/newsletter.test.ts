@@ -58,8 +58,8 @@ test("newsletter persists hashed tokens and reports provider failures, duplicate
   process.env.NEXT_PUBLIC_SITE_URL = "https://example.com";
   process.env.NEXT_PUBLIC_SUPABASE_URL = "https://newsletter-test.invalid";
   process.env.SUPABASE_SECRET_KEY = "test-secret";
-  process.env.RESEND_API_KEY = "test-email-key";
-  process.env.RESEND_FROM_EMAIL = "test@example.com";
+  process.env.SENDBYTE_API_KEY = "sk_live_mock_not_real";
+  process.env.SENDBYTE_FROM_EMAIL = "test@example.com";
   let row: Record<string, unknown> | null = null;
   let sent = 0;
   let allow = true;
@@ -73,9 +73,16 @@ test("newsletter persists hashed tokens and reports provider failures, duplicate
         status,
         headers: { "Content-Type": "application/json" },
       });
-    if (url.startsWith("https://api.resend.com/")) {
+    if (url.startsWith("https://api.sendbyte.africa/")) {
+      assert.equal(url, "https://api.sendbyte.africa/v1/emails");
+      assert.match(body.idempotency_key, /^confirm:[a-f0-9]{64}$/);
+      assert.equal(
+        new Headers(init?.headers).get("Authorization"),
+        "Bearer sk_live_mock_not_real",
+      );
       sent++;
       emailBody = body.text;
+      assert.match(body.html, /<a href="[^"]+confirm\?token=/);
       return failEmail
         ? response({ name: "validation_error", message: "Mock failure" }, 422)
         : response({ id: "email-id" });
@@ -114,6 +121,19 @@ test("newsletter persists hashed tokens and reports provider failures, duplicate
         .status,
       503,
     );
+    process.env.SENDBYTE_API_KEY = "sk_test_mock";
+    const sentBeforeSandbox = sent;
+    assert.equal(
+      (await subscribe({ email: "user@example.com", source: "/newsletter" }))
+        .status,
+      503,
+    );
+    assert.equal(
+      sent,
+      sentBeforeSandbox,
+      "sandbox keys must never simulate a successful public signup",
+    );
+    process.env.SENDBYTE_API_KEY = "sk_live_mock_not_real";
     row!.active = true;
     row!.confirmed = true;
     const before = sent;

@@ -1,6 +1,6 @@
 import "server-only";
 import { createHash, randomBytes } from "node:crypto";
-import { Resend } from "resend";
+import { SendByte } from "@sendbyte/node";
 import { z } from "zod";
 import { createServiceClient } from "@/lib/supabase/server";
 import { siteUrl } from "@/lib/site";
@@ -21,8 +21,8 @@ export async function subscribe(input: z.infer<typeof subscriptionSchema>) {
   const client = await createServiceClient();
   if (
     !client ||
-    !process.env.RESEND_API_KEY ||
-    !process.env.RESEND_FROM_EMAIL ||
+    !process.env.SENDBYTE_API_KEY?.startsWith("sk_live_") ||
+    !process.env.SENDBYTE_FROM_EMAIL ||
     !process.env.NEXT_PUBLIC_SITE_URL
   )
     return {
@@ -98,19 +98,34 @@ export async function subscribe(input: z.infer<typeof subscriptionSchema>) {
     };
   const confirmUrl = `${siteUrl}/newsletter/confirm?token=${confirmation}`;
   const unsubscribeUrl = `${siteUrl}/newsletter/unsubscribe?token=${unsubscribe}`;
-  const { error: sendError } = await new Resend(
-    process.env.RESEND_API_KEY,
-  ).emails.send({
-    from: process.env.RESEND_FROM_EMAIL,
-    to: input.email,
-    subject: "Confirm your Naira Shield subscription",
-    text: `You requested NairaSavvy updates. Confirm your subscription within 24 hours:\n${confirmUrl}\n\nIf you did not request this, ignore this email. To remove this signup or unsubscribe:\n${unsubscribeUrl}`,
-  });
-  if (sendError)
+  const escapeHtml = (value: string) =>
+    value
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  const emailText = `You requested NairaSavvy updates. Confirm your subscription within 24 hours:\n${confirmUrl}\n\nIf you did not request this, ignore this email. To remove this signup or unsubscribe:\n${unsubscribeUrl}`;
+  try {
+    const client = new SendByte(process.env.SENDBYTE_API_KEY, {
+      timeoutMs: 8000,
+      maxAttempts: 1,
+    });
+    const sent = await client.emails.send({
+      from: process.env.SENDBYTE_FROM_EMAIL,
+      to: input.email,
+      subject: "Confirm your Naira Shield subscription",
+      idempotency_key: `confirm:${tokenHash(confirmation)}`,
+      text: emailText,
+      html: `<div style="font-family:Arial,sans-serif;line-height:1.7"><h1>The Naira Shield</h1><p>You requested NairaSavvy updates. Confirm your subscription within 24 hours.</p><p><a href="${escapeHtml(confirmUrl)}">Confirm your subscription</a></p><p>If you did not request this, ignore this email.</p><p><a href="${escapeHtml(unsubscribeUrl)}">Remove this signup or unsubscribe</a></p></div>`,
+    });
+    if (!sent?.id || sent.sandbox === true)
+      throw new Error("Email not queued for live delivery");
+  } catch {
     return {
       status: 503,
       error:
         "Your signup is pending, but the confirmation email could not be sent. Please retry in a minute.",
     };
+  }
   return { status: 202, message };
 }

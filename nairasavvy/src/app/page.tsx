@@ -7,13 +7,13 @@ import {
   Radio,
   Sparkles,
 } from "lucide-react";
-import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import ArticleGrid from "@/components/ArticleGrid";
 import NewsletterCTA from "@/components/NewsletterCTA";
-import ErosionCalculator from "@/components/tools/ErosionCalculator";
+import InflationCalculator from "@/components/tools/InflationCalculator";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
-import { getCurrentInflationRate } from "@/lib/data/inflation";
+import { Suspense } from "react";
+import DataLoading from "@/components/DataLoading";
 export const dynamic = "force-dynamic";
 
 const pathways = [
@@ -49,11 +49,9 @@ const pathways = [
   },
 ];
 
-export default async function Home() {
-  const inflation = await getCurrentInflationRate();
+export default function Home() {
   return (
     <>
-      <Nav />
       <main id="main-content" tabIndex={-1} className="studio-home">
         <section className="money-hero" id="hero-sentinel">
           <div className="container-content">
@@ -194,11 +192,9 @@ export default async function Home() {
               </div>
             </div>
             <AnimateOnScroll variant="scale">
-              <ErosionCalculator
-                initialInflationRate={inflation?.rate_percent}
-                inflationPeriod={inflation?.period}
-                inflationSource={inflation?.source}
-              />
+              <Suspense fallback={<DataLoading />}>
+                <InflationCalculator />
+              </Suspense>
             </AnimateOnScroll>
             <div className="lab-caption">
               <span>UNDERSTAND THE NUMBERS. OWN YOUR NEXT MOVE.</span>

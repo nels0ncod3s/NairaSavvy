@@ -1,6 +1,5 @@
 export const dynamic = "force-dynamic";
 import type { Metadata } from "next";
-import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { getAllDataPlans } from "@/lib/data/data-plans";
 import DataPlansClient from "./DataPlansClient";
@@ -23,7 +22,6 @@ export default async function DataPlansPage() {
 
   return (
     <>
-      <Nav />
       <main
         id="main-content"
         tabIndex={-1}

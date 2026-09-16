@@ -31,7 +31,7 @@ export default defineConfig({
       NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: "",
       SUPABASE_SECRET_KEY: "",
       SUPABASE_SERVICE_ROLE_KEY: "",
-      RESEND_API_KEY: "",
+      SENDBYTE_API_KEY: "",
     },
   },
 });

@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import ArticleGrid from "@/components/ArticleGrid";
 import PageHero from "@/components/PageHero";
@@ -47,7 +46,6 @@ export default async function ArticlesPage({
       : "all";
   return (
     <>
-      <Nav />
       <main id="main-content" tabIndex={-1}>
         <PageHero
           eyebrow="The Savvy Edit"

@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
@@ -20,7 +19,7 @@ const sections = [
   },
   {
     heading: "Service providers",
-    body: `Supabase stores subscription records and Resend processes confirmation email delivery. Complaint-letter details stay in your browser and are not submitted to these services.`,
+    body: `Supabase stores subscription records and SendByte processes confirmation email delivery. Complaint-letter details stay in your browser and are not submitted to these services.`,
   },
   {
     heading: "Cookies and analytics",
@@ -47,7 +46,6 @@ const sections = [
 export default function PrivacyPage() {
   return (
     <>
-      <Nav />
       <main
         id="main-content"
         tabIndex={-1}

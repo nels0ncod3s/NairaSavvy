@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import ComplaintLetter from "@/components/tools/ComplaintLetter";
 export const metadata: Metadata = {
@@ -10,7 +9,6 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <>
-      <Nav />
       <main id="main-content" tabIndex={-1}>
         <section className="ns-hero">
           <div className="container-content" style={{ maxWidth: 900 }}>

@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import Nav from "./Nav";
 import Footer from "./Footer";
 import PageHero from "./PageHero";
 import ArticleGrid from "./ArticleGrid";
@@ -26,7 +25,6 @@ export default function CategoryLanding({
 }) {
   return (
     <>
-      <Nav />
       <main id="main-content" tabIndex={-1}>
         <PageHero
           eyebrow={label}

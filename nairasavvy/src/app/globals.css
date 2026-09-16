@@ -2694,3 +2694,126 @@ h3 {
     font-size: 170px;
   }
 }
+
+/* Fluid sections: preserve readable measures from small phones to wide screens. */
+.container-content {
+  width: min(100%, 1440px);
+  padding-inline: clamp(18px, 4vw, 64px);
+}
+.hero-composition,
+.section-heading,
+.pathway-grid,
+.journal-grid,
+.newsletter-layout,
+.signup-grid,
+.page-hero-grid {
+  min-width: 0;
+}
+.hero-composition > *,
+.pathway-grid > *,
+.journal-grid > *,
+.newsletter-layout > *,
+.signup-grid > *,
+.page-hero-grid > * {
+  min-width: 0;
+}
+.studio-section {
+  padding-block: clamp(56px, 7vw, 110px);
+}
+.money-lab,
+.newsletter-section {
+  padding-block: clamp(48px, 6vw, 90px);
+}
+.hero-copy h1 {
+  font-size: clamp(46px, 6.6vw, 96px);
+}
+.section-heading h2,
+.newsletter-layout h2 {
+  font-size: clamp(32px, 4.2vw, 58px);
+}
+.page-hero h1,
+.signup-copy h1 {
+  font-size: clamp(38px, 5.5vw, 76px);
+  overflow-wrap: break-word;
+}
+.naira-art {
+  height: clamp(335px, 34vw, 460px);
+}
+.main-nav a {
+  position: relative;
+}
+.nav-pending {
+  position: absolute;
+  bottom: 3px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: currentColor;
+  opacity: 0;
+}
+.nav-pending.is-pending {
+  opacity: 0.7;
+}
+.route-loading {
+  padding-top: 145px;
+  min-height: 70vh;
+}
+.data-loading {
+  background: #e8eddf;
+  color: #183c30;
+  padding: clamp(24px, 4vw, 42px);
+  border-radius: 16px;
+  min-height: 240px;
+}
+.data-loading p {
+  font-size: 14px;
+  margin: 20px 0;
+}
+.skeleton-line {
+  height: 20px;
+  background: #183c3015;
+  border-radius: 5px;
+  margin-top: 16px;
+}
+.skeleton-line.short {
+  width: 65%;
+}
+@media (min-width: 801px) and (max-width: 1050px) {
+  .hero-composition {
+    grid-template-columns: 1fr 1fr;
+  }
+  .hero-actions {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+@media (max-width: 699px) {
+  .pathway-grid,
+  .journal-grid {
+    grid-template-columns: 1fr;
+  }
+  .hero-copy h1 {
+    font-size: clamp(46px, 11vw, 72px);
+  }
+}
+@media (max-width: 360px) {
+  .hero-actions {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .rights-card,
+  .signup-box {
+    padding: 22px;
+  }
+  .principles-strip {
+    font-size: 8px;
+    gap: 8px;
+    letter-spacing: 0.06em;
+  }
+  .pathway-art {
+    right: 12px;
+  }
+  .pathway-card {
+    padding: 22px;
+  }
+}

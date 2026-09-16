@@ -4,6 +4,8 @@ import AnimateOnScroll from "@/components/AnimateOnScroll";
 
 interface ArticleGridProps {
   category?: string;
+  limit?: number;
+  excludeArchived?: boolean;
 }
 
 function formatDate(dateStr: string): string {
@@ -31,163 +33,69 @@ function CategoryLabel({ category }: { category: string }) {
 
 function ArticleCard({ article }: { article: ArticleMeta }) {
   return (
-    <Link
-      href={`/articles/${article.slug}`}
-      style={{ textDecoration: "none", display: "block" }}
-    >
-      <article
-        className="card"
-        style={{
-          borderRadius: "4px",
-          padding: "32px",
-          height: "100%",
-          display: "flex",
-          flexDirection: "column",
-          gap: "16px",
-          transition: "transform 0.2s ease, box-shadow 0.2s ease",
-        }}
-      >
+    <Link href={`/articles/${article.slug}`} className="journal-card">
+      <article>
         <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            gap: "12px",
-          }}
+          className={`journal-art journal-${article.category}`}
+          aria-hidden="true"
         >
-          <CategoryLabel category={article.category} />
-          <span
-            className="type-small"
-            style={{ color: "#6B6560", whiteSpace: "nowrap" }}
-          >
-            {article.readTime} min read
+          <span className="journal-art-label">THE SAVVY EDIT</span>
+          <span className="journal-glyph">
+            {article.category === "savings"
+              ? "₦"
+              : article.category === "grow"
+                ? "↗"
+                : article.category === "cut-costs"
+                  ? "✳"
+                  : "!"}
           </span>
+          <span className="journal-art-corner">↗</span>
         </div>
-
+        <div className="journal-meta">
+          <CategoryLabel category={article.category} />
+          <span>{article.readTime} min read</span>
+        </div>
         {article.reviewRequired && (
-          <p className="type-small">Archived · source review needed</p>
+          <p className="archive-label">Archived · source review needed</p>
         )}
-        <h3
-          className="type-h3"
-          style={{
-            fontFamily: "var(--font-serif, Georgia, serif)",
-            fontSize: "22px",
-            lineHeight: "1.3",
-            color: "#1A1A1A",
-            margin: 0,
-          }}
-        >
-          {article.title}
-        </h3>
-
-        <p
-          className="type-body"
-          style={{
-            color: "#6B6560",
-            margin: 0,
-            flex: 1,
-            display: "-webkit-box",
-            WebkitLineClamp: 3,
-            WebkitBoxOrient: "vertical",
-            overflow: "hidden",
-          }}
-        >
-          {article.excerpt}
-        </p>
-
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            paddingTop: "16px",
-            borderTop: "1px solid #D4CFC8",
-          }}
-        >
-          <span className="type-small" style={{ color: "#6B6560" }}>
-            {formatDate(article.publishedAt)}
-          </span>
-          <span
-            style={{
-              color: "#1B5E3B",
-              fontSize: "14px",
-              fontWeight: 600,
-            }}
-          >
-            Read →
-          </span>
+        <h3>{article.title}</h3>
+        <p className="journal-excerpt">{article.excerpt}</p>
+        <div className="journal-bottom">
+          <span>{formatDate(article.publishedAt)}</span>
+          <span>Read story ↗</span>
         </div>
       </article>
     </Link>
   );
 }
 
-export default function ArticleGrid({ category }: ArticleGridProps) {
-  const articles = getArticlesByCategory(category);
+export default function ArticleGrid({
+  category,
+  limit,
+  excludeArchived = false,
+}: ArticleGridProps) {
+  const articles = getArticlesByCategory(category)
+    .filter((article) => !excludeArchived || !article.reviewRequired)
+    .slice(0, limit);
 
   if (articles.length === 0) {
     return (
-      <div
-        style={{
-          backgroundColor: "#0F0F0D",
-          borderRadius: "4px",
-          padding: "56px 40px",
-          textAlign: "center",
-        }}
-      >
-        <p
-          style={{
-            fontFamily: "var(--font-sans, system-ui, sans-serif)",
-            fontSize: "11px",
-            fontWeight: 700,
-            textTransform: "uppercase" as const,
-            letterSpacing: "0.1em",
-            color: "#1B5E3B",
-            marginBottom: "16px",
-          }}
-        >
-          The Naira Shield
-        </p>
-        <h3
-          style={{
-            fontFamily: "var(--font-serif, Georgia, serif)",
-            fontSize: "24px",
-            fontWeight: 600,
-            color: "#FFFFFF",
-            marginBottom: "12px",
-            lineHeight: "1.3",
-          }}
-        >
-          Guides for this section are on their way.
-        </h3>
-        <p
-          style={{
-            fontFamily: "var(--font-sans, system-ui, sans-serif)",
-            fontSize: "16px",
-            color: "#888884",
-            maxWidth: "400px",
-            margin: "0 auto 28px",
-            lineHeight: "1.6",
-          }}
-        >
-          Subscribe to the Naira Shield and we&apos;ll notify you the moment new
-          guides are published.
-        </p>
-        <Link href="/newsletter" className="btn-primary">
-          Get Notified Free &rarr;
-        </Link>
+      <div className="editorial-empty">
+        <span aria-hidden="true">✳</span>
+        <div>
+          <p className="eyebrow">MORE GOOD READS ON THE WAY</p>
+          <h3>This chapter is still being written.</h3>
+          <p>Explore the other guides while we work on this section.</p>
+          <Link className="btn-primary" href="/articles">
+            Explore all guides ↗
+          </Link>
+        </div>
       </div>
     );
   }
 
   return (
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fill, minmax(min(300px, 100%), 1fr))",
-        gap: "24px",
-      }}
-    >
+    <div className="journal-grid">
       {articles.map((article, i) => (
         <AnimateOnScroll key={article.slug} delay={i * 100} variant="fadeUp">
           <ArticleCard article={article} />

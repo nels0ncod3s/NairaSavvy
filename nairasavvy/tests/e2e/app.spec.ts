@@ -61,6 +61,11 @@ test("calculator explains loss correctly and validates negative values", async (
   await page.getByLabel("Annual inflation (%)").fill("20");
   await page.getByLabel("Years", { exact: true }).fill("1");
   await expect(page.locator(".result-card").nth(1)).toContainText("16,667");
+  await page.getByRole("button", { name: "₦500,000", exact: true }).click();
+  await expect(page.getByLabel("Amount (₦)", { exact: true })).toHaveValue(
+    "500000",
+  );
+  await expect(page.locator(".power-labels")).toContainText("83.3%");
   await page.getByLabel("Amount (₦)", { exact: true }).fill("-1");
   await expect(page.locator(".erosion-calc-wrap [role=alert]")).toBeVisible();
 });
@@ -91,6 +96,12 @@ test("mobile navigation traps focus, closes with Escape and has no overflow", as
     "/savings",
     "/cut-costs/data-plans",
     "/tools/complaint-letter",
+    "/articles",
+    "/grow",
+    "/fight-back",
+    "/cut-costs",
+    "/newsletter",
+    "/search?q=bank",
   ]) {
     await page.goto(path);
     expect(

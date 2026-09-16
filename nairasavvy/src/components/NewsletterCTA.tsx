@@ -1,17 +1,30 @@
 import NewsletterForm from "./NewsletterForm";
 export default function NewsletterCTA() {
   return (
-    <section className="ns-section-dark newsletter-section">
-      <div className="container-content" style={{ maxWidth: 680 }}>
-        <p className="type-label">The Naira Shield</p>
-        <h2 className="type-h2">
-          Make your next money decision with better information.
-        </h2>
-        <p>
-          Practical guides, rate comparisons and consumer updates, delivered by
-          email.
-        </p>
-        <NewsletterForm />
+    <section className="newsletter-section">
+      <div className="container-content newsletter-layout">
+        <div>
+          <p className="eyebrow">THE NAIRA SHIELD / IN YOUR INBOX</p>
+          <h2>
+            A little wiser.
+            <br />
+            <em>Every time you open.</em>
+          </h2>
+          <p>
+            Money insights worth making room for. Practical guides, comparisons
+            and consumer updates.
+          </p>
+        </div>
+        <div className="newsletter-signup">
+          <span className="newsletter-spark" aria-hidden="true">
+            ✳
+          </span>
+          <h3>Your next smart move starts here.</h3>
+          <NewsletterForm />
+          <p className="newsletter-promise">
+            Free to join. Unsubscribe whenever you like.
+          </p>
+        </div>
       </div>
     </section>
   );

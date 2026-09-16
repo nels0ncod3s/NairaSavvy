@@ -1,38 +1,51 @@
-import { getCurrentInflationRate } from "@/lib/data/inflation";
-export const dynamic = "force-dynamic";
 import Link from "next/link";
+import {
+  ArrowUpRight,
+  ArrowDown,
+  ShieldCheck,
+  MoveUpRight,
+  Radio,
+  Sparkles,
+} from "lucide-react";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import NairaGuardDashboard from "@/components/home/NairaGuardDashboard";
 import ArticleGrid from "@/components/ArticleGrid";
 import NewsletterCTA from "@/components/NewsletterCTA";
 import ErosionCalculator from "@/components/tools/ErosionCalculator";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
+import { getCurrentInflationRate } from "@/lib/data/inflation";
+export const dynamic = "force-dynamic";
 
-const pillars = [
+const pathways = [
   {
-    num: "01",
-    label: "Protect",
-    heading: "Stop your savings from being eaten alive by inflation.",
-    body: "Inflation changes what your savings can buy. Compare the published rate, currency, fees, access rules and source before choosing a product.",
-    cta: "See the NairaGuard table",
+    n: "01",
+    name: "Protect it.",
+    description:
+      "Understand what inflation means for your savings. Compare the details that count.",
     href: "/savings",
+    cta: "Compare savings",
+    icon: ShieldCheck,
+    style: "protect",
   },
   {
-    num: "02",
-    label: "Fight Back",
-    heading: "Banks fail you. We give you the tools to fight back.",
-    body: "Failed POS transactions. Mystery charges. Locked accounts. The CBN gives you legal rights in every one of these cases. Most Nigerians never collect what they're owed simply because they don't know to ask.",
-    cta: "Know your rights",
-    href: "/fight-back",
-  },
-  {
-    num: "03",
-    label: "Grow",
-    heading: "Find every legal edge to make your money work harder.",
-    body: "Treasury bills, money market funds and dollar products work differently. Understand the terms and risks before deciding what fits your goals.",
-    cta: "Explore growth options",
+    n: "02",
+    name: "Grow it.",
+    description:
+      "Make sense of money markets, treasury bills and the trade-offs behind the returns.",
     href: "/grow",
+    cta: "Explore your options",
+    icon: MoveUpRight,
+    style: "grow",
+  },
+  {
+    n: "03",
+    name: "Stretch it.",
+    description:
+      "Spend less on the everyday. Find data plans that fit your budget and your life.",
+    href: "/cut-costs/data-plans",
+    cta: "Compare data plans",
+    icon: Radio,
+    style: "stretch",
   },
 ];
 
@@ -41,294 +54,202 @@ export default async function Home() {
   return (
     <>
       <Nav />
-      <main
-        id="main-content"
-        tabIndex={-1}
-        style={{ backgroundColor: "#F5F0E8" }}
-      >
-        {/* ── HERO ─────────────────────────────────────────── */}
-        <section
-          id="hero-sentinel"
-          className="ns-hero-main"
-          style={{ backgroundColor: "#F5F0E8" }}
-        >
-          <div className="container-content" style={{ maxWidth: "760px" }}>
-            <h1
-              className="type-display hero-animate-1"
-              style={{ color: "#1A1A1A", marginBottom: "28px" }}
-            >
-              Nigeria&apos;s financial system
-              <br />
-              wasn&apos;t built for you.
-              <br />
-              <span style={{ color: "#1B5E3B" }}>NairaSavvy was.</span>
-            </h1>
-            <p
-              className="type-body hero-animate-2"
-              style={{
-                color: "#6B6560",
-                fontSize: "18px",
-                lineHeight: "1.7",
-                maxWidth: "540px",
-                margin: "0 auto 48px",
-              }}
-            >
-              Free guides, tools, and alerts to protect your money, fight back
-              against banks, and grow what you have.
-            </p>
-            <div className="hero-animate-3">
-              <Link
-                href="/newsletter"
-                className="btn-primary"
-                style={{ fontSize: "16px", padding: "16px 32px" }}
-              >
-                Get Free Alerts &rarr;
-              </Link>
+      <main id="main-content" tabIndex={-1} className="studio-home">
+        <section className="money-hero" id="hero-sentinel">
+          <div className="container-content">
+            <div className="hero-kicker">
+              <span className="status-dot" /> YOUR MONEY. YOUR MOVE.
+              <span className="hero-location">
+                INDEPENDENT THINKING · NIGERIAN MONEY
+              </span>
+            </div>
+            <div className="hero-composition">
+              <div className="hero-copy">
+                <h1 className="hero-animate-1">
+                  More power
+                  <br />
+                  to your <em>naira.</em>
+                  <span className="heading-dot">✳</span>
+                </h1>
+                <p className="hero-animate-2">
+                  You work hard for your money.
+                  <br />
+                  Let’s make sure it works hard for you.
+                </p>
+                <div className="hero-actions hero-animate-3">
+                  <Link className="btn-primary" href="#money-tool">
+                    Meet your money <ArrowUpRight size={19} />
+                  </Link>
+                  <Link className="quiet-link" href="/articles">
+                    Find your next read <ArrowUpRight size={17} />
+                  </Link>
+                </div>
+                <div className="hero-footnote">
+                  <ShieldCheck size={16} /> Free tools. Clear guides. No
+                  financial jargon.
+                </div>
+              </div>
+              <div className="naira-art" aria-hidden="true">
+                <div className="art-grid" />
+                <span className="art-coordinate">
+                  NGN / A LITTLE MORE POSSIBILITY
+                </span>
+                <div className="coin-orbit orbit-one" />
+                <div className="coin-orbit orbit-two" />
+                <div className="naira-coin">
+                  <span>₦</span>
+                  <div className="coin-caption">KNOW MORE · KEEP MORE ·</div>
+                </div>
+                <div className="art-sticker">
+                  <Sparkles size={19} />
+                  <span>
+                    A smarter
+                    <br />
+                    money mindset.
+                  </span>
+                </div>
+                <div className="art-bottom">
+                  <span>MADE FOR REAL LIFE IN NIGERIA</span>
+                  <ArrowUpRight size={30} />
+                </div>
+              </div>
+            </div>
+            <div className="hero-bottom">
+              <span>A little clarity goes a long way.</span>
+              <a href="#start-here">
+                SCROLL TO GET SAVVY <ArrowDown size={15} />
+              </a>
             </div>
           </div>
         </section>
-
-        {/* ── PILLAR CARDS 01 / 02 / 03 ────────────────────── */}
-        <section className="ns-section" style={{ backgroundColor: "#F5F0E8" }}>
-          <div className="container-content">
-            <div
-              style={{
-                display: "grid",
-                /* min() ensures cards never overflow on narrow screens */
-                gridTemplateColumns:
-                  "repeat(auto-fill, minmax(min(300px, 100%), 1fr))",
-                gap: "24px",
-              }}
-            >
-              {pillars.map((p, i) => (
-                <AnimateOnScroll key={p.num} delay={i * 120} variant="fadeUp">
-                  <Link
-                    href={p.href}
-                    style={{
-                      textDecoration: "none",
-                      display: "block",
-                      height: "100%",
-                    }}
-                  >
-                    <div
-                      className="card"
-                      style={{
-                        borderRadius: "4px",
-                        height: "100%",
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "16px",
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "12px",
-                        }}
-                      >
-                        <span
-                          style={{
-                            fontFamily:
-                              "var(--font-sans, system-ui, sans-serif)",
-                            fontSize: "12px",
-                            fontWeight: 700,
-                            textTransform: "uppercase" as const,
-                            letterSpacing: "0.1em",
-                            color: "#9CA3A0",
-                          }}
-                        >
-                          {p.num}
-                        </span>
-                        <span className="category-tag">{p.label}</span>
-                      </div>
-                      <h3
-                        style={{
-                          fontFamily: "var(--font-serif, Georgia, serif)",
-                          fontSize: "clamp(18px, 3vw, 22px)",
-                          fontWeight: 700,
-                          color: "#1A1A1A",
-                          lineHeight: "1.3",
-                          margin: 0,
-                        }}
-                      >
-                        {p.heading}
-                      </h3>
-                      <p
-                        style={{
-                          fontFamily: "var(--font-sans, system-ui, sans-serif)",
-                          fontSize: "15px",
-                          lineHeight: "1.7",
-                          color: "#6B6560",
-                          margin: 0,
-                          flex: 1,
-                        }}
-                      >
-                        {p.body}
-                      </p>
-                      <span
-                        style={{
-                          color: "#1B5E3B",
-                          fontSize: "14px",
-                          fontWeight: 600,
-                          fontFamily: "var(--font-sans, system-ui, sans-serif)",
-                        }}
-                      >
-                        {p.cta} &rarr;
-                      </span>
+        <div className="principles-strip">
+          <span>LESS GUESSWORK.</span>
+          <span aria-hidden="true">✳</span>
+          <span>BETTER MONEY MOVES.</span>
+          <span aria-hidden="true">✳</span>
+          <span>MORE YOU.</span>
+          <span aria-hidden="true">✳</span>
+        </div>
+        <section id="start-here" className="studio-section container-content">
+          <div className="section-heading">
+            <div>
+              <p className="eyebrow">01 / START WHERE YOU ARE</p>
+              <h2>
+                Your money has potential.
+                <br />
+                <em>Give it a direction.</em>
+              </h2>
+            </div>
+            <p>
+              Saving for something big or making it to payday. There’s a smarter
+              next step.
+            </p>
+          </div>
+          <div className="pathway-grid">
+            {pathways.map(
+              ({ n, name, description, href, cta, icon: Icon, style }, i) => (
+                <AnimateOnScroll key={n} delay={i * 90}>
+                  <Link href={href} className={`pathway-card pathway-${style}`}>
+                    <div className="pathway-top">
+                      <span>{n} /</span>
+                      <ArrowUpRight size={23} />
                     </div>
+                    <div className="pathway-art" aria-hidden="true">
+                      <Icon strokeWidth={1.1} />
+                    </div>
+                    <h3>{name}</h3>
+                    <p>{description}</p>
+                    <span className="pathway-cta">
+                      {cta}
+                      <ArrowUpRight size={18} />
+                    </span>
                   </Link>
                 </AnimateOnScroll>
-              ))}
-            </div>
+              ),
+            )}
           </div>
         </section>
-
-        {/* ── NAIRA-GUARD DASHBOARD ─────────────────────────── */}
-        <section
-          id="naira-guard"
-          className="ns-section"
-          style={{ backgroundColor: "#F5F0E8" }}
-        >
+        <section id="money-tool" className="money-lab">
           <div className="container-content">
-            <AnimateOnScroll style={{ marginBottom: "40px" }}>
-              <p
-                style={{
-                  fontFamily: "var(--font-sans, system-ui, sans-serif)",
-                  fontSize: "12px",
-                  fontWeight: 700,
-                  textTransform: "uppercase" as const,
-                  letterSpacing: "0.1em",
-                  color: "#9CA3A0",
-                  marginBottom: "12px",
-                }}
-              >
-                04 — NairaGuard
-              </p>
-              <h2 className="type-h2" style={{ color: "#1A1A1A" }}>
-                Is your money working hard enough?
-              </h2>
-            </AnimateOnScroll>
-            <AnimateOnScroll delay={100} variant="scale">
-              <NairaGuardDashboard />
-            </AnimateOnScroll>
-          </div>
-        </section>
-
-        {/* ── LATEST ARTICLES ──────────────────────────────── */}
-        <section className="ns-section" style={{ backgroundColor: "#FAFAF7" }}>
-          <div className="container-content">
-            <AnimateOnScroll
-              style={{
-                display: "flex",
-                alignItems: "baseline",
-                justifyContent: "space-between",
-                flexWrap: "wrap" as const,
-                gap: "16px",
-                marginBottom: "40px",
-              }}
-            >
+            <div className="section-heading">
               <div>
-                <p
-                  style={{
-                    fontFamily: "var(--font-sans, system-ui, sans-serif)",
-                    fontSize: "12px",
-                    fontWeight: 700,
-                    textTransform: "uppercase" as const,
-                    letterSpacing: "0.1em",
-                    color: "#9CA3A0",
-                    marginBottom: "12px",
-                  }}
-                >
-                  05 — Latest
-                </p>
-                <h2 className="type-h2" style={{ color: "#1A1A1A", margin: 0 }}>
-                  Guides for your next money decision.
+                <p className="eyebrow">02 / THE REALITY CHECK</p>
+                <h2>
+                  Same balance.
+                  <br />
+                  <em>Different buying power.</em>
                 </h2>
               </div>
-              <Link
-                href="/articles"
-                style={{
-                  fontFamily: "var(--font-sans, system-ui, sans-serif)",
-                  fontSize: "15px",
-                  fontWeight: 600,
-                  color: "#1B5E3B",
-                  textDecoration: "none",
-                  whiteSpace: "nowrap" as const,
-                }}
-              >
-                See all guides &rarr;
-              </Link>
-            </AnimateOnScroll>
-            <ArticleGrid />
-          </div>
-        </section>
-
-        {/* ── NAIRA EROSION CALCULATOR ─────────────────────── */}
-        <section
-          className="ns-section-dark"
-          style={{ backgroundColor: "#0F0F0D" }}
-        >
-          <div className="container-content" style={{ maxWidth: "860px" }}>
-            <AnimateOnScroll style={{ marginBottom: "48px" }}>
-              <p
-                style={{
-                  fontFamily: "var(--font-sans, system-ui, sans-serif)",
-                  fontSize: "12px",
-                  fontWeight: 700,
-                  textTransform: "uppercase" as const,
-                  letterSpacing: "0.1em",
-                  color: "#1B5E3B",
-                  marginBottom: "12px",
-                }}
-              >
-                06 — Tool
-              </p>
-              <h2
-                className="type-h2"
-                style={{ color: "#FFFFFF", marginBottom: "16px" }}
-              >
-                See exactly how much your savings are losing.
-              </h2>
-              <p
-                style={{
-                  fontFamily: "var(--font-sans, system-ui, sans-serif)",
-                  fontSize: "17px",
-                  color: "#888884",
-                  lineHeight: "1.65",
-                  maxWidth: "560px",
-                }}
-              >
-                Enter your balance. Choose a timeframe. The Naira Erosion
-                Calculator shows you the real value of your money after
-                inflation, in naira, not percentages.
-              </p>
-            </AnimateOnScroll>
-            <AnimateOnScroll delay={120} variant="scale">
+              <div>
+                <p>
+                  Your balance can stand still while prices move. Try the
+                  calculator to see what that could mean for you.
+                </p>
+                <Link
+                  className="quiet-link"
+                  href="/tools/naira-erosion-calculator"
+                >
+                  Open full calculator <ArrowUpRight size={18} />
+                </Link>
+              </div>
+            </div>
+            <AnimateOnScroll variant="scale">
               <ErosionCalculator
                 initialInflationRate={inflation?.rate_percent}
                 inflationPeriod={inflation?.period}
                 inflationSource={inflation?.source}
               />
             </AnimateOnScroll>
-            <p style={{ marginTop: "24px", textAlign: "center" }}>
-              <Link
-                href="/tools/naira-erosion-calculator"
-                style={{
-                  fontFamily: "var(--font-sans, system-ui, sans-serif)",
-                  fontSize: "14px",
-                  color: "#1B5E3B",
-                  fontWeight: 600,
-                  textDecoration: "none",
-                }}
-              >
-                Open full calculator &rarr;
+            <div className="lab-caption">
+              <span>UNDERSTAND THE NUMBERS. OWN YOUR NEXT MOVE.</span>
+              <Link href="/savings">
+                Now compare savings options <ArrowUpRight size={17} />
               </Link>
-            </p>
+            </div>
+          </div>
+        </section>
+        <section className="studio-section container-content">
+          <div className="section-heading">
+            <div>
+              <p className="eyebrow">03 / THE SAVVY EDIT</p>
+              <h2>
+                Good reads.
+                <br />
+                <em>Better decisions.</em>
+              </h2>
+            </div>
+            <Link className="quiet-link" href="/articles">
+              Explore the journal <ArrowUpRight size={19} />
+            </Link>
+          </div>
+          <ArticleGrid limit={3} excludeArchived />
+        </section>
+        <section className="rights-section container-content">
+          <div className="rights-card">
+            <div className="rights-symbol" aria-hidden="true">
+              !
+            </div>
+            <div>
+              <p className="eyebrow">04 / FIND YOUR VOICE</p>
+              <h2>
+                A failed transaction
+                <br />
+                shouldn’t be your loss.
+              </h2>
+              <p>
+                Know what to document, where to complain, and how to put it in
+                writing. Let’s take the first step.
+              </p>
+              <Link href="/tools/complaint-letter" className="btn-primary">
+                Build your complaint letter <ArrowUpRight size={18} />
+              </Link>
+              <Link href="/fight-back" className="quiet-link">
+                Know your rights <ArrowUpRight size={16} />
+              </Link>
+            </div>
           </div>
         </section>
       </main>
-
       <NewsletterCTA />
       <Footer />
     </>

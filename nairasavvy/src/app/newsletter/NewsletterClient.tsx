@@ -1,11 +1,9 @@
 import { Check, Mail } from "lucide-react";
-import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import NewsletterForm from "@/components/NewsletterForm";
 export default function NewsletterClient() {
   return (
     <>
-      <Nav />
       <main id="main-content" tabIndex={-1} className="signup-page">
         <div className="container-content signup-grid">
           <div className="signup-copy">

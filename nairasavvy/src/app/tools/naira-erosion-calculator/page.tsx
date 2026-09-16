@@ -1,10 +1,10 @@
-import { getCurrentInflationRate } from "@/lib/data/inflation";
+import { Suspense } from "react";
+import DataLoading from "@/components/DataLoading";
 export const dynamic = "force-dynamic";
 import type { Metadata } from "next";
-import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import NewsletterCTA from "@/components/NewsletterCTA";
-import ErosionCalculator from "@/components/tools/ErosionCalculator";
+import InflationCalculator from "@/components/tools/InflationCalculator";
 
 export const metadata: Metadata = {
   title: "Naira Erosion Calculator — See What Inflation Is Costing You",
@@ -19,11 +19,9 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function NairaErosionCalculatorPage() {
-  const inflation = await getCurrentInflationRate();
+export default function NairaErosionCalculatorPage() {
   return (
     <>
-      <Nav />
       <main
         id="main-content"
         tabIndex={-1}
@@ -74,11 +72,9 @@ export default async function NairaErosionCalculatorPage() {
         {/* Calculator */}
         <section style={{ padding: "0 24px 80px" }}>
           <div className="container-content" style={{ maxWidth: "860px" }}>
-            <ErosionCalculator
-              initialInflationRate={inflation?.rate_percent}
-              inflationPeriod={inflation?.period}
-              inflationSource={inflation?.source}
-            />
+            <Suspense fallback={<DataLoading />}>
+              <InflationCalculator />
+            </Suspense>
           </div>
         </section>
 

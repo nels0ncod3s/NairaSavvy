@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
@@ -50,7 +49,6 @@ const sections = [
 export default function TermsPage() {
   return (
     <>
-      <Nav />
       <main
         id="main-content"
         tabIndex={-1}

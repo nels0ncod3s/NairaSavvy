@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { tokenSchema } from "@/lib/newsletter";
 export const metadata: Metadata = {
@@ -17,7 +16,6 @@ export default async function Page({
   const success = params.result === "success";
   return (
     <>
-      <Nav />
       <main id="main-content" tabIndex={-1}>
         <section className="ns-hero">
           <div className="container-content" style={{ maxWidth: 680 }}>

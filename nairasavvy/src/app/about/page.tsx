@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
@@ -43,7 +42,6 @@ const pillars = [
 export default function AboutPage() {
   return (
     <>
-      <Nav />
       <main
         id="main-content"
         tabIndex={-1}

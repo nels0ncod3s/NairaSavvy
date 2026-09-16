@@ -1,6 +1,6 @@
 # NairaSavvy
 
-Consumer money guides and comparison tools for Nigerians. Next.js 16 App Router, React 19, TypeScript, MDX, Supabase and Resend.
+Consumer money guides and comparison tools for Nigerians. Next.js 16 App Router, React 19, TypeScript, MDX, Supabase and SendByte.
 
 ## Local development
 
@@ -20,7 +20,7 @@ Without external credentials, all public routes still work. Savings/news data sh
 1. Use the Supabase project belonging to NairaSavvy. Do not point this app at another product's database.
 2. Run `src/lib/supabase/schema.sql`, then `src/lib/supabase/upgrade.sql` in that project. Both scripts are repeatable. Upgrade aborts on case-insensitive duplicate emails rather than merging consent records. Resolve any such duplicates deliberately before retrying.
 3. Set the public Supabase URL and publishable key, plus a server-only Supabase secret key. Legacy anon/service-role keys remain supported.
-4. Set `RESEND_API_KEY`, a verified `RESEND_FROM_EMAIL`, and `NEXT_PUBLIC_SITE_URL` to the public HTTPS origin.
+4. Set a live (`sk_live_…`) `SENDBYTE_API_KEY`, a verified `SENDBYTE_FROM_EMAIL`, and `NEXT_PUBLIC_SITE_URL` to the public HTTPS origin.
 5. Verify one signup, confirmation and unsubscribe with an address you control before promoting the release. No production email was sent during development tests.
 
 New signups are inactive until confirmed. Confirmation tokens expire after 24 hours, are hashed in the database, and are single-use. Opening a link does not change subscription state: confirmation and unsubscribe require a POST. Unsubscribe deletes the subscriber record. Only send newsletters to records with BOTH `confirmed=true` and `active=true` and include a working unsubscribe link. The confirmation flow is implemented; editorial newsletter composition/scheduling remains an operator responsibility. Unsubscribe raw tokens are only present in the email, so future sending code must generate a new token and persist its hash before including a new link.
@@ -68,3 +68,9 @@ The optional `/api/deploy` hook still requires `CONTENT_WEBHOOK_SECRET` and `VER
 - Test confirmation/unsubscribe with a controlled address; do not import unconfirmed legacy rows into a mailing campaign.
 - Check the configured canonical origin, contact address and privacy policy against actual operations.
 - Review the archived market stories before removing their warning.
+
+## SendByte email delivery
+
+Confirmation emails use the official `@sendbyte/node` SDK with an eight-second timeout, one attempt per request and a token-scoped idempotency key. Only live keys are accepted by public signup: SendByte test keys simulate delivery and would leave visitors waiting for an email that cannot arrive. Use mocked tests locally; test sandbox sends separately through the provider dashboard. Verify your sending domain and use its address in `SENDBYTE_FROM_EMAIL`. Delete the old provider’s environment variables after deploying this migration.
+
+A queued response does not prove inbox delivery. Verify confirmation and unsubscribe with an address you control before release. This migration does not start campaigns or send emails to existing subscribers. See `docs/agent-pipeline.md` for the proposed editorial workflow.

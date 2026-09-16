@@ -1,6 +1,6 @@
 "use client";
 import { useRef } from "react";
-import Link from "next/link";
+import Link, { useLinkStatus } from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X, ArrowUpRight } from "lucide-react";
 const links = [
@@ -11,6 +11,15 @@ const links = [
   ["Articles", "/articles"],
   ["Search", "/search"],
 ];
+function PendingHint() {
+  const { pending } = useLinkStatus();
+  return (
+    <span
+      className={`nav-pending${pending ? " is-pending" : ""}`}
+      aria-hidden="true"
+    />
+  );
+}
 export default function Nav() {
   const dialog = useRef<HTMLDialogElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);
@@ -35,6 +44,7 @@ export default function Nav() {
               aria-current={pathname === href ? "page" : undefined}
             >
               {label}
+              <PendingHint />
             </Link>
           ))}
           <Link className="btn-primary" href="/newsletter">
@@ -91,6 +101,7 @@ export default function Nav() {
             aria-current={pathname === href ? "page" : undefined}
           >
             {label}
+            <PendingHint />
           </Link>
         ))}
         <Link className="btn-primary" href="/newsletter" onClick={close}>

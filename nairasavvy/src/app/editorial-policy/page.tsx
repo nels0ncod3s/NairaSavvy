@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 export const metadata: Metadata = {
   title: "Editorial and comparison policy",
@@ -8,7 +7,6 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <>
-      <Nav />
       <main id="main-content" tabIndex={-1}>
         <section className="ns-hero">
           <div className="container-content" style={{ maxWidth: 800 }}>

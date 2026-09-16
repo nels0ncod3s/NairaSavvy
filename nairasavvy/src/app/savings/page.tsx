@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import NewsletterCTA from "@/components/NewsletterCTA";
 import ArticleGrid from "@/components/ArticleGrid";
 import NairaGuardDashboard from "@/components/home/NairaGuardDashboard";
-import ErosionCalculator from "@/components/tools/ErosionCalculator";
-import { getCurrentInflationRate } from "@/lib/data/inflation";
+import InflationCalculator from "@/components/tools/InflationCalculator";
+import { Suspense } from "react";
+import DataLoading from "@/components/DataLoading";
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Compare savings and purchasing power",
@@ -13,11 +13,9 @@ export const metadata: Metadata = {
     "Compare currencies, yields, access terms and verification dates before choosing a savings product.",
   alternates: { canonical: "/savings" },
 };
-export default async function SavingsPage() {
-  const inflation = await getCurrentInflationRate();
+export default function SavingsPage() {
   return (
     <>
-      <Nav />
       <main id="main-content" tabIndex={-1}>
         <section className="ns-hero">
           <div className="container-content">
@@ -31,16 +29,16 @@ export default async function SavingsPage() {
         </section>
         <section className="ns-section">
           <div className="container-content">
-            <NairaGuardDashboard />
+            <Suspense fallback={<DataLoading />}>
+              <NairaGuardDashboard />
+            </Suspense>
           </div>
         </section>
         <section className="ns-section">
           <div className="container-content">
-            <ErosionCalculator
-              initialInflationRate={inflation?.rate_percent}
-              inflationPeriod={inflation?.period}
-              inflationSource={inflation?.source}
-            />
+            <Suspense fallback={<DataLoading />}>
+              <InflationCalculator />
+            </Suspense>
           </div>
         </section>
         <section className="ns-section">

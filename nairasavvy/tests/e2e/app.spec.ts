@@ -155,3 +155,53 @@ test("article category filter uses async search parameters", async ({
     "Five questions before choosing a money product",
   );
 });
+
+test("landing sections fit phones, tablets and wide screens; navigation stays client-side", async ({
+  page,
+  request,
+}) => {
+  for (const width of [320, 375, 540, 768, 1024, 1440, 1920]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/");
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+      `overflow at ${width}px`,
+    ).toBe(true);
+    for (const section of await page
+      .locator(".studio-home section, .newsletter-section")
+      .all()) {
+      const box = await section.boundingBox();
+      expect(box!.x).toBeGreaterThanOrEqual(-1);
+      expect(box!.x + box!.width).toBeLessThanOrEqual(width + 1);
+    }
+  }
+  await page.evaluate(() => {
+    (window as Window & { navigationMarker?: string }).navigationMarker =
+      "persist";
+  });
+  await page
+    .locator(".desktop-nav")
+    .getByRole("link", { name: "Savings", exact: true })
+    .click();
+  await expect(page).toHaveURL(/\/savings$/);
+  await expect(page.getByRole("heading", { level: 1 })).toContainText(
+    "fair comparison",
+  );
+  expect(
+    await page.evaluate(
+      () => (window as Window & { navigationMarker?: string }).navigationMarker,
+    ),
+  ).toBe("persist");
+  expect(await page.locator('link[rel="icon"]').getAttribute("href")).toContain(
+    "icon.svg",
+  );
+  expect((await request.get("/icon.svg")).headers()["content-type"]).toContain(
+    "image/svg+xml",
+  );
+  expect(
+    (await request.get("/apple-icon")).headers()["content-type"],
+  ).toContain("image/png");
+});

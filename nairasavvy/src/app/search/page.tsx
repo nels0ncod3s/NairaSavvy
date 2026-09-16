@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Search as SearchIcon, ArrowUpRight } from "lucide-react";
-import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { getAllArticles } from "@/lib/articles";
 export const metadata: Metadata = {
@@ -47,7 +46,6 @@ export default async function Search({
   );
   return (
     <>
-      <Nav />
       <main id="main-content" tabIndex={-1}>
         <section className="ns-hero search-page">
           <div className="container-content">

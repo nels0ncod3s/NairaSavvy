@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import type { MDXComponents } from "mdx/types";
-import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import NewsletterCTA from "@/components/NewsletterCTA";
 import { getAllArticles, getArticleBySlug, type Faq } from "@/lib/articles";
@@ -576,8 +575,6 @@ export default async function ArticlePage({
           }}
         />
       )}
-
-      <Nav />
 
       <main
         id="main-content"

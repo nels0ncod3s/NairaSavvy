@@ -1,5 +1,5 @@
 "use client";
-import { useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 import Link, { useLinkStatus } from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X, ArrowUpRight } from "lucide-react";
@@ -24,13 +24,33 @@ export default function Nav() {
   const dialog = useRef<HTMLDialogElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);
   const pathname = usePathname();
+  const scrollTarget = useRef<string | null>(null);
+  useLayoutEffect(() => {
+    if (scrollTarget.current === pathname) {
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    }
+    scrollTarget.current = null;
+  }, [pathname]);
+  function startNavigation(href: string) {
+    dialog.current?.close();
+    if (pathname === href) {
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    } else {
+      scrollTarget.current = href;
+    }
+  }
   function close() {
     dialog.current?.close();
   }
   return (
     <>
       <nav className="main-nav" aria-label="Main navigation">
-        <Link className="wordmark" href="/">
+        <Link
+          className="wordmark"
+          href="/"
+          scroll={false}
+          onNavigate={() => startNavigation("/")}
+        >
           <span className="brand-mark" aria-hidden="true">
             ₦
           </span>
@@ -41,13 +61,20 @@ export default function Nav() {
             <Link
               key={href}
               href={href}
+              scroll={false}
+              onNavigate={() => startNavigation(href)}
               aria-current={pathname === href ? "page" : undefined}
             >
               {label}
               <PendingHint />
             </Link>
           ))}
-          <Link className="btn-primary" href="/newsletter">
+          <Link
+            className="btn-primary"
+            href="/newsletter"
+            scroll={false}
+            onNavigate={() => startNavigation("/newsletter")}
+          >
             Get Free Alerts <ArrowUpRight size={16} aria-hidden="true" />
           </Link>
         </div>
@@ -65,7 +92,7 @@ export default function Nav() {
         className="mobile-nav"
         ref={dialog}
         aria-labelledby="menu-title"
-        onClose={() => trigger.current?.focus()}
+        onClose={() => trigger.current?.focus({ preventScroll: true })}
         onKeyDown={(event) => {
           if (event.key !== "Tab") return;
           const items = dialog.current?.querySelectorAll<HTMLElement>(
@@ -97,6 +124,8 @@ export default function Nav() {
           <Link
             key={href}
             href={href}
+            scroll={false}
+            onNavigate={() => startNavigation(href)}
             onClick={close}
             aria-current={pathname === href ? "page" : undefined}
           >
@@ -104,7 +133,13 @@ export default function Nav() {
             <PendingHint />
           </Link>
         ))}
-        <Link className="btn-primary" href="/newsletter" onClick={close}>
+        <Link
+          className="btn-primary"
+          href="/newsletter"
+          scroll={false}
+          onNavigate={() => startNavigation("/newsletter")}
+          onClick={close}
+        >
           Get Free Alerts <ArrowUpRight size={16} aria-hidden="true" />
         </Link>
       </dialog>

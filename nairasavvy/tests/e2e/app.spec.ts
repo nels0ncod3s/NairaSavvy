@@ -205,3 +205,51 @@ test("landing sections fit phones, tablets and wide screens; navigation stays cl
     (await request.get("/apple-icon")).headers()["content-type"],
   ).toContain("image/png");
 });
+
+test("navbar destinations start at the top after scrolling down", async ({
+  page,
+}) => {
+  for (const width of [1440, 375]) {
+    await page.setViewportSize({ width, height: 850 });
+    await page.goto("/");
+    for (const [name, path] of [
+      ["Savings", "/savings"],
+      ["Grow", "/grow"],
+      ["Articles", "/articles"],
+      ["Get Free Alerts", "/newsletter"],
+    ]) {
+      await expect(page.locator(".footer-big-word")).toBeVisible();
+      await page.evaluate(() =>
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: "instant",
+        }),
+      );
+      await expect
+        .poll(() => page.evaluate(() => window.scrollY))
+        .toBeGreaterThan(300);
+      if (width < 1000)
+        await page
+          .getByRole("button", { name: "Open navigation menu" })
+          .click();
+      const menu =
+        width < 1000 ? page.getByRole("dialog") : page.locator(".desktop-nav");
+      await menu.getByRole("link", { name, exact: true }).click();
+      await expect(page).toHaveURL(new RegExp(`${path}$`));
+      await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+      await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
+    }
+    // Selecting the current destination should also return to the top.
+    await page.evaluate(() =>
+      window.scrollTo({ top: document.body.scrollHeight, behavior: "instant" }),
+    );
+    if (width < 1000)
+      await page.getByRole("button", { name: "Open navigation menu" }).click();
+    await (
+      width < 1000 ? page.getByRole("dialog") : page.locator(".desktop-nav")
+    )
+      .getByRole("link", { name: "Get Free Alerts", exact: true })
+      .click();
+    await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
+  }
+});

@@ -13,6 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       "/cut-costs",
       "/cut-costs/data-plans",
       "/news",
+      "/briefings",
       "/newsletter",
       "/tools/naira-erosion-calculator",
       "/tools/complaint-letter",

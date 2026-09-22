@@ -1,4 +1,5 @@
 export const dynamic = "force-dynamic";
+import Link from "next/link";
 import type { Metadata } from "next";
 import Footer from "@/components/Footer";
 import ArticleGrid from "@/components/ArticleGrid";
@@ -87,6 +88,11 @@ export default async function NewsPage() {
             >
               Latest
             </h2>
+            <p style={{ marginBottom: 24 }}>
+              <Link href="/briefings">
+                Read the latest reviewed money briefings →
+              </Link>
+            </p>
             <ArticleGrid category="news" />
           </div>
         </section>

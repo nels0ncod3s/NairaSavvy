@@ -1,0 +1,12 @@
+[
+  {
+    "id": "nairametrics", "name": "Nairametrics", "url": "https://nairametrics.com/feed/",
+    "hosts": ["nairametrics.com", "www.nairametrics.com"], "kind": "rss", "enabled": false,
+    "permission": "Example only. Check feed availability, publisher terms and excerpt permissions before enabling."
+  },
+  {
+    "id": "businessday", "name": "BusinessDay", "url": "https://businessday.ng/feed/",
+    "hosts": ["businessday.ng", "www.businessday.ng"], "kind": "rss", "enabled": false,
+    "permission": "Example only. Check feed availability, publisher terms and excerpt permissions before enabling."
+  }
+]

@@ -253,3 +253,42 @@ test("navbar destinations start at the top after scrolling down", async ({
     await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(0);
   }
 });
+
+test("briefings and newsletter leave handle missing services honestly on mobile", async ({
+  page,
+  request,
+}) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto("/briefings");
+  await expect(page.getByRole("heading", { level: 1 })).toContainText(
+    "your money",
+  );
+  await expect(page.getByRole("status")).toContainText(
+    "temporarily unavailable",
+  );
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  ).toBe(true);
+  await page.goto("/briefings/00000000-0000-4000-8000-000000000001");
+  await expect(page.getByRole("heading", { level: 1 })).toContainText(
+    "Briefing unavailable",
+  );
+  await page.goto("/newsletter/leave?token=invalid");
+  await expect(page.locator("main")).toContainText("invalid");
+  const token = "a".repeat(64);
+  await page.goto(`/newsletter/leave?token=${token}`);
+  await expect(
+    page.getByRole("button", { name: "Unsubscribe", exact: true }),
+  ).toBeVisible();
+  expect(
+    (await request.get(`/api/newsletter/leave?token=${token}`)).status(),
+  ).toBe(405);
+  expect(
+    (await request.post(`/api/newsletter/leave?token=${token}`)).status(),
+  ).toBe(503);
+  expect(
+    (await request.post("/api/webhooks/sendbyte", { data: {} })).status(),
+  ).toBe(503);
+});

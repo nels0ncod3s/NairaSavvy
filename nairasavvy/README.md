@@ -23,7 +23,7 @@ Without external credentials, all public routes still work. Savings/news data sh
 4. Set a live (`sk_live_…`) `SENDBYTE_API_KEY`, a verified `SENDBYTE_FROM_EMAIL`, and `NEXT_PUBLIC_SITE_URL` to the public HTTPS origin.
 5. Verify one signup, confirmation and unsubscribe with an address you control before promoting the release. No production email was sent during development tests.
 
-New signups are inactive until confirmed. Confirmation tokens expire after 24 hours, are hashed in the database, and are single-use. Opening a link does not change subscription state: confirmation and unsubscribe require a POST. Unsubscribe deletes the subscriber record. Only send newsletters to records with BOTH `confirmed=true` and `active=true` and include a working unsubscribe link. The confirmation flow is implemented; editorial newsletter composition/scheduling remains an operator responsibility. Unsubscribe raw tokens are only present in the email, so future sending code must generate a new token and persist its hash before including a new link.
+New signups are inactive until confirmed. Confirmation tokens expire after 24 hours, are hashed in the database, and are single-use. Opening a link does not change subscription state: confirmation and unsubscribe require a POST. Unsubscribe deletes the subscriber record. Only send newsletters to records with BOTH `confirmed=true` and `active=true` and include a working unsubscribe link. The confirmation flow is implemented; editorial newsletter composition/scheduling remains an operator responsibility. The agent pipeline stores per-delivery unsubscribe tokens privately, preserving links from older editions.
 
 Subscriber access and throttling RPCs are service-role-only. A distributed per-address cooldown permits one signup request/minute; a global 60 requests/minute circuit breaker limits email abuse. Add provider/WAF protections appropriate to traffic volume. Neither API keys nor full emails are logged by the signup route. Operational rate-limit records expire after two days on subsequent use. Regularly delete unconfirmed signups older than your chosen retention period; confirm the published policy reflects that period before public rollout.
 
@@ -73,4 +73,11 @@ The optional `/api/deploy` hook still requires `CONTENT_WEBHOOK_SECRET` and `VER
 
 Confirmation emails use the official `@sendbyte/node` SDK with an eight-second timeout, one attempt per request and a token-scoped idempotency key. Only live keys are accepted by public signup: SendByte test keys simulate delivery and would leave visitors waiting for an email that cannot arrive. Use mocked tests locally; test sandbox sends separately through the provider dashboard. Verify your sending domain and use its address in `SENDBYTE_FROM_EMAIL`. Delete the old provider’s environment variables after deploying this migration.
 
-A queued response does not prove inbox delivery. Verify confirmation and unsubscribe with an address you control before release. This migration does not start campaigns or send emails to existing subscribers. See `docs/agent-pipeline.md` for the proposed editorial workflow.
+A queued response does not prove inbox delivery. Verify confirmation and unsubscribe with an address you control before release. This migration does not start campaigns or send emails to existing subscribers. See `docs/agent-pipeline.md` for the executable editorial workflow and activation steps.
+
+
+## Scout, Bayo and Sendy
+
+The executable agent pipeline is implemented, with reviewed public content at `/briefings`. Start with `npm run agents -- scout`, then `npm run agents -- bayo` and `npm run agents -- list`. Apply the separate agent migration first. Review/publish and edition preparation happen through privileged CLI commands; Sendy is disabled by default.
+
+See [the operator guide](docs/agent-pipeline.md) for source configuration, optional AI summaries, draft editing, approval, newsletter previews, queueing, delivery and recovery. No production database changes, scheduler activation or real subscriber emails are performed by installing the code.
